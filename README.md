@@ -1,8 +1,10 @@
-# Welcome to React Router!
+# Welcome to the SpaceTraders UI!
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A React application using React Router, Vite, and Tailwind CSS to create a user interface for the SpaceTraders API.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## WIP: This project is currently a work in progress. The UI is not yet complete, but the foundation is set up for server-side rendering, hot module replacement, and a modern development experience.
+
+The rest of the README will be updated as the project progresses, but for now, you can get started with the features and instructions below.
 
 ## Features
 
