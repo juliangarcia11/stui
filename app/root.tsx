@@ -7,10 +7,10 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import type { Route } from "./+types/root";
 import "@radix-ui/themes/styles.css";
+import type { Route } from "./+types/root";
 import "./app.css";
-import { AppContainer } from "./layout";
+import { AppContainer } from "./components";
 import { Config } from "./config";
 
 export const links: Route.LinksFunction = () => [
