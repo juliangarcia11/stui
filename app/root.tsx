@@ -7,11 +7,13 @@ import {
   ScrollRestoration,
 } from "react-router";
 
-import "@radix-ui/themes/styles.css";
 import type { Route } from "./+types/root";
-import "./app.css";
+import { ApiProvider } from "./api";
 import { AppContainer } from "./components";
 import { Config } from "./config";
+
+import "@radix-ui/themes/styles.css";
+import "./app.css";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -36,9 +38,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <AppContainer title={Config.AppTitleLong} pages={Config.HeaderPages}>
-          {children}
-        </AppContainer>
+        <ApiProvider>
+          <AppContainer title={Config.AppTitleLong} pages={Config.HeaderPages}>
+            {children}
+          </AppContainer>
+        </ApiProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

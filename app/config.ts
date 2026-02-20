@@ -4,6 +4,7 @@
  * This keeps them centralized and makes it easier to change them in the future.
  */
 export const Config = {
+  ApiUrl: "https://api.spacetraders.io/v2",
   AppTitleShort: "STUI",
   AppTitleLong: "SpaceTraders UI",
   HeaderPages: [
