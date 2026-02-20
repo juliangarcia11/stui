@@ -1,5 +1,5 @@
 import { NotFoundCard } from "~/components";
-import type { Route } from "./+types/home";
+import type { Route } from "./+types/dashboard";
 
 export function meta({}: Route.MetaArgs) {
   return [
