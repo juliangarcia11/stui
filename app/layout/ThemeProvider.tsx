@@ -10,7 +10,9 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     <NextThemeProvider attribute="class" defaultTheme="system">
       <Theme>
         {children}
-        <ThemePanel />
+        {process.env.NODE_ENV === "development" && (
+          <ThemePanel defaultOpen={false} />
+        )}
       </Theme>
     </NextThemeProvider>
   );

@@ -10,6 +10,7 @@ export type AppHeaderPageItem = {
 };
 
 export type AppHeaderProps = {
+  title: string;
   pages: AppHeaderPageItem[];
 };
 
@@ -17,7 +18,7 @@ export type AppHeaderProps = {
  * AppHeader
  * A navigation header component that includes links to different sections of the app.
  */
-export const AppHeader: FC<AppHeaderProps> = ({ pages }) => {
+export const AppHeader: FC<AppHeaderProps> = ({ title, pages }) => {
   return (
     <TabNav.Root size="2" wrap="nowrap" justify="start" color="indigo">
       <Flex direction="row" width="100%" align="center" justify="between" p="1">
@@ -25,7 +26,7 @@ export const AppHeader: FC<AppHeaderProps> = ({ pages }) => {
           {({ isActive }) => (
             <TabNav.Link asChild active={isActive}>
               <Text size="4" weight="bold">
-                Radix Fun
+                {title}
               </Text>
             </TabNav.Link>
           )}

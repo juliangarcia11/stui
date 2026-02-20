@@ -11,6 +11,7 @@ import type { Route } from "./+types/root";
 import "@radix-ui/themes/styles.css";
 import "./app.css";
 import { AppContainer } from "./layout";
+import { Config } from "./config";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -25,11 +26,6 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-const PAGE_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
-];
-
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -40,7 +36,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <AppContainer pages={PAGE_LINKS}>{children}</AppContainer>
+        <AppContainer title={Config.AppTitleLong} pages={Config.HeaderPages}>
+          {children}
+        </AppContainer>
         <ScrollRestoration />
         <Scripts />
       </body>
