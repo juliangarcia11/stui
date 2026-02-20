@@ -20,7 +20,7 @@ export type AppHeaderProps = {
  */
 export const AppHeader: FC<AppHeaderProps> = ({ title, pages }) => {
   return (
-    <TabNav.Root size="2" wrap="nowrap" justify="start" color="indigo">
+    <TabNav.Root size="2" wrap="nowrap" justify="start">
       <Flex direction="row" width="100%" align="center" justify="between" p="1">
         <NavLink to="/">
           {({ isActive }) => (
