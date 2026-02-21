@@ -1,4 +1,4 @@
-import { type FlexProps, Flex, Text } from "@radix-ui/themes";
+import { type FlexProps, Box, Flex, Text } from "@radix-ui/themes";
 import type { PropsWithChildren, FC } from "react";
 
 export type LabelledFormFieldProps = PropsWithChildren &
@@ -18,17 +18,19 @@ export const LabelledFormField: FC<LabelledFormFieldProps> = ({
   gap,
   ...flexProps
 }) => (
-  <Flex
-    direction={direction ?? "column"}
-    gap={getGap(direction, gap)}
-    {...flexProps}
-  >
-    <Text as="label" htmlFor={name}>
-      {label}
-    </Text>
+  <Box maxWidth="fit-content" asChild>
+    <Flex
+      direction={direction ?? "column"}
+      gap={getGap(direction, gap)}
+      {...flexProps}
+    >
+      <Text as="label" htmlFor={name}>
+        {label}
+      </Text>
 
-    {children}
-  </Flex>
+      {children}
+    </Flex>
+  </Box>
 );
 
 function getGap(

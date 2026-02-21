@@ -2,27 +2,32 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { Box, Callout, Card, Flex, Heading } from "@radix-ui/themes";
 import type { FC } from "react";
 import { TextFormField } from "~/components";
+import { TextAreaFormField } from "~/components/form";
 
 export const LoginForm: FC<{ error?: string }> = ({ error }) => (
-  <Card>
-    <Heading as="h1">Login</Heading>
-
-    <Box width="fit-content">
-      <Flex direction="column" gap="3">
-        <TextFormField
-          name="username"
-          label="Agent:"
-          placeholder="Agent Name"
-          direction="row"
-          gap="3"
-        />
-
-        <TextFormField name="token" label="Token:" direction="row" />
-
-        {error?.length && <LoginErrorCallout error={error} />}
-      </Flex>
-    </Box>
-  </Card>
+  <Box maxWidth="fit-content" asChild>
+    <Card>
+      <Box maxWidth="fit-content" asChild>
+        <Flex direction="column" gap="3">
+          <Heading as="h1">Login</Heading>
+          <TextFormField
+            name="username"
+            label="Agent:"
+            placeholder="Agent Name"
+            direction="row"
+            gap="3"
+          />
+          <TextAreaFormField
+            name="token"
+            label="Token:"
+            direction="row"
+            placeholder="A long string of letters and numbers..."
+          />
+          {error?.length && <LoginErrorCallout error={error} />}
+        </Flex>
+      </Box>
+    </Card>
+  </Box>
 );
 
 const LoginErrorCallout: FC<{ error: string }> = ({ error }) => (
