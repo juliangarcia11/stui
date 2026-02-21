@@ -9,11 +9,29 @@ import {
 
 import type { Route } from "./+types/root";
 import { ApiProvider } from "./api";
+import { client } from "./client/client.gen";
 import { AppContainer } from "./components";
 import { Config } from "./config";
 
 import "@radix-ui/themes/styles.css";
 import "./app.css";
+
+// configure internal service client
+client.setConfig({
+  // set default base url for requests
+  baseUrl: Config.ApiUrl,
+  // set default headers for requests
+  // headers: {
+  //   Authorization: "Bearer <token_from_service_client>",
+  // },
+});
+
+client.interceptors.response.use((response) => {
+  if (response.status === 200) {
+    console.log(`request to ${response.url} was successful`);
+  }
+  return response;
+});
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
