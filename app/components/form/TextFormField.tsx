@@ -1,7 +1,7 @@
-import { type FlexProps, Flex, TextField, Text } from "@radix-ui/themes";
-import type { FC, PropsWithChildren } from "react";
-import { LabelledFormField } from "./LabelledFormField";
+import { type FlexProps, TextField } from "@radix-ui/themes";
+import type { FC } from "react";
 import { ErrorFormField } from "./ErrorFormField";
+import { LabelledFormField } from "./LabelledFormField";
 
 type TextFormFieldProps = FlexProps & {
   label: string;
@@ -10,10 +10,13 @@ type TextFormFieldProps = FlexProps & {
   error?: string;
 };
 
+/**
+ * Formatted Text Field for use in Forms
+ */
 export const TextFormField: FC<TextFormFieldProps> = ({
-  error,
   name,
   placeholder,
+  error,
   ...rest
 }) => (
   <ErrorFormField error={error}>
