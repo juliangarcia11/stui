@@ -19,5 +19,10 @@ export async function loader() {
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
-  return <DashboardCard />;
+  return (
+    <Flex direction="column" gap="4" p="4">
+      {loaderData && <DashboardCard {...loaderData} />}
+      {/* <Debug>{stringifyWithBigInt(loaderData)}</Debug> */}
+    </Flex>
+  );
 }
