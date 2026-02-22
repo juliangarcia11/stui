@@ -1,5 +1,5 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { Box, Callout, Card, Flex, Heading } from "@radix-ui/themes";
+import { Box, Callout, Card, Em, Flex, Heading } from "@radix-ui/themes";
 import type { FC } from "react";
 import { useFetcher } from "react-router";
 import { TextFormField } from "~/components";
@@ -8,11 +8,15 @@ import { SubmitButton, TextAreaFormField } from "~/components/form";
 export const LoginForm: FC<{ error?: string }> = ({ error }) => {
   const fetcher = useFetcher();
   return (
-    <fetcher.Form action="/login" method="POST">
-      <Box maxWidth="fit-content" asChild>
+    <fetcher.Form
+      action="/login"
+      method="POST"
+      aria-description="agent login form"
+    >
+      <Box maxWidth="fit-content" m="auto" asChild>
         <Card>
           <Flex direction="column" gap="3">
-            <Heading as="h1">Login</Heading>
+            <Heading as="h1">Welcome back, agent!</Heading>
             <TextFormField
               name="username"
               label="Agent:"

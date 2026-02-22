@@ -2,6 +2,7 @@ import { data, redirect } from "react-router";
 import { LoginForm } from "~/features/auth";
 import { commitSession, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
+import { Text } from "@radix-ui/themes";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -54,7 +55,7 @@ export async function action({ request }: Route.ActionArgs) {
 export default function Login({ loaderData }: Route.ComponentProps) {
   const { error } = loaderData;
 
-  return <LoginForm error={error} />;
+  return <Text>Register</Text>;
 }
 
 async function validateCredentials(
