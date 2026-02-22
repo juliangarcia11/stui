@@ -1,8 +1,7 @@
 import { data, redirect } from "react-router";
-import type { Route } from "./+types/login";
-
 import { LoginForm } from "~/features/login";
 import { commitSession, getSession } from "../sessions.server";
+import type { Route } from "./+types/login";
 
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
@@ -66,11 +65,11 @@ async function validateCredentials(
   // fake credentials checker for now while I test session stuff
   console.log("Validating...", {
     username,
-    password: token,
-    isValid: !mockError,
+    token,
+    isValid: mockError || !username.length || !token.length,
   });
 
-  if (mockError) {
+  if (mockError || !username.length || !token.length) {
     return null;
   }
 
