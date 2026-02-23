@@ -22,6 +22,7 @@ export const LabelledFormField: FC<LabelledFormFieldProps> = ({
     <Flex
       direction={direction ?? "column"}
       gap={getGap(direction, gap)}
+      align="center"
       {...flexProps}
     >
       <Text as="label" htmlFor={name}>
