@@ -1,6 +1,6 @@
-import { data, redirect } from "react-router";
+import { data, redirect, type Session } from "react-router";
 import { RegistrationForm } from "~/features/auth/RegistrationForm";
-import { commitSession, getSession } from "../sessions.server";
+import { commitSession, getSession, flashError } from "../sessions.server";
 import type { Route } from "./+types/login";
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -25,20 +25,20 @@ export async function action({ request }: Route.ActionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const form = await request.formData();
   const username = form.get("username")?.toString() ?? "";
-  const token = form.get("token")?.toString() ?? "";
+  const faction = form.get("faction")?.toString() ?? "";
   const mockError = form.get("mockError")?.toString() === "true";
 
-  const agentId = await validateCredentials(username, token, mockError);
+  if (!username.length) {
+    return flashRegistrationError(session, "Agent name is required");
+  }
+  if (!faction.length) {
+    return flashRegistrationError(session, "Faction is required");
+  }
+
+  const agentId = await validateCredentials(username, faction, mockError);
 
   if (agentId == null) {
-    session.flash("error", "Invalid username/token");
-
-    // Redirect back to the login page with errors.
-    return redirect("/login", {
-      headers: {
-        "Set-Cookie": await commitSession(session),
-      },
-    });
+    return flashRegistrationError(session, "Invalid agent name or faction");
   }
 
   session.set("agentId", agentId);
@@ -59,19 +59,33 @@ export default function Register({ loaderData }: Route.ComponentProps) {
 
 async function validateCredentials(
   username: string,
-  token: string,
+  faction: string,
   mockError: boolean,
 ) {
   // fake credentials checker for now while I test session stuff
   console.log("Validating...", {
     username,
-    token,
-    isValid: mockError || !username.length || !token.length,
+    faction,
+    isValid: mockError || !username.length || !faction.length,
   });
 
-  if (mockError || !username.length || !token.length) {
+  if (mockError || !username.length || !faction.length) {
     return null;
   }
 
   return username;
+}
+
+/**
+ * Route helper to flash error message to the session & reload the page for display
+ * @param session Browser session
+ * @param message Error message
+ * @returns Redirect
+ */
+async function flashRegistrationError(session: Session, message: string) {
+  return flashError({
+    flashError: message,
+    redirectUrl: "/register",
+    session,
+  });
 }

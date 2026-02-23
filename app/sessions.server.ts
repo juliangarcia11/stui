@@ -1,4 +1,8 @@
-import { createCookieSessionStorage } from "react-router";
+import {
+  createCookieSessionStorage,
+  redirect,
+  type Session,
+} from "react-router";
 
 type SessionData = {
   agentId: string;
@@ -6,9 +10,15 @@ type SessionData = {
 };
 
 type SessionFlashData = {
+  /**
+   * General session error message
+   */
   error: string;
 };
 
+/**
+ * @source https://reactrouter.com/explanation/sessions-and-cookies#using-sessions
+ */
 const { getSession, commitSession, destroySession } =
   createCookieSessionStorage<SessionData, SessionFlashData>({
     // a Cookie from `createCookie` or the CookieOptions to create one
@@ -30,4 +40,53 @@ const { getSession, commitSession, destroySession } =
     },
   });
 
-export { getSession, commitSession, destroySession };
+export { commitSession, destroySession, getSession };
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+// My own helpers for sessions
+// ===========================================================
+// ===========================================================
+// ===========================================================
+
+export type FlashErrorParams = {
+  session: Session;
+  flashKey?: string;
+  flashError: string;
+  redirectUrl: `/${string}`;
+};
+
+/**
+ * Store an error in the session flash data & redirect.
+ *
+ * If multiple session errors are needed at once, each must be keyed uniquely.
+ * Add these keys to `SessionFlashData` type in `app\sessions.server.ts`
+ *
+ * More info: https://reactrouter.com/explanation/sessions-and-cookies#session-gotchas
+ * @example
+ * // reusable helper for a given route (replace 'route' with whatever)
+ * function flashRouteError(session: Session, message: string) {
+ *  return flashError({
+ *    flashKey: "error",
+ *    flashError: message,
+ *    redirectUrl: "/route",
+ *    session,
+ *  })
+ * }
+ */
+export async function flashError({
+  session,
+  flashKey = "error",
+  flashError = "Invalid form values",
+  redirectUrl = "/",
+}: FlashErrorParams) {
+  session.flash(flashKey, flashError);
+
+  // Redirect back to the login page with errors.
+  return redirect(redirectUrl, {
+    headers: {
+      "Set-Cookie": await commitSession(session),
+    },
+  });
+}
