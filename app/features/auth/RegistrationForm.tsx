@@ -37,7 +37,7 @@ export const RegistrationForm: FC<{ error?: string }> = ({ error }) => (
 const FactionSelectInput = () => (
   <ErrorFormField>
     <LabelledFormField label="Faction:" name="faction" direction="row" gap="2">
-      <Select.Root>
+      <Select.Root name="faction">
         <Select.Trigger placeholder="Select a faction" />
         <Select.Content>
           {FACTIONS.map(({ label, value }) => (
