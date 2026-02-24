@@ -6,7 +6,7 @@ import type { Route } from "./+types/login";
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
-  if (session.has("agentId")) {
+  if (session.has("token")) {
     // Redirect to the home page if they are already signed in.
     return redirect("/");
   }
@@ -41,7 +41,7 @@ export async function action({ request }: Route.ActionArgs) {
     return flashLoginError(session, "Invalid username or token");
   }
 
-  session.set("agentId", agentId);
+  session.set("agentSymbol", agentId);
 
   // Login succeeded, send them to the home page.
   return redirect("/", {

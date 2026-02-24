@@ -5,8 +5,8 @@ import {
 } from "react-router";
 
 type SessionData = {
-  agentId: string;
   token: string;
+  agentSymbol: string;
 };
 
 type SessionFlashData = {

@@ -18,7 +18,7 @@ export const RegistrationForm: FC<{ error?: string }> = ({ error }) => (
     error={error}
   >
     <TextFormField
-      name="username"
+      name="symbol"
       label="Agent: "
       placeholder="Agent Name"
       direction="row"

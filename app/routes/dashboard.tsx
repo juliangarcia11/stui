@@ -17,15 +17,17 @@ export function meta({}: Route.MetaArgs) {
 // see: https://reactrouter.com/start/framework/data-loading
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
-  const agentId = session.get("agentId");
+  const token = session.get("token");
+  const agentSymbol = session.get("agentSymbol");
 
-  if (!agentId?.length) {
+  if (!token?.length || !agentSymbol?.length) {
     return redirect("/login");
   }
 
   const apiStatus = await getStatus();
   return {
-    agentId,
+    token,
+    agentSymbol,
     statusResponse: apiStatus.data,
   };
 }
@@ -36,7 +38,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
       {loaderData.statusResponse && (
         <DashboardCard {...loaderData.statusResponse} />
       )}
-      <Debug>{stringifyWithBigInt(loaderData.agentId)}</Debug>
+      <Debug>{stringifyWithBigInt(loaderData)}</Debug>
     </Flex>
   );
 }
