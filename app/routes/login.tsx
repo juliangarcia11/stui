@@ -1,8 +1,13 @@
 import { data, redirect, type Session } from "react-router";
-import { LoginForm } from "~/features/auth";
+import { loginAgent, LoginForm } from "~/features/auth";
 import { commitSession, flashError, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
 
+/**
+ * Pre-check user session as page loads.
+ * If user is signed in, reroute to `/`
+ * If user session has an error (form was already submitted), get that to the UI
+ */
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
@@ -21,29 +26,37 @@ export async function loader({ request }: Route.LoaderArgs) {
   );
 }
 
+/**
+ * Login form submission action
+ * 1. Extract form data from the request
+ * 2. Attempt login
+ * 3. Flash error to session storage, or
+ * 4. Set user session & redirect to `/`
+ */
 export async function action({ request }: Route.ActionArgs) {
   const session = await getSession(request.headers.get("Cookie"));
   const form = await request.formData();
-  const username = form.get("username")?.toString() ?? "";
+  const symbol = form.get("symbol")?.toString() ?? "";
   const token = form.get("token")?.toString() ?? "";
-  const mockError = form.get("mockError")?.toString() === "true";
 
-  if (!username.length) {
-    return flashLoginError(session, "Agent name is required");
+  const result = await loginAgent({
+    symbol,
+    token,
+  });
+
+  // Login error, flash the error message to session storage & refresh
+  if (result.status === "error") {
+    return flashError({
+      flashError: result.message,
+      redirectUrl: "/login",
+      session,
+    });
   }
-  if (!token.length) {
-    return flashLoginError(session, "Token is required");
-  }
 
-  const agentId = await validateCredentials(username, token, mockError);
+  // Login succeeded, set session details & send them to the home page.
+  session.set("token", result.data.token);
+  session.set("agentSymbol", result.data.symbol);
 
-  if (agentId == null) {
-    return flashLoginError(session, "Invalid username or token");
-  }
-
-  session.set("agentSymbol", agentId);
-
-  // Login succeeded, send them to the home page.
   return redirect("/", {
     headers: {
       "Set-Cookie": await commitSession(session),
@@ -55,37 +68,4 @@ export default function Login({ loaderData }: Route.ComponentProps) {
   const { error } = loaderData;
 
   return <LoginForm error={error} />;
-}
-
-async function validateCredentials(
-  username: string,
-  token: string,
-  mockError: boolean,
-) {
-  // fake credentials checker for now while I test session stuff
-  console.log("Validating...", {
-    username,
-    token,
-    isValid: mockError || !username.length || !token.length,
-  });
-
-  if (mockError || !username.length || !token.length) {
-    return null;
-  }
-
-  return username;
-}
-
-/**
- * Route helper to flash error message to the session & reload the page for display
- * @param session Browser session
- * @param message Error message
- * @returns Redirect
- */
-async function flashLoginError(session: Session, message: string) {
-  return flashError({
-    flashError: message,
-    redirectUrl: "/login",
-    session,
-  });
 }

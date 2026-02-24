@@ -1,4 +1,5 @@
 export { LoginForm } from "./LoginForm";
 export { RegistrationForm } from "./RegistrationForm";
 
-export { registerAgent } from "./registerAgent";
+export { loginAgent } from "./agent-login";
+export { registerAgent } from "./agent-registration";
