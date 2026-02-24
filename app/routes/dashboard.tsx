@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import { Debug } from "~/components";
-import { DashboardContainer } from "~/features/dashboard";
+import { DashboardContainer, getAgentInfo } from "~/features/dashboard";
 import { stringifyWithBigInt } from "~/utils";
 import type { Route } from "./+types/dashboard";
 import { getStatus } from "~/client";
@@ -25,19 +25,22 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   const apiStatus = await getStatus();
+  const agentInfo = await getAgentInfo(token);
   return {
     token,
     agentSymbol,
-    statusResponse: apiStatus.data,
+    statusInfo: apiStatus.data,
+    agentInfo: agentInfo,
   };
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   return (
     <Flex direction="column" gap="4" p="4">
-      {loaderData.statusResponse && (
-        <DashboardContainer {...loaderData.statusResponse} />
+      {loaderData.statusInfo && (
+        <DashboardContainer {...loaderData.statusInfo} />
       )}
+      <Debug>{stringifyWithBigInt(loaderData.agentInfo)}</Debug>
     </Flex>
   );
 }
