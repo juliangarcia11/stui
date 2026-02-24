@@ -10,11 +10,13 @@ import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
 import { buildAuth, extractApiErr, wrapErr, wrapSuccess } from "~/utils";
 
-type AgentInfoResponse = ApiResponse<{
+export type AgentInfo = {
   agent: Agent;
   contracts: Contract[];
   ships: Ship[];
-}>;
+};
+
+type AgentInfoResponse = ApiResponse<AgentInfo>;
 
 /**
  * Get Agent, Contracts, and Ships in a parallel request

@@ -1,16 +1,12 @@
-import { Flex } from "@radix-ui/themes";
-import { Debug } from "~/components";
+import { redirect } from "react-router";
+import { ErrorBoundary } from "~/components";
 import {
   DashboardContainer,
   getAgentInfo,
   getApiStatus,
 } from "~/features/dashboard";
-import { stringifyWithBigInt } from "~/utils";
-import type { Route } from "./+types/dashboard";
-import { getStatus } from "~/client";
 import { getSession } from "~/sessions.server";
-import { redirect } from "react-router";
-import { ErrorBoundary } from "~/components";
+import type { Route } from "./+types/dashboard";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -46,7 +42,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
-  return <DashboardContainer {...loaderData.statusInfo} />;
+  return <DashboardContainer {...loaderData} />;
 }
 
 /**
