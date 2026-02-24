@@ -1,5 +1,6 @@
 import { data, redirect } from "react-router";
 import { FactionSymbol } from "~/client";
+import { ErrorBoundary } from "~/components";
 import { registerAgent, RegistrationForm } from "~/features/auth";
 import { commitSession, flashError, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
@@ -71,3 +72,8 @@ export default function Register({ loaderData }: Route.ComponentProps) {
 
   return <RegistrationForm error={error} />;
 }
+
+/**
+ * Reusable error boundary for errors in the loader, component, or actions.
+ */
+export { ErrorBoundary };

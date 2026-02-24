@@ -1,4 +1,5 @@
-import { data, redirect, type Session } from "react-router";
+import { data, redirect } from "react-router";
+import { ErrorBoundary } from "~/components";
 import { loginAgent, LoginForm } from "~/features/auth";
 import { commitSession, flashError, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
@@ -69,3 +70,8 @@ export default function Login({ loaderData }: Route.ComponentProps) {
 
   return <LoginForm error={error} />;
 }
+
+/**
+ * Reusable error boundary for errors in the loader, component, or actions.
+ */
+export { ErrorBoundary };

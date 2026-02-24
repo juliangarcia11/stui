@@ -1,11 +1,16 @@
 import { Flex } from "@radix-ui/themes";
 import { Debug } from "~/components";
-import { DashboardContainer, getAgentInfo } from "~/features/dashboard";
+import {
+  DashboardContainer,
+  getAgentInfo,
+  getApiStatus,
+} from "~/features/dashboard";
 import { stringifyWithBigInt } from "~/utils";
 import type { Route } from "./+types/dashboard";
 import { getStatus } from "~/client";
 import { getSession } from "~/sessions.server";
 import { redirect } from "react-router";
+import { ErrorBoundary } from "~/components";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -24,13 +29,21 @@ export async function loader({ request }: Route.LoaderArgs) {
     return redirect("/login");
   }
 
-  const apiStatus = await getStatus();
+  const apiStatus = await getApiStatus();
   const agentInfo = await getAgentInfo(token);
+
+  if (apiStatus.status === "error") {
+    throw new Error(`Failed to fetch API status: ${apiStatus.message}`);
+  }
+  if (agentInfo.status === "error") {
+    throw new Error(`Failed to fetch agent info: ${agentInfo.message}`);
+  }
+
   return {
     token,
     agentSymbol,
     statusInfo: apiStatus.data,
-    agentInfo: agentInfo,
+    agentInfo: agentInfo.data,
   };
 }
 
@@ -44,3 +57,8 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
     </Flex>
   );
 }
+
+/**
+ * Reusable error boundary for errors in the loader, component, or actions.
+ */
+export { ErrorBoundary };
