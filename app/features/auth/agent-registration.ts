@@ -1,6 +1,7 @@
 import { FactionSymbol, register, type RegisterResponse } from "~/client";
-import type { ApiResponse } from "./types";
-import { AUTH_ERR, extractApiErr, wrapErr } from "./utils";
+import { Config } from "~/config";
+import type { ApiResponse } from "~/types";
+import { extractApiErr, wrapErr } from "~/utils";
 
 type AgentRegistrationParams = {
   symbol: string;
@@ -22,10 +23,10 @@ export async function registerAgent({
 }: AgentRegistrationParams): Promise<AgentRegistrationResponse> {
   // Validate user input
   if (!symbol.trim().length) {
-    return AUTH_ERR.AGENT_SYMBOL;
+    return Config.Errors.MissingAgentSymbol;
   }
   if (!faction.trim().length) {
-    return AUTH_ERR.FACTION;
+    return Config.Errors.MissingFaction;
   }
 
   // Register agent with the API
@@ -38,7 +39,7 @@ export async function registerAgent({
 
   // Validate response
   if (response.error) return wrapErr(extractApiErr(response.error));
-  if (!response.data) return AUTH_ERR.MISSING_DATA;
+  if (!response.data) return Config.Errors.MissingData;
 
   // Parse result
   return {

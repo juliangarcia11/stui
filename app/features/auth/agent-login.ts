@@ -1,6 +1,7 @@
 import { getMyAgent } from "~/client";
-import type { ApiResponse } from "./types";
-import { AUTH_ERR, extractApiErr, wrapErr } from "./utils";
+import { Config } from "~/config";
+import type { ApiResponse } from "~/types";
+import { extractApiErr, wrapErr } from "~/utils";
 
 type AgentLoginParams = {
   symbol: string;
@@ -22,10 +23,10 @@ export async function loginAgent({
 }: AgentLoginParams): Promise<AgentLoginResponse> {
   // Validate user input
   if (!symbol.trim().length) {
-    return AUTH_ERR.AGENT_SYMBOL;
+    return Config.Errors.MissingAgentSymbol;
   }
   if (!token.trim().length) {
-    return AUTH_ERR.TOKEN;
+    return Config.Errors.MissingToken;
   }
 
   // Get agent by provided token
@@ -37,9 +38,9 @@ export async function loginAgent({
 
   // Validate response
   if (response.error) return wrapErr(extractApiErr(response.error));
-  if (!response.data) return AUTH_ERR.MISSING_DATA;
+  if (!response.data) return Config.Errors.MissingData;
   if (symbol !== response.data.data.symbol.toLowerCase())
-    return AUTH_ERR.SYMBOL_MISMATCH;
+    return Config.Errors.MismatchedAgentSymbol;
 
   // Parse result
   return {
