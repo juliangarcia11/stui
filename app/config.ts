@@ -7,10 +7,14 @@ export const Config = {
   ApiUrl: "https://api.spacetraders.io/v2",
   AppTitleShort: "STUI",
   AppTitleLong: "SpaceTraders UI",
-  HeaderPages: [
+  Pages: [
     { label: "Contracts", href: "/contracts" },
     { label: "Fleet", href: "/fleet" },
     { label: "Waypoints", href: "/waypoints" },
     { label: "Settings", href: "/settings" },
+  ],
+  AuthFeaturePages: [
+    { label: "Login", href: "/login" },
+    { label: "Register", href: "/register" },
   ],
 };

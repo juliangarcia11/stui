@@ -56,11 +56,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <ApiProvider>
-          <AppContainer title={Config.AppTitleLong} pages={Config.HeaderPages}>
-            {children}
-          </AppContainer>
-        </ApiProvider>
+        <ApiProvider>{children}</ApiProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
