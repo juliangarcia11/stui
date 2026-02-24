@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import { Debug } from "~/components";
-import { DashboardCard } from "~/features/dashboard";
+import { DashboardContainer } from "~/features/dashboard";
 import { stringifyWithBigInt } from "~/utils";
 import type { Route } from "./+types/dashboard";
 import { getStatus } from "~/client";
@@ -36,9 +36,8 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
   return (
     <Flex direction="column" gap="4" p="4">
       {loaderData.statusResponse && (
-        <DashboardCard {...loaderData.statusResponse} />
+        <DashboardContainer {...loaderData.statusResponse} />
       )}
-      <Debug>{stringifyWithBigInt(loaderData)}</Debug>
     </Flex>
   );
 }
