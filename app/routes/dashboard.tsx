@@ -40,22 +40,13 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   return {
-    token,
-    agentSymbol,
     statusInfo: apiStatus.data,
     agentInfo: agentInfo.data,
   };
 }
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
-  return (
-    <Flex direction="column" gap="4" p="4">
-      {loaderData.statusInfo && (
-        <DashboardContainer {...loaderData.statusInfo} />
-      )}
-      <Debug>{stringifyWithBigInt(loaderData.agentInfo)}</Debug>
-    </Flex>
-  );
+  return <DashboardContainer {...loaderData.statusInfo} />;
 }
 
 /**
