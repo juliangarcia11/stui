@@ -8,9 +8,8 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { ApiProvider } from "./api";
 import { client } from "./client/client.gen";
-import { AppContainer } from "./components";
+import { ThemeProvider } from "./components";
 import { Config } from "./config";
 
 import "@radix-ui/themes/styles.css";
@@ -56,7 +55,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <ApiProvider>{children}</ApiProvider>
+        {/* add providers here */}
+        <ThemeProvider>{children}</ThemeProvider>
+        {/* add layout ui to `app\components\layout\AppPageLayout.tsx` or the feature's layout */}
         <ScrollRestoration />
         <Scripts />
       </body>
