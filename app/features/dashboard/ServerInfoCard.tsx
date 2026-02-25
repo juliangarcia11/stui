@@ -11,7 +11,7 @@ import {
   Text,
 } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { GetStatusResponse } from "~/client";
+import type { GetStatusResponse } from "~/api/client";
 import { formatRelativeDate } from "~/utils/dates";
 
 /**

@@ -1,3 +1,5 @@
+import { Config } from "~/config";
+import type { ApiResponse } from "~/types";
 import {
   getContracts,
   getMyAgent,
@@ -5,10 +7,8 @@ import {
   type Agent,
   type Contract,
   type Ship,
-} from "~/client";
-import { Config } from "~/config";
-import type { ApiResponse } from "~/types";
-import { buildAuth, standardizeApiResponse, wrapSuccess } from "~/utils";
+} from "./client";
+import { buildAuth, standardizeApiResponse, wrapSuccess } from "./utils";
 
 export type AgentInfo = {
   agent: Agent;

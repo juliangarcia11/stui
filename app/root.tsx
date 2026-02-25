@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { client } from "./client/client.gen";
+import { client } from "./api/client/client.gen";
 import { ThemeProvider } from "./components";
 import { Config } from "./config";
 

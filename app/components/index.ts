@@ -3,4 +3,3 @@ export * from "./ErrorBoundary";
 export * from "./form";
 export * from "./layout";
 export * from "./NotFoundCard";
-export * from "./TestClientCard";

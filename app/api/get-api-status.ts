@@ -1,6 +1,6 @@
-import { getStatus, type GetStatusResponse } from "~/client";
 import type { ApiResponse } from "~/types";
-import { standardizeApiResponse } from "~/utils";
+import { getStatus, type GetStatusResponse } from "./client";
+import { standardizeApiResponse } from "./utils";
 
 type ApiStatusResponse = ApiResponse<GetStatusResponse>;
 

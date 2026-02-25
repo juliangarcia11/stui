@@ -1,6 +1,6 @@
 import { Badge, DataList, Flex, Text } from "@radix-ui/themes";
 import { useMemo, type FC, type ReactNode } from "react";
-import type { GetStatusResponse } from "~/client";
+import type { GetStatusResponse } from "~/api/client";
 import { DashboardCard } from "./DashboardCard";
 
 const LeaderLabel: FC<{ leader: string; index: number }> = ({

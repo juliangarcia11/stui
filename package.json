@@ -8,8 +8,7 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "client:gen": "openapi-ts",
-    "api:gen": "openapi-typescript https://api.spacetraders.io/v2/documentation/json --output ./app/api/types.ts --enum --enum-values --dedupe-enums --export-type --root-types --make-paths-enum"
+    "client:gen": "openapi-ts"
   },
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.2",

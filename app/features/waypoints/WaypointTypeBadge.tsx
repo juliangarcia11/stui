@@ -1,6 +1,6 @@
 import { Badge, type BadgeProps } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { WaypointType } from "~/client";
+import type { WaypointType } from "~/api/client";
 import { capitalizeWords } from "~/utils";
 
 const WaypointBadgeColor: Record<WaypointType, BadgeProps["color"]> = {

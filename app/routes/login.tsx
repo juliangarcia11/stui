@@ -1,6 +1,7 @@
 import { data, redirect } from "react-router";
+import { loginAgent } from "~/api";
 import { ErrorBoundary } from "~/components";
-import { loginAgent, LoginForm } from "~/features/auth";
+import { LoginForm } from "~/features/auth";
 import { commitSession, flashError, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
 

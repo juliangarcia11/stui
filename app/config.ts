@@ -1,4 +1,4 @@
-import { wrapErr } from "./utils/api";
+import { wrapErr } from "./api/utils";
 
 /**
  * Config

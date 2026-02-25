@@ -1,10 +1,7 @@
 import { redirect } from "react-router";
+import { getAgentInfo, getApiStatus } from "~/api";
 import { ErrorBoundary } from "~/components";
-import {
-  DashboardContainer,
-  getAgentInfo,
-  getApiStatus,
-} from "~/features/dashboard";
+import { DashboardContainer } from "~/features/dashboard";
 import { extractToken } from "~/sessions.server";
 import type { Route } from "./+types/dashboard";
 

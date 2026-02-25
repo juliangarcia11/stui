@@ -1,5 +1,4 @@
-import { getAgentInfo } from "../dashboard";
-import { getSystemInfo } from "./get-system-info";
+import { getAgentInfo, getSystemInfo } from "~/api";
 import { transformWaypointToSystem } from "./utils";
 
 /**

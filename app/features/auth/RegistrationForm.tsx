@@ -1,9 +1,9 @@
-import type { FC } from "react";
-import { TextFormField } from "~/components";
-import { AuthForm } from "./AuthForm";
 import { Select } from "@radix-ui/themes";
+import type { FC } from "react";
+import { FactionSymbol } from "~/api/client";
+import { TextFormField } from "~/components";
 import { ErrorFormField, LabelledFormField } from "~/components/form";
-import { FactionSymbol } from "~/client";
+import { AuthForm } from "./AuthForm";
 
 const FACTIONS = Object.values(FactionSymbol).map((value) => ({
   label: value.slice(0, 1) + value.slice(1).toLowerCase(),

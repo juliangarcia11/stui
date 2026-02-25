@@ -3,7 +3,7 @@ import { defineConfig } from "@hey-api/openapi-ts";
 export default defineConfig({
   input: "https://api.spacetraders.io/v2/documentation/json",
   output: {
-    path: "./app/client",
+    path: "./app/api/client",
     postProcess: ["prettier", "eslint"],
   },
   plugins: [

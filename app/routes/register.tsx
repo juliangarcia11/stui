@@ -1,7 +1,8 @@
 import { data, redirect } from "react-router";
-import { FactionSymbol } from "~/client";
+import { registerAgent } from "~/api";
+import { FactionSymbol } from "~/api/client";
 import { ErrorBoundary } from "~/components";
-import { registerAgent, RegistrationForm } from "~/features/auth";
+import { RegistrationForm } from "~/features/auth";
 import { commitSession, flashError, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
 

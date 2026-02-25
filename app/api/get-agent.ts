@@ -1,7 +1,7 @@
-import { getMyAgent, type Agent } from "~/client";
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { buildAuth, standardizeApiResponse } from "~/utils";
+import { getMyAgent, type Agent } from "./client";
+import { buildAuth, standardizeApiResponse } from "./utils";
 
 type GetAgentResponse = ApiResponse<Agent>;
 
