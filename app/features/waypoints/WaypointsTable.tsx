@@ -11,7 +11,7 @@ import type { LoadWaypointsDataResponse } from "./loader-waypoints";
  * - Coordinates
  */
 export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
-  agentInfo,
+  agentInfo: { agent, ships, contracts },
   systemInfo,
 }) => {
   return (
@@ -29,7 +29,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
           <Table.Row key={waypoint.symbol}>
             <Table.RowHeaderCell>
               <WaypointSymbol
-                headquarters={agentInfo.headquarters}
+                headquarters={agent.headquarters}
                 waypointSymbol={waypoint.symbol}
               />
             </Table.RowHeaderCell>

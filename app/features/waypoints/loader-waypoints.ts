@@ -1,4 +1,4 @@
-import { getAgent } from "./get-agent";
+import { getAgentInfo } from "../dashboard";
 import { getSystemInfo } from "./get-system-info";
 import { transformWaypointToSystem } from "./utils";
 
@@ -15,21 +15,20 @@ export async function loadWaypointsData(
   searchParams: URLSearchParams,
 ) {
   const system = searchParams.get("system");
-  const agentInfo = await getAgent(token);
+  const agentInfo = await getAgentInfo(token);
   if (agentInfo.status === "error") {
     throw new Error(`Failed to fetch agent info: ${agentInfo.message}`);
   }
 
   const systemSymbol = system?.length
     ? system
-    : transformWaypointToSystem(agentInfo.data.headquarters);
+    : transformWaypointToSystem(agentInfo.data.agent.headquarters);
   const systemInfo = await getSystemInfo({ token, systemSymbol });
   if (systemInfo.status === "error") {
     throw new Error(`Failed to fetch system info: ${systemInfo.message}`);
   }
 
   // TODO:
-  //   - get agent ships & contracts
   //   - map system waypoints to include agent's ships & contracts at each waypoint
 
   return { agentInfo: agentInfo.data, systemInfo: systemInfo.data };
