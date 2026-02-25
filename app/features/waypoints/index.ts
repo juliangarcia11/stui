@@ -1,3 +1,2 @@
-export { getAgent } from "./get-agent";
-export { getSystemInfo } from "./get-system-info";
-export * from "./utils";
+export { loadWaypointsData } from "./loader-waypoints";
+export { WaypointContainer } from "./WaypointContainer";

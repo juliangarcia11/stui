@@ -1,17 +1,12 @@
 import { Badge, Container, Flex, Heading, Text } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { Agent, System } from "~/client";
 import { WaypointsTable } from "./WaypointsTable";
-
-export type WaypointContainerProps = {
-  agentInfo: Agent;
-  systemInfo: System;
-};
+import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 
 /**
  * Page container for displaying waypoints in the current system
  */
-export const WaypointContainer: FC<WaypointContainerProps> = ({
+export const WaypointContainer: FC<LoadWaypointsDataResponse> = ({
   agentInfo,
   systemInfo,
 }) => {

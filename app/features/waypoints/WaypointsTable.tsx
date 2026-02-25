@@ -1,13 +1,8 @@
 import { Table } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { Agent, System } from "~/client";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
-
-type WaypointsTableProps = {
-  agentInfo: Agent;
-  systemInfo: System;
-};
+import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -15,7 +10,7 @@ type WaypointsTableProps = {
  * - Type
  * - Coordinates
  */
-export const WaypointsTable: FC<WaypointsTableProps> = ({
+export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
   agentInfo,
   systemInfo,
 }) => {

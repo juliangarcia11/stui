@@ -1,0 +1,40 @@
+import { getAgent } from "./get-agent";
+import { getSystemInfo } from "./get-system-info";
+import { transformWaypointToSystem } from "./utils";
+
+/**
+ * Loads the data for the Waypoints route.
+ *
+ * **Note:** The `getSystemInfo` returns a list of waypoint summaries, not the full waypoint details.
+ * When/if that detail data is needed, we'll need to make additional API calls to fetch the full details for each waypoint or a page of waypoints.
+ *
+ * @throws {Error} If fetching fails. Meant to be caught by the route's ErrorBoundary.
+ */
+export async function loadWaypointsData(
+  token: string,
+  searchParams: URLSearchParams,
+) {
+  const system = searchParams.get("system");
+  const agentInfo = await getAgent(token);
+  if (agentInfo.status === "error") {
+    throw new Error(`Failed to fetch agent info: ${agentInfo.message}`);
+  }
+
+  const systemSymbol = system?.length
+    ? system
+    : transformWaypointToSystem(agentInfo.data.headquarters);
+  const systemInfo = await getSystemInfo({ token, systemSymbol });
+  if (systemInfo.status === "error") {
+    throw new Error(`Failed to fetch system info: ${systemInfo.message}`);
+  }
+
+  // TODO:
+  //   - get agent ships & contracts
+  //   - map system waypoints to include agent's ships & contracts at each waypoint
+
+  return { agentInfo: agentInfo.data, systemInfo: systemInfo.data };
+}
+
+export type LoadWaypointsDataResponse = Awaited<
+  ReturnType<typeof loadWaypointsData>
+>;

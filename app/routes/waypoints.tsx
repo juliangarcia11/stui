@@ -1,15 +1,8 @@
-import { Container, Flex, Heading } from "@radix-ui/themes";
 import { redirect } from "react-router";
-import { Debug, ErrorBoundary } from "~/components";
-import {
-  getAgent,
-  getSystemInfo,
-  transformWaypointToSystem,
-} from "~/features/waypoints";
+import { ErrorBoundary } from "~/components";
+import { loadWaypointsData, WaypointContainer } from "~/features/waypoints";
 import { extractToken } from "~/sessions.server";
-import { stringifyWithBigInt } from "~/utils";
 import type { Route } from "./+types/waypoints";
-import { WaypointContainer } from "~/features/waypoints/WaypointContainer";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -30,23 +23,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   if (!token) return redirect("/login");
 
   const searchparams = new URL(request.url).searchParams;
-  const system = searchparams.get("system");
-
-  const agentInfo = await getAgent(token);
-  if (agentInfo.status === "error") {
-    throw new Error(`Failed to fetch agent info: ${agentInfo.message}`);
-  }
-
-  const systemSymbol = system?.length
-    ? system
-    : transformWaypointToSystem(agentInfo.data.headquarters);
-  const systemInfo = await getSystemInfo({ token, systemSymbol });
-
-  if (systemInfo.status === "error") {
-    throw new Error(`Failed to fetch system info: ${systemInfo.message}`);
-  }
-
-  return { agentInfo: agentInfo.data, systemInfo: systemInfo.data };
+  return await loadWaypointsData(token, searchparams);
 }
 
 export default function Waypoints({ loaderData }: Route.ComponentProps) {
