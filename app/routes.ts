@@ -9,6 +9,7 @@ import {
 export default [
   layout("components/layout/AppPageLayout.tsx", [
     index("routes/dashboard.tsx"),
+    route("waypoints", "routes/waypoints.tsx"),
   ]),
 
   layout("features/auth/AuthLayout.tsx", [
