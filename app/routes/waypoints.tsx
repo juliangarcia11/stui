@@ -1,9 +1,9 @@
-import { redirect } from "react-router";
-import { getSession } from "~/sessions.server";
-import type { Route } from "./+types/waypoints";
-import { Debug } from "~/components";
 import { Container, Flex, Heading } from "@radix-ui/themes";
+import { redirect } from "react-router";
+import { Debug } from "~/components";
+import { extractToken } from "~/sessions.server";
 import { stringifyWithBigInt } from "~/utils";
+import type { Route } from "./+types/waypoints";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -14,13 +14,8 @@ export function meta({}: Route.MetaArgs) {
 
 // see: https://reactrouter.com/start/framework/data-loading
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
-  const token = session.get("token");
-  const agentSymbol = session.get("agentSymbol");
-
-  if (!token?.length || !agentSymbol?.length) {
-    return redirect("/login");
-  }
+  const token = await extractToken(request.headers.get("Cookie"));
+  if (!token) return redirect("/login");
 
   return {};
 }

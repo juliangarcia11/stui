@@ -5,7 +5,7 @@ import {
   getAgentInfo,
   getApiStatus,
 } from "~/features/dashboard";
-import { getSession } from "~/sessions.server";
+import { extractToken, getSession } from "~/sessions.server";
 import type { Route } from "./+types/dashboard";
 
 export function meta({}: Route.MetaArgs) {
@@ -17,13 +17,8 @@ export function meta({}: Route.MetaArgs) {
 
 // see: https://reactrouter.com/start/framework/data-loading
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getSession(request.headers.get("Cookie"));
-  const token = session.get("token");
-  const agentSymbol = session.get("agentSymbol");
-
-  if (!token?.length || !agentSymbol?.length) {
-    return redirect("/login");
-  }
+  const token = await extractToken(request.headers.get("Cookie"));
+  if (!token) return redirect("/login");
 
   const apiStatus = await getApiStatus();
   const agentInfo = await getAgentInfo(token);

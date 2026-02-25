@@ -90,3 +90,13 @@ export async function flashError({
     },
   });
 }
+
+/**
+ * Extract the token string from the stored session
+ */
+export async function extractToken(cookie: string | null) {
+  if (!cookie) return null;
+
+  const session = await getSession(cookie);
+  return session.get("token");
+}
