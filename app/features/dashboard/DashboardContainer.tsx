@@ -3,7 +3,7 @@ import type { FC } from "react";
 import type { GetStatusResponse } from "~/client";
 import { Leaderboards } from "./Leaderboards";
 import { ServerInfoHoverCard } from "./ServerInfoCard";
-import type { AgentInfo } from "./agent-info";
+import type { AgentInfo } from "./get-agent-info";
 
 type DashboardContainerProps = {
   statusInfo: GetStatusResponse;

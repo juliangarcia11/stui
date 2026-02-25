@@ -1,7 +1,7 @@
 import { getMyAgent, type Agent } from "~/client";
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { buildAuth, extractApiErr, wrapErr, wrapSuccess } from "~/utils";
+import { buildAuth, standardizeApiResponse } from "~/utils";
 
 type GetAgentResponse = ApiResponse<Agent>;
 
@@ -15,9 +15,5 @@ export async function getAgent(token: string): Promise<GetAgentResponse> {
   }
 
   const response = await getMyAgent(buildAuth(token));
-
-  if (response.error) return wrapErr(extractApiErr(response.error));
-  if (!response.data) return Config.Errors.MissingData;
-
-  return wrapSuccess(response.data.data);
+  return standardizeApiResponse<Agent>(response);
 }

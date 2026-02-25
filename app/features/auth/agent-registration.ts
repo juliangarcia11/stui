@@ -1,7 +1,7 @@
 import { FactionSymbol, register, type RegisterResponse } from "~/client";
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { extractApiErr, wrapErr } from "~/utils";
+import { extractApiErr, standardizeApiResponse, wrapErr } from "~/utils";
 
 type AgentRegistrationParams = {
   symbol: string;
@@ -37,19 +37,5 @@ export async function registerAgent({
     },
   });
 
-  // Validate response
-  if (response.error) return wrapErr(extractApiErr(response.error));
-  if (!response.data) return Config.Errors.MissingData;
-
-  // Parse result
-  return {
-    status: "success",
-    data: {
-      token: response.data.data.token,
-      agent: response.data.data.agent,
-      faction: response.data.data.faction,
-      contract: response.data.data.contract,
-      ships: response.data.data.ships,
-    },
-  };
+  return standardizeApiResponse<RegisterResponse["data"]>(response);
 }

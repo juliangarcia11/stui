@@ -1,3 +1,4 @@
+import { Config } from "~/config";
 import type { ApiError } from "~/types";
 
 /**
@@ -25,3 +26,28 @@ export const buildAuth = (token: string) => ({
     Authorization: `Bearer ${token}`,
   },
 });
+
+/**
+ * Util to standardize the API response handling across the app.
+ * It checks for errors and missing data, and formats the response in a way that's easy for the UI to consume.
+ * @example
+ * type MyData = { foo: string };
+ * const response = await clientFunction(); // from `/app/client`
+ * const standardizedResponse = standardizeApiResponse<MyData>(response);
+ * if (standardizedResponse.status === "error") {
+ *   // Handle error
+ * } else {
+ *   // Use standardizedResponse.data.foo
+ * }
+ */
+export const standardizeApiResponse = <
+  T = unknown,
+  R extends { error?: unknown; data?: { data: T } } = any,
+>(
+  response: R,
+) => {
+  if (response.error) return wrapErr(extractApiErr(response.error));
+  if (!response.data) return Config.Errors.MissingData;
+
+  return wrapSuccess(response.data.data);
+};

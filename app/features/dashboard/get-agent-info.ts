@@ -8,7 +8,7 @@ import {
 } from "~/client";
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { buildAuth, extractApiErr, wrapErr, wrapSuccess } from "~/utils";
+import { buildAuth, standardizeApiResponse, wrapSuccess } from "~/utils";
 
 export type AgentInfo = {
   agent: Agent;
@@ -35,16 +35,8 @@ export async function getAgentInfo(token: string): Promise<AgentInfoResponse> {
   ];
 
   // Make parallel requests & parse errors
-  const results = await Promise.all(
-    requests.map((request) =>
-      request.then((response) => {
-        if (response.error) return wrapErr(extractApiErr(response.error));
-        if (!response.data) return Config.Errors.MissingData;
-
-        return wrapSuccess(response.data.data);
-      }),
-    ),
-  );
+  const responses = await Promise.all(requests);
+  const results = responses.map((response) => standardizeApiResponse(response));
 
   // Validate responses
   const agentResult = results[0] as ApiResponse<Agent>;

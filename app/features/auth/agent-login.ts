@@ -1,7 +1,7 @@
-import { getMyAgent } from "~/client";
+import { type Agent, getMyAgent } from "~/client";
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { extractApiErr, wrapErr } from "~/utils";
+import { standardizeApiResponse } from "~/utils";
 
 type AgentLoginParams = {
   symbol: string;
@@ -37,9 +37,9 @@ export async function loginAgent({
   });
 
   // Validate response
-  if (response.error) return wrapErr(extractApiErr(response.error));
-  if (!response.data) return Config.Errors.MissingData;
-  if (symbol !== response.data.data.symbol.toLowerCase())
+  const result = standardizeApiResponse<Agent>(response);
+  if (result.status === "error") return result;
+  if (symbol !== result.data.symbol.toLowerCase())
     return Config.Errors.MismatchedAgentSymbol;
 
   // Parse result
@@ -47,7 +47,7 @@ export async function loginAgent({
     status: "success",
     data: {
       token,
-      symbol: response.data.data.symbol,
+      symbol: result.data.symbol,
     },
   };
 }

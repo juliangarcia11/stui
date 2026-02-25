@@ -1,7 +1,13 @@
 import { getSystem, type System } from "~/client";
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { buildAuth, extractApiErr, wrapErr, wrapSuccess } from "~/utils";
+import {
+  buildAuth,
+  extractApiErr,
+  standardizeApiResponse,
+  wrapErr,
+  wrapSuccess,
+} from "~/utils";
 
 type GetSystemInfoParams = {
   token: string;
@@ -26,8 +32,5 @@ export async function getSystemInfo({
     },
   });
 
-  if (response.error) return wrapErr(extractApiErr(response.error));
-  if (!response.data) return Config.Errors.MissingData;
-
-  return wrapSuccess(response.data.data);
+  return standardizeApiResponse<System>(response);
 }
