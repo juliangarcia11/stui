@@ -1,8 +1,9 @@
 import { Table } from "@radix-ui/themes";
 import type { FC } from "react";
+import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import { WaypointNearestShips } from "./WaypointNearestShips";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -21,6 +22,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
           <Table.ColumnHeaderCell>Symbol</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Coordinates</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Nearest Ships</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -38,6 +40,9 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
             </Table.Cell>
             <Table.Cell>
               {waypoint.x}, {waypoint.y}
+            </Table.Cell>
+            <Table.Cell>
+              <WaypointNearestShips ships={waypoint.ships} />
             </Table.Cell>
           </Table.Row>
         ))}

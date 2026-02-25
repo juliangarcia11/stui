@@ -1,5 +1,5 @@
 import { getAgentInfo, getSystemInfo } from "~/api";
-import { transformWaypointToSystem } from "./utils";
+import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
 
 /**
  * Loads the data for the Waypoints route.
@@ -28,9 +28,12 @@ export async function loadWaypointsData(
   }
 
   // TODO:
-  //   - map system waypoints to include agent's ships & contracts at each waypoint
+  //   - map system waypoints to include agent's contracts at each waypoint
 
-  return { agentInfo: agentInfo.data, systemInfo: systemInfo.data };
+  return {
+    agentInfo: agentInfo.data,
+    systemInfo: mapWaypointsWithShips(systemInfo.data, agentInfo.data.ships),
+  };
 }
 
 export type LoadWaypointsDataResponse = Awaited<
