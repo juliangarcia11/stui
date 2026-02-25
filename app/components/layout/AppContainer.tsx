@@ -13,9 +13,9 @@ export const AppContainer: FC<AppContainerProps> = ({
   ...headerProps
 }) => {
   return (
-    <Flex direction="column" gap="4" width="100vw">
+    <Flex direction="column" gap="4">
       <AppHeader {...headerProps} />
-      <Flex direction="column" gap="4" width="100%">
+      <Flex direction="column" gap="4">
         {children}
       </Flex>
     </Flex>

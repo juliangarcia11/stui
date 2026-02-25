@@ -5,7 +5,7 @@ import {
   getAgentInfo,
   getApiStatus,
 } from "~/features/dashboard";
-import { extractToken, getSession } from "~/sessions.server";
+import { extractToken } from "~/sessions.server";
 import type { Route } from "./+types/dashboard";
 
 export function meta({}: Route.MetaArgs) {
