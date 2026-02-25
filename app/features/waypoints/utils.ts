@@ -11,3 +11,15 @@ export function transformWaypointToSystem(waypoint: string): string {
   if (parts.length < 3) return waypoint;
   return `${parts[0]}-${parts[1]}`;
 }
+
+/**
+ * Removes the system prefix from a waypoint symbol, leaving only the unique identifier
+ *
+ * @example
+ * //  "X1-CB30-A1" => "A1"
+ * const waypointId = removeSystemPrefix("X1-CB30-A1");
+ */
+export function removeSystemPrefix(waypoint: string): string {
+  const prefix = transformWaypointToSystem(waypoint);
+  return waypoint.replace(`${prefix}-`, "");
+}

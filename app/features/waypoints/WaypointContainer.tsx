@@ -1,13 +1,18 @@
 import { Badge, Container, Flex, Heading, Text } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { System } from "~/client";
+import type { Agent, System } from "~/client";
 import { WaypointsTable } from "./WaypointsTable";
 
-type WaypointContainerProps = {
+export type WaypointContainerProps = {
+  agentInfo: Agent;
   systemInfo: System;
 };
 
+/**
+ * Page container for displaying waypoints in the current system
+ */
 export const WaypointContainer: FC<WaypointContainerProps> = ({
+  agentInfo,
   systemInfo,
 }) => {
   return (
@@ -18,12 +23,15 @@ export const WaypointContainer: FC<WaypointContainerProps> = ({
           symbol={systemInfo.symbol}
         />
 
-        <WaypointsTable waypoints={systemInfo.waypoints} />
+        <WaypointsTable agentInfo={agentInfo} systemInfo={systemInfo} />
       </Flex>
     </Container>
   );
 };
 
+/**
+ * Page header for the WaypointContainer, displaying the system name and symbol
+ */
 const WaypointContainerHeader: FC<{ name: string; symbol: string }> = ({
   name,
   symbol,

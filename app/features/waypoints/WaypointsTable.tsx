@@ -1,13 +1,24 @@
-import { Badge, Table, type BadgeProps } from "@radix-ui/themes";
+import { Table } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { SystemWaypoint, WaypointType } from "~/client";
-import { capitalizeWords } from "~/utils";
+import type { Agent, System } from "~/client";
+import { WaypointSymbol } from "./WaypointSymbol";
+import { WaypointTypeBadge } from "./WaypointTypeBadge";
 
 type WaypointsTableProps = {
-  waypoints: SystemWaypoint[];
+  agentInfo: Agent;
+  systemInfo: System;
 };
 
-export const WaypointsTable: FC<WaypointsTableProps> = ({ waypoints }) => {
+/**
+ * Table display of waypoints in the current system, showing:
+ * - Symbol
+ * - Type
+ * - Coordinates
+ */
+export const WaypointsTable: FC<WaypointsTableProps> = ({
+  agentInfo,
+  systemInfo,
+}) => {
   return (
     <Table.Root>
       <Table.Header>
@@ -19,9 +30,14 @@ export const WaypointsTable: FC<WaypointsTableProps> = ({ waypoints }) => {
       </Table.Header>
 
       <Table.Body>
-        {waypoints.map((waypoint) => (
+        {systemInfo.waypoints.map((waypoint) => (
           <Table.Row key={waypoint.symbol}>
-            <Table.RowHeaderCell>{waypoint.symbol}</Table.RowHeaderCell>
+            <Table.RowHeaderCell>
+              <WaypointSymbol
+                headquarters={agentInfo.headquarters}
+                waypointSymbol={waypoint.symbol}
+              />
+            </Table.RowHeaderCell>
             <Table.Cell>
               <WaypointTypeBadge type={waypoint.type} />
             </Table.Cell>
@@ -34,28 +50,3 @@ export const WaypointsTable: FC<WaypointsTableProps> = ({ waypoints }) => {
     </Table.Root>
   );
 };
-
-const WaypointBadgeColor: Record<WaypointType, BadgeProps["color"]> = {
-  PLANET: "blue",
-  GAS_GIANT: "cyan",
-  MOON: "gray",
-  ORBITAL_STATION: "amber",
-  JUMP_GATE: "purple",
-  ASTEROID_FIELD: "orange",
-  ASTEROID: "yellow",
-  ENGINEERED_ASTEROID: "yellow",
-  ASTEROID_BASE: "yellow",
-  NEBULA: "crimson",
-  DEBRIS_FIELD: "indigo",
-  GRAVITY_WELL: "teal",
-  ARTIFICIAL_GRAVITY_WELL: "teal",
-  FUEL_STATION: "green",
-};
-
-const WaypointTypeBadge: FC<{ type: WaypointType }> = ({ type }) => (
-  <Badge color={WaypointBadgeColor[type]}>
-    {capitalizeWords(type.replace("_", " "))}
-  </Badge>
-);
-
-// const
