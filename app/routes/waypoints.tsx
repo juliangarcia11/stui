@@ -9,6 +9,7 @@ import {
 import { extractToken } from "~/sessions.server";
 import { stringifyWithBigInt } from "~/utils";
 import type { Route } from "./+types/waypoints";
+import { WaypointContainer } from "~/features/waypoints/WaypointContainer";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -49,17 +50,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Waypoints({ loaderData }: Route.ComponentProps) {
-  return (
-    <Container size="4" asChild>
-      <Flex direction="column" gap="4">
-        <Heading as="h1" size="7">
-          Waypoints
-        </Heading>
-
-        <Debug>{stringifyWithBigInt(loaderData)}</Debug>
-      </Flex>
-    </Container>
-  );
+  return <WaypointContainer {...loaderData} />;
 }
 
 /**
