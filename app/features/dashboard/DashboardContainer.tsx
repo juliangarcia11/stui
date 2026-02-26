@@ -1,9 +1,9 @@
 import { Container, Flex, Heading } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { GetStatusResponse } from "~/client";
+import type { AgentInfo } from "~/api";
+import type { GetStatusResponse } from "~/api/client";
 import { Leaderboards } from "./Leaderboards";
 import { ServerInfoHoverCard } from "./ServerInfoCard";
-import type { AgentInfo } from "../../api/get-agent-info";
 
 type DashboardContainerProps = {
   statusInfo: GetStatusResponse;
