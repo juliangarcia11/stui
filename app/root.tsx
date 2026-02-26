@@ -25,12 +25,12 @@ client.setConfig({
   // },
 });
 
-client.interceptors.response.use((response) => {
-  if (response.status === 200) {
-    console.log(`request to ${response.url} was successful`);
-  }
-  return response;
-});
+// client.interceptors.response.use((response) => {
+//   if (response.status === 200) {
+//     console.log(`request to ${response.url} was successful`);
+//   }
+//   return response;
+// });
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },

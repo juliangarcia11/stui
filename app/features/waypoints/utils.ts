@@ -37,7 +37,7 @@ export function calculateDistance(
 ): number {
   const dx = x2 - x1; // Difference in x-coordinates
   const dy = y2 - y1; // Difference in y-coordinates
-  return Math.sqrt(dx * dx + dy * dy).toFixed(0) as unknown as number; // Return the distance rounded to the nearest whole number
+  return +Math.sqrt(dx * dx + dy * dy).toFixed(0) as unknown as number; // Return the distance rounded to the nearest whole number
 }
 
 /**
@@ -68,7 +68,7 @@ export function mapWaypointsWithShips(systemInfo: System, ships: Ship[]) {
           if (!shipWaypoint) return null;
 
           return {
-            shipSymbol: ship.symbol,
+            ...ship,
             distance: calculateDistance(
               waypoint.x,
               waypoint.y,
