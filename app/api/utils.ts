@@ -30,6 +30,8 @@ export const buildAuth = (token: string) => ({
 /**
  * Util to standardize the API response handling across the app.
  * It checks for errors and missing data, and formats the response in a way that's easy for the UI to consume.
+ * Optionally, you can provide a custom data extractor function if the data is nested in a different way than the default.
+ *
  * @example
  * type MyData = { foo: string };
  * const response = await clientFunction(); // from `/app/client`
@@ -45,9 +47,11 @@ export const standardizeApiResponse = <
   R extends { error?: unknown; data?: { data: T } } = any,
 >(
   response: R,
+  dataExtractor: (response: R) => T = (response) =>
+    (response.data as any).data as T,
 ) => {
   if (response.error) return wrapErr(extractApiErr(response.error));
   if (!response.data) return Config.Errors.MissingData;
 
-  return wrapSuccess(response.data.data);
+  return wrapSuccess(dataExtractor(response));
 };

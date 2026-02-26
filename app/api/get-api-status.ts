@@ -10,5 +10,5 @@ type ApiStatusResponse = ApiResponse<GetStatusResponse>;
 export async function getApiStatus(): Promise<ApiStatusResponse> {
   const response = await getStatus();
 
-  return standardizeApiResponse<GetStatusResponse>(response);
+  return standardizeApiResponse<GetStatusResponse>(response, (res) => res.data);
 }
