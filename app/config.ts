@@ -28,9 +28,10 @@ export const Config = {
     MissingAgentSymbol: wrapErr("Agent symbol is required"),
     MissingFaction: wrapErr("Faction is required"),
     MissingData: wrapErr("Data missing in response"),
+    MissingSystem: wrapErr("System is required"),
+    MissingToken: wrapErr("Token is required"),
     MismatchedAgentSymbol: wrapErr(
       "Agent symbol provided does not match token",
     ),
-    MissingToken: wrapErr("Token is required"),
   },
 };
