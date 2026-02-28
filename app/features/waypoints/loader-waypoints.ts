@@ -4,9 +4,7 @@ import { getWaypointsList } from "~/api/get-waypoints-list";
 
 /**
  * Loads the data for the Waypoints route.
- *
- * **Note:** The `getSystemInfo` returns a list of waypoint summaries, not the full waypoint details.
- * When/if that detail data is needed, we'll need to make additional API calls to fetch the full details for each waypoint or a page of waypoints.
+ * Fetches the agent's information, the current system's information, and a paginated list of waypoints in that system.
  *
  * @throws {Error} If fetching fails. Meant to be caught by the route's ErrorBoundary.
  */
@@ -15,6 +13,9 @@ export async function loadWaypointsData(
   searchParams: URLSearchParams,
 ) {
   const system = searchParams.get("system");
+  const page = searchParams.get("page") || "1";
+  const limit = searchParams.get("limit") || "10";
+
   const agentInfo = await getAgentInfo(token);
   if (agentInfo.status === "error") {
     throw new Error(`Failed to fetch agent info: ${agentInfo.message}`);
@@ -28,7 +29,11 @@ export async function loadWaypointsData(
     throw new Error(`Failed to fetch system info: ${systemInfo.message}`);
   }
 
-  const waypointsList = await getWaypointsList({ token, systemSymbol });
+  const waypointsList = await getWaypointsList({
+    token,
+    systemSymbol,
+    query: { page: +page, limit: +limit },
+  });
   if (waypointsList.status === "error") {
     throw new Error(`Failed to fetch waypoints list: ${waypointsList.message}`);
   }

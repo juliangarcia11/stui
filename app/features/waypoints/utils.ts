@@ -84,3 +84,11 @@ export function mapWaypointsWithShips(waypoints: Waypoint[], ships: Ship[]) {
     };
   });
 }
+
+/**
+ * Calculate the total number of pages based on the total number of items and the number of items per page.
+ * If the limit is 0, we return 0 to avoid division by zero errors.
+ */
+export function calculateTotalPages(total: number, limit: number): number {
+  return limit === 0 ? 0 : Math.ceil(total / limit);
+}
