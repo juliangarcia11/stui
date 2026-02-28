@@ -29,6 +29,9 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Coordinates</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{"What's Here?"}</Table.ColumnHeaderCell>
+
+          {/* TODO: could add actions menu column */}
+          {/* <Table.ColumnHeaderCell>Clear Filters Button (using header as an 'header actions' item not menu) </Table.ColumnHeaderCell> */}
         </Table.Row>
       </Table.Header>
 
@@ -48,6 +51,9 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
                 {...waypoint}
               />
             </Table.Cell>
+
+            {/* TODO: could add actions menu column */}
+            {/* <Table.Cell>actions menu</Table.Cell> */}
           </Table.Row>
         ))}
       </Table.Body>

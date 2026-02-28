@@ -31,7 +31,11 @@ export const WaypointPointsOfInterest: FC<WaypointPointsOfInterestProps> = ({
   return (
     <Flex direction="row" gap="2">
       {isHeadquarters && <WaypointPoiButton text="Headquarters" color="sky" />}
+
+      {/* TODO: could make this trigger a confirm dialog to send the ship to orbit/dock it */}
       {hasShip && <WaypointNearestShip key={ship.symbol} ship={ship} />}
+
+      {/* TODO: could make the rest of these open dialog with their information */}
       {hasOrbitals && (
         <WaypointPoiButton text="Orbitals" badge={orbitalsCount} color="gray" />
       )}

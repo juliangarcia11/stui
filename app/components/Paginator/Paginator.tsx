@@ -5,7 +5,8 @@ import { PaginationButton } from "./Button";
 import { PaginationConfig } from "./config";
 import type { PaginatorProps } from "./types";
 
-// todo: pending states
+// TODO: pending states
+// TODO: "current of total" display
 
 /**
  * A flexible paginator component that generates pagination buttons based on our provided configuration.
