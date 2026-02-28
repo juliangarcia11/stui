@@ -1,11 +1,9 @@
-import { Table } from "@radix-ui/themes";
+import { Badge, Flex, Heading, Table, Text } from "@radix-ui/themes";
 import type { FC } from "react";
 import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 import { WaypointNearestShip } from "./WaypointNearestShip";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
-import { Debug } from "~/components";
-import { stringifyWithBigInt } from "~/utils";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -18,13 +16,16 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
   systemInfo,
   waypointsList,
 }) => {
-  // return <Debug>{stringifyWithBigInt(waypointsList)}</Debug>;
-
   return (
-    <Table.Root>
+    <Table.Root variant="surface" size="1">
       <Table.Header>
         <Table.Row>
-          <Table.ColumnHeaderCell>Symbol</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>
+            <WaypointTitle
+              name={systemInfo.name ?? "Unnamed System"}
+              symbol={systemInfo.symbol}
+            />
+          </Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Coordinates</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Nearest Ship</Table.ColumnHeaderCell>
@@ -55,3 +56,23 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
     </Table.Root>
   );
 };
+
+/**
+ * Title displaying the system name and symbol
+ */
+const WaypointTitle: FC<{ name: string; symbol: string }> = ({
+  name,
+  symbol,
+}) => (
+  <Flex direction="row" gap="2" align="baseline" asChild>
+    <Heading as="h1" size="3">
+      Waypoints at:
+      <Text as="span" size="2" style={{ color: "var(--accent-11)" }}>
+        {name}
+      </Text>
+      <Badge variant="outline" my="auto">
+        {symbol}
+      </Badge>
+    </Heading>
+  </Flex>
+);

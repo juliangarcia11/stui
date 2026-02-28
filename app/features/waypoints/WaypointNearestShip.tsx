@@ -1,17 +1,10 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Grid,
-  type BadgeProps,
-} from "@radix-ui/themes";
+import { Badge, Box, Button, Flex, type BadgeProps } from "@radix-ui/themes";
 import { useMemo, type FC } from "react";
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 import type { ShipNavStatus } from "~/api/client";
+import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 
 type WaypointNearestShipProps = {
-  ship?: LoadWaypointsDataResponse["systemInfo"]["waypoints"][number]["ships"][number];
+  ship?: LoadWaypointsDataResponse["waypointsList"]["data"][0]["ships"][0];
 };
 
 /**
@@ -29,7 +22,7 @@ export const WaypointNearestShip: FC<WaypointNearestShipProps> = ({ ship }) => {
 
   return (
     <Box asChild width="100%">
-      <Button color={badgeColor} variant="outline" size="2">
+      <Button color={badgeColor} variant="outline" size="1">
         <Flex align="center" gap="2">
           {symbol} <Badge color={badgeColor}>{badgeText}</Badge>
         </Flex>
