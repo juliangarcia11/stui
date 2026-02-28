@@ -1,2 +1,2 @@
 export { loadWaypointsData } from "./loader-waypoints";
-export { WaypointContainer } from "./WaypointContainer";
+export { WaypointsContainer as WaypointContainer } from "./WaypointsContainer";

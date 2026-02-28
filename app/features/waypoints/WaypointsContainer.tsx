@@ -6,7 +6,7 @@ import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 /**
  * Page container for displaying waypoints in the current system
  */
-export const WaypointContainer: FC<LoadWaypointsDataResponse> = ({
+export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
   agentInfo,
   systemInfo,
   waypointsList,
