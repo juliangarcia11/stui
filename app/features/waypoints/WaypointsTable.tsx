@@ -1,7 +1,7 @@
 import { Badge, Flex, Heading, Table, Text } from "@radix-ui/themes";
 import type { FC } from "react";
 import type { LoadWaypointsDataResponse } from "./loader-waypoints";
-import { WaypointNearestShip } from "./WaypointNearestShip";
+import { WaypointPointsOfInterest } from "./WaypointPois";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
 
@@ -28,7 +28,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
           </Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Coordinates</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Nearest Ship</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>{"What's Here?"}</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -48,7 +48,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
               {waypoint.x}, {waypoint.y}
             </Table.Cell>
             <Table.Cell>
-              <WaypointNearestShip ship={waypoint.ships[0]} />
+              <WaypointPointsOfInterest {...waypoint} />
             </Table.Cell>
           </Table.Row>
         ))}
