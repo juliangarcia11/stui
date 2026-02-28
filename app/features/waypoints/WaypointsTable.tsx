@@ -4,6 +4,8 @@ import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 import { WaypointNearestShip } from "./WaypointNearestShip";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
+import { Debug } from "~/components";
+import { stringifyWithBigInt } from "~/utils";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -14,7 +16,10 @@ import { WaypointTypeBadge } from "./WaypointTypeBadge";
 export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
   agentInfo: { agent, ships, contracts },
   systemInfo,
+  waypointsList,
 }) => {
+  // return <Debug>{stringifyWithBigInt(waypointsList)}</Debug>;
+
   return (
     <Table.Root>
       <Table.Header>
@@ -27,7 +32,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
       </Table.Header>
 
       <Table.Body>
-        {systemInfo.waypoints.map((waypoint) => (
+        {waypointsList.data.map((waypoint) => (
           <Table.Row key={waypoint.symbol}>
             <Table.RowHeaderCell>
               <WaypointSymbol

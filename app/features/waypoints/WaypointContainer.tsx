@@ -2,6 +2,8 @@ import { Badge, Container, Flex, Heading, Text } from "@radix-ui/themes";
 import type { FC } from "react";
 import { WaypointsTable } from "./WaypointsTable";
 import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import { Debug } from "~/components";
+import { stringifyWithBigInt } from "~/utils";
 
 /**
  * Page container for displaying waypoints in the current system
@@ -9,6 +11,7 @@ import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 export const WaypointContainer: FC<LoadWaypointsDataResponse> = ({
   agentInfo,
   systemInfo,
+  waypointsList,
 }) => {
   return (
     <Container size="4" asChild>
@@ -18,7 +21,11 @@ export const WaypointContainer: FC<LoadWaypointsDataResponse> = ({
           symbol={systemInfo.symbol}
         />
 
-        <WaypointsTable agentInfo={agentInfo} systemInfo={systemInfo} />
+        <WaypointsTable
+          agentInfo={agentInfo}
+          systemInfo={systemInfo}
+          waypointsList={waypointsList}
+        />
       </Flex>
     </Container>
   );

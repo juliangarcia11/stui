@@ -6,6 +6,8 @@ import {
   getMyShips,
   type Agent,
   type Contract,
+  type GetContractsResponse,
+  type GetMyShipsResponse,
   type Ship,
 } from "./client";
 import { buildAuth, standardizeApiResponse, wrapSuccess } from "./utils";
@@ -41,15 +43,15 @@ export async function getAgentInfo(token: string): Promise<AgentInfoResponse> {
   // Validate responses
   const agentResult = results[0] as ApiResponse<Agent>;
   if (agentResult.status === "error") return agentResult;
-  const contractsResult = results[1] as ApiResponse<Contract[]>;
+  const contractsResult = results[1] as ApiResponse<GetContractsResponse>;
   if (contractsResult.status === "error") return contractsResult;
-  const shipsResult = results[2] as ApiResponse<Ship[]>;
+  const shipsResult = results[2] as ApiResponse<GetMyShipsResponse>;
   if (shipsResult.status === "error") return shipsResult;
 
   // Prepare resulting data
   return wrapSuccess({
     agent: agentResult.data,
-    contracts: contractsResult.data,
-    ships: shipsResult.data,
+    contracts: contractsResult.data.data, // meta is useless here
+    ships: shipsResult.data.data, // meta is useless here
   });
 }

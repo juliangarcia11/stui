@@ -1,5 +1,6 @@
 import { getAgentInfo, getSystemInfo } from "~/api";
 import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
+import { getWaypointsList } from "~/api/get-waypoints-list";
 
 /**
  * Loads the data for the Waypoints route.
@@ -27,12 +28,24 @@ export async function loadWaypointsData(
     throw new Error(`Failed to fetch system info: ${systemInfo.message}`);
   }
 
+  const waypointsList = await getWaypointsList({ token, systemSymbol });
+  if (waypointsList.status === "error") {
+    throw new Error(`Failed to fetch waypoints list: ${waypointsList.message}`);
+  }
+
   // TODO:
   //   - map system waypoints to include agent's contracts at each waypoint
 
   return {
     agentInfo: agentInfo.data,
-    systemInfo: mapWaypointsWithShips(systemInfo.data, agentInfo.data.ships),
+    systemInfo: systemInfo.data,
+    waypointsList: {
+      data: mapWaypointsWithShips(
+        waypointsList.data.data,
+        agentInfo.data.ships,
+      ),
+      meta: waypointsList.data.meta,
+    },
   };
 }
 

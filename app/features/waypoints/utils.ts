@@ -1,4 +1,4 @@
-import type { Ship, System } from "~/api/client";
+import type { Ship, System, Waypoint } from "~/api/client";
 
 /**
  * Take a 3 section waypoint symbol & return the 2 section system symbol
@@ -55,35 +55,32 @@ export function preprocessWaypoints(waypoints: System["waypoints"]) {
  * For each waypoint in the system, find the agent's ships that are currently in the same system and calculate their distance to the waypoint.
  * This allows us to display the nearest ships to each waypoint without needing to make additional API calls for each ship or waypoint.
  */
-export function mapWaypointsWithShips(systemInfo: System, ships: Ship[]) {
-  const waypointMap = preprocessWaypoints(systemInfo.waypoints);
+export function mapWaypointsWithShips(waypoints: Waypoint[], ships: Ship[]) {
+  const waypointMap = preprocessWaypoints(waypoints);
 
-  return {
-    ...systemInfo,
-    waypoints: systemInfo.waypoints.map((waypoint) => {
-      const shipsInSystem = ships
-        .filter((ship) => ship.nav.systemSymbol === systemInfo.symbol)
-        .map((ship) => {
-          const shipWaypoint = waypointMap.get(ship.nav.waypointSymbol);
-          if (!shipWaypoint) return null;
+  return waypoints.map((waypoint) => {
+    const shipsInSystem = ships
+      .filter((ship) => ship.nav.systemSymbol === waypoint.systemSymbol)
+      .map((ship) => {
+        const shipWaypoint = waypointMap.get(ship.nav.waypointSymbol);
+        if (!shipWaypoint) return null;
 
-          return {
-            ...ship,
-            distance: calculateDistance(
-              waypoint.x,
-              waypoint.y,
-              shipWaypoint.x,
-              shipWaypoint.y,
-            ),
-          };
-        })
-        .filter((ship) => ship !== null) // Remove null values for ships not found in the map
-        .sort((a, b) => (a!.distance > b!.distance ? 1 : -1)); // Sort by distance
+        return {
+          ...ship,
+          distance: calculateDistance(
+            waypoint.x,
+            waypoint.y,
+            shipWaypoint.x,
+            shipWaypoint.y,
+          ),
+        };
+      })
+      .filter((ship) => ship !== null) // Remove null values for ships not found in the map
+      .sort((a, b) => (a!.distance > b!.distance ? 1 : -1)); // Sort by distance
 
-      return {
-        ...waypoint,
-        ships: shipsInSystem,
-      };
-    }),
-  };
+    return {
+      ...waypoint,
+      ships: shipsInSystem,
+    };
+  });
 }

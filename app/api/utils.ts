@@ -1,5 +1,6 @@
 import { Config } from "~/config";
 import type { ApiError } from "~/types";
+import type { Meta } from "./client";
 
 /**
  * Util that formats success response json
@@ -27,6 +28,17 @@ export const buildAuth = (token: string) => ({
   },
 });
 
+type DataResponse<T> = {
+  data: T;
+};
+
+type ListDataResponse<T> = {
+  data: {
+    data: T[];
+    meta: Meta;
+  };
+};
+
 /**
  * Util to standardize the API response handling across the app.
  * It checks for errors and missing data, and formats the response in a way that's easy for the UI to consume.
@@ -44,7 +56,8 @@ export const buildAuth = (token: string) => ({
  */
 export const standardizeApiResponse = <
   T = unknown,
-  R extends { error?: unknown; data?: { data: T } } = any,
+  R extends { error?: unknown; data?: DataResponse<T> | ListDataResponse<T> } =
+    any,
 >(
   response: R,
   dataExtractor: (response: R) => T = (response) =>
@@ -52,6 +65,13 @@ export const standardizeApiResponse = <
 ) => {
   if (response.error) return wrapErr(extractApiErr(response.error));
   if (!response.data) return Config.Errors.MissingData;
+
+  // Check if the response matches the List<T> structure
+  const listData = (response.data as any).data;
+  const meta = (response.data as any).meta;
+  if (Array.isArray(listData) && meta) {
+    return wrapSuccess({ data: listData, meta });
+  }
 
   return wrapSuccess(dataExtractor(response));
 };
