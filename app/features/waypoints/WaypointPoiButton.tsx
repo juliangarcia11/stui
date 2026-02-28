@@ -17,7 +17,7 @@ export const WaypointPoiButton: FC<WaypointPoiButtonProps> = ({
 }) => (
   <Button color={color} variant="outline" size="1">
     <Flex align="center" gap="2">
-      {text} <Badge color={color}>{badge}</Badge>
+      {text} {!!badge?.length && <Badge color={color}>{badge}</Badge>}
     </Flex>
   </Button>
 );

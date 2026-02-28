@@ -5,7 +5,9 @@ import { WaypointNearestShip } from "./WaypointNearestShip";
 import { WaypointPoiButton } from "./WaypointPoiButton";
 
 type WaypointPointsOfInterestProps =
-  LoadWaypointsDataResponse["waypointsList"]["data"][number];
+  LoadWaypointsDataResponse["waypointsList"]["data"][number] & {
+    isHeadquarters?: boolean;
+  };
 
 /**
  * Displays points of interest at a waypoint, such as:
@@ -13,19 +15,29 @@ type WaypointPointsOfInterestProps =
  * - Number of orbitals (if any)
  */
 export const WaypointPointsOfInterest: FC<WaypointPointsOfInterestProps> = ({
+  isHeadquarters,
   ships,
   orbitals,
-}) => (
-  <Flex direction="row" gap="2">
-    {ships[0]?.distance === 0 && (
-      <WaypointNearestShip key={ships[0].symbol} ship={ships[0]} />
-    )}
-    {orbitals.length > 0 && (
-      <WaypointPoiButton
-        text="Orbitals"
-        badge={(orbitals?.length ?? 0).toString()}
-        color="gray"
-      />
-    )}
-  </Flex>
-);
+  traits,
+}) => {
+  const ship = ships[0];
+  const hasShip = ship?.distance === 0;
+  const hasOrbitals = (orbitals?.length ?? 0) > 0;
+  const orbitalsCount = (orbitals?.length ?? 0).toString();
+  const marketplace = traits.find((trait) => trait.symbol === "MARKETPLACE");
+  const shipyard = traits.find((trait) => trait.symbol === "SHIPYARD");
+  const outpost = traits.find((trait) => trait.symbol === "OUTPOST");
+
+  return (
+    <Flex direction="row" gap="2">
+      {isHeadquarters && <WaypointPoiButton text="Headquarters" color="sky" />}
+      {hasShip && <WaypointNearestShip key={ship.symbol} ship={ship} />}
+      {hasOrbitals && (
+        <WaypointPoiButton text="Orbitals" badge={orbitalsCount} color="gray" />
+      )}
+      {marketplace && <WaypointPoiButton text="Marketplace" color="violet" />}
+      {shipyard && <WaypointPoiButton text="Shipyard" color="indigo" />}
+      {outpost && <WaypointPoiButton text="Outpost" color="orange" />}
+    </Flex>
+  );
+};

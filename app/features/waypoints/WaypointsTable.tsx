@@ -35,12 +35,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
       <Table.Body>
         {waypointsList.data.map((waypoint) => (
           <Table.Row key={waypoint.symbol}>
-            <Table.RowHeaderCell>
-              <WaypointSymbol
-                headquarters={agent.headquarters}
-                waypointSymbol={waypoint.symbol}
-              />
-            </Table.RowHeaderCell>
+            <Table.RowHeaderCell>{waypoint.symbol}</Table.RowHeaderCell>
             <Table.Cell>
               <WaypointTypeBadge type={waypoint.type} />
             </Table.Cell>
@@ -48,7 +43,10 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
               {waypoint.x}, {waypoint.y}
             </Table.Cell>
             <Table.Cell>
-              <WaypointPointsOfInterest {...waypoint} />
+              <WaypointPointsOfInterest
+                isHeadquarters={agent.headquarters === waypoint.symbol}
+                {...waypoint}
+              />
             </Table.Cell>
           </Table.Row>
         ))}
