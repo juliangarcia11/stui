@@ -4,6 +4,7 @@ import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 import { WaypointPointsOfInterest } from "./WaypointPois";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
+import { WaypointRowActions } from "./WaypointRowActions";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -32,6 +33,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
 
           {/* TODO: could add actions menu column */}
           {/* <Table.ColumnHeaderCell>Clear Filters Button (using header as an 'header actions' item not menu) </Table.ColumnHeaderCell> */}
+          <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -53,7 +55,9 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
             </Table.Cell>
 
             {/* TODO: could add actions menu column */}
-            {/* <Table.Cell>actions menu</Table.Cell> */}
+            <Table.Cell>
+              <WaypointRowActions />
+            </Table.Cell>
           </Table.Row>
         ))}
       </Table.Body>

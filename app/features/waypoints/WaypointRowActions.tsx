@@ -1,0 +1,97 @@
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { Button, DropdownMenu } from "@radix-ui/themes";
+import { useMemo } from "react";
+
+type ActionKeys =
+  | "DOCK_SHIP"
+  | "ORBIT_SHIP"
+  | "NAVIGATE_SHIP"
+  | "REFUEL_SHIP"
+  | "DELIVER_CONTRACT"
+  | "JUMP_SYSTEM"
+  | "SURVEY_WAYPOINT"
+  | "MINE_WAYPOINT"
+  | "OPEN_MARKET"
+  | "OPEN_SHIPYARD";
+
+type WaypointAction = {
+  key: ActionKeys | `SEPARATOR_${string}`; // using template literal type to allow for separator items with unique keys
+  label: string;
+  disabled?: boolean;
+  shortcut?: string; // later, could add keyboard shortcuts to actions
+};
+
+const WAYPOINT_ACTIONS: Record<
+  ActionKeys | `SEPARATOR_${string}`,
+  WaypointAction
+> = {
+  OPEN_MARKET: { key: "OPEN_MARKET", label: "Open Market", disabled: true },
+  OPEN_SHIPYARD: {
+    key: "OPEN_SHIPYARD",
+    label: "Open Shipyard",
+    disabled: true,
+  },
+  SEPARATOR_1: { key: "SEPARATOR_1", label: "" },
+  DOCK_SHIP: { key: "DOCK_SHIP", label: "Dock Ship", disabled: true },
+  ORBIT_SHIP: { key: "ORBIT_SHIP", label: "Orbit Ship", disabled: true },
+  NAVIGATE_SHIP: {
+    key: "NAVIGATE_SHIP",
+    label: "Navigate Ship",
+    disabled: true,
+  },
+  REFUEL_SHIP: { key: "REFUEL_SHIP", label: "Refuel Ship", disabled: true },
+  DELIVER_CONTRACT: {
+    key: "DELIVER_CONTRACT",
+    label: "Deliver Contract",
+    disabled: true,
+  },
+  SEPARATOR_2: { key: "SEPARATOR_2", label: "", disabled: true },
+  JUMP_SYSTEM: { key: "JUMP_SYSTEM", label: "Jump to System", disabled: true },
+  SURVEY_WAYPOINT: {
+    key: "SURVEY_WAYPOINT",
+    label: "Survey Waypoint",
+    disabled: true,
+  },
+  MINE_WAYPOINT: {
+    key: "MINE_WAYPOINT",
+    label: "Mine Waypoint",
+    disabled: true,
+  },
+};
+
+/**
+ * Actions menu for each waypoint row, showing possible interactions with the waypoint (e.g. navigate ship here, open market, etc.)
+ * All actions are disabled since we haven't implemented any of the interactions yet. As we do, they will be enabled/disabled based
+ * on the state of the waypoint and the player's ships/contracts.
+ */
+export const WaypointRowActions = () => {
+  const actionsToShow = useMemo(
+    () =>
+      Object.values(WAYPOINT_ACTIONS).map((action) => {
+        if (action.key.startsWith("SEPARATOR_")) {
+          return <DropdownMenu.Separator key={action.key} />;
+        }
+        return (
+          <DropdownMenu.Item
+            key={action.key}
+            shortcut={action.shortcut}
+            disabled={action.disabled}
+          >
+            {action.label}
+          </DropdownMenu.Item>
+        );
+      }),
+    [],
+  );
+
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Button aria-label="waypoint actions" size="1">
+          <DotsVerticalIcon />
+        </Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content size="1">{actionsToShow}</DropdownMenu.Content>
+    </DropdownMenu.Root>
+  );
+};
