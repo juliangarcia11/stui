@@ -14,11 +14,6 @@ import type { Route } from "./+types/login";
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getSession(request.headers.get("Cookie"));
 
-  if (session.has("token")) {
-    // Redirect to the home page if they are already signed in.
-    return redirect("/");
-  }
-
   return data(
     { error: session.get("error") },
     {
