@@ -1,13 +1,12 @@
 import { Flex } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import type { UIWaypoint } from "./types";
 import { WaypointNearestShip } from "./WaypointNearestShip";
 import { WaypointPoiButton } from "./WaypointPoiButton";
 
-type WaypointPointsOfInterestProps =
-  LoadWaypointsDataResponse["waypointsList"]["data"][number] & {
-    isHeadquarters?: boolean;
-  };
+type WaypointPointsOfInterestProps = UIWaypoint & {
+  isHeadquarters?: boolean;
+};
 
 /**
  * Displays points of interest at a waypoint, such as:

@@ -1,11 +1,11 @@
 import { type BadgeProps } from "@radix-ui/themes";
 import { useMemo, type FC } from "react";
 import type { ShipNavStatus } from "~/api/client";
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import type { UIWaypoint } from "./types";
 import { WaypointPoiButton } from "./WaypointPoiButton";
 
 type WaypointNearestShipProps = {
-  ship?: LoadWaypointsDataResponse["waypointsList"]["data"][0]["ships"][0];
+  ship?: UIWaypoint["ships"][0];
 };
 
 /**
