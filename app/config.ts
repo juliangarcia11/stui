@@ -26,6 +26,7 @@ export const Config = {
   // App Error Message Strings
   Errors: {
     MissingAgentSymbol: wrapErr("Agent symbol is required"),
+    MissingShip: wrapErr("Ship symbol is required"),
     MissingFaction: wrapErr("Faction is required"),
     MissingData: wrapErr("Data missing in response"),
     MissingSystem: wrapErr("System is required"),
