@@ -56,7 +56,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
 
             {/* TODO: could add actions menu column */}
             <Table.Cell>
-              <WaypointRowActions />
+              <WaypointRowActions waypoint={waypoint} />
             </Table.Cell>
           </Table.Row>
         ))}

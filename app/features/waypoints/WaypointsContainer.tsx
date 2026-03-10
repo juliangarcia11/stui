@@ -4,6 +4,7 @@ import { WaypointsTable } from "./WaypointsTable";
 import type { LoadWaypointsDataResponse } from "./loader-waypoints";
 import { Paginator } from "~/components";
 import { calculateTotalPages } from "./utils";
+import { OrbitingAlert } from "./RowActions/OrbitingAlert";
 
 /**
  * Page container for displaying waypoints in the current system in a paginated table format.
@@ -30,6 +31,7 @@ export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
           <Paginator to="/waypoints" totalPages={totalPages} />
         </Flex>
       </Flex>
+      <OrbitingAlert />
     </Container>
   );
 };

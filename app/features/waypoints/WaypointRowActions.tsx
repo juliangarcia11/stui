@@ -1,25 +1,13 @@
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Button, DropdownMenu } from "@radix-ui/themes";
-import { useMemo } from "react";
-
-type ActionKeys =
-  | "DOCK_SHIP"
-  | "ORBIT_SHIP"
-  | "NAVIGATE_SHIP"
-  | "REFUEL_SHIP"
-  | "DELIVER_CONTRACT"
-  | "JUMP_SYSTEM"
-  | "SURVEY_WAYPOINT"
-  | "MINE_WAYPOINT"
-  | "OPEN_MARKET"
-  | "OPEN_SHIPYARD";
-
-type WaypointAction = {
-  key: ActionKeys | `SEPARATOR_${string}`; // using template literal type to allow for separator items with unique keys
-  label: string;
-  disabled?: boolean;
-  shortcut?: string; // later, could add keyboard shortcuts to actions
-};
+import { useMemo, type FC } from "react";
+import { DOCK_SHIP_ACTION } from "./RowActions/DockingAlert";
+import { ORBIT_SHIP_ACTION } from "./RowActions/OrbitingAlert";
+import type {
+  ActionKeys,
+  WaypointAction,
+  WaypointRowActionsProps,
+} from "./types";
 
 const WAYPOINT_ACTIONS: Record<
   ActionKeys | `SEPARATOR_${string}`,
@@ -32,8 +20,8 @@ const WAYPOINT_ACTIONS: Record<
     disabled: true,
   },
   SEPARATOR_1: { key: "SEPARATOR_1", label: "" },
-  DOCK_SHIP: { key: "DOCK_SHIP", label: "Dock Ship", disabled: true },
-  ORBIT_SHIP: { key: "ORBIT_SHIP", label: "Orbit Ship", disabled: true },
+  DOCK_SHIP: DOCK_SHIP_ACTION,
+  ORBIT_SHIP: ORBIT_SHIP_ACTION,
   NAVIGATE_SHIP: {
     key: "NAVIGATE_SHIP",
     label: "Navigate Ship",
@@ -64,23 +52,32 @@ const WAYPOINT_ACTIONS: Record<
  * All actions are disabled since we haven't implemented any of the interactions yet. As we do, they will be enabled/disabled based
  * on the state of the waypoint and the player's ships/contracts.
  */
-export const WaypointRowActions = () => {
+export const WaypointRowActions: FC<WaypointRowActionsProps> = ({
+  waypoint,
+}) => {
   const actionsToShow = useMemo(
     () =>
-      Object.values(WAYPOINT_ACTIONS).map((action) => {
-        if (action.key.startsWith("SEPARATOR_")) {
-          return <DropdownMenu.Separator key={action.key} />;
-        }
-        return (
-          <DropdownMenu.Item
-            key={action.key}
-            shortcut={action.shortcut}
-            disabled={action.disabled}
-          >
-            {action.label}
-          </DropdownMenu.Item>
-        );
-      }),
+      Object.values(WAYPOINT_ACTIONS).map(
+        ({ template: Template, ...action }) => {
+          if (action.key.startsWith("SEPARATOR_")) {
+            return <DropdownMenu.Separator key={action.key} />;
+          }
+
+          return (
+            <DropdownMenu.Item
+              key={action.key}
+              shortcut={action.shortcut}
+              disabled={
+                typeof action.disabled === "function"
+                  ? action.disabled({ waypoint })
+                  : action.disabled
+              }
+            >
+              {Template ? <Template /> : action.label}
+            </DropdownMenu.Item>
+          );
+        },
+      ),
     [],
   );
 
