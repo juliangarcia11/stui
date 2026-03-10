@@ -1,12 +1,10 @@
 import { Config } from "~/config";
-import type { ApiResponse } from "~/types";
 import {
   getSystemWaypoints,
   type GetSystemWaypointsData,
-  type GetSystemWaypointsResponses,
-  type System,
+  type Waypoint,
 } from "./client";
-import { buildAuth, standardizeApiResponse } from "./utils";
+import { buildAuth, standardizeListApiResponse } from "./utils";
 
 type GetSystemInfoParams = {
   token: string;
@@ -15,14 +13,11 @@ type GetSystemInfoParams = {
   query?: GetSystemWaypointsData["query"];
 };
 
-export type WaypointsList = GetSystemWaypointsResponses["200"];
-type GetWaypointListResponse = ApiResponse<WaypointsList>;
-
 export async function getWaypointsList({
   token,
   systemSymbol,
   query,
-}: GetSystemInfoParams): Promise<GetWaypointListResponse> {
+}: GetSystemInfoParams) {
   if (!token.trim().length) return Config.Errors.MissingToken;
   if (!systemSymbol.trim().length) return Config.Errors.MissingSystem;
 
@@ -34,5 +29,5 @@ export async function getWaypointsList({
     query,
   });
 
-  return standardizeApiResponse<WaypointsList>(response);
+  return standardizeListApiResponse<Waypoint>(response);
 }

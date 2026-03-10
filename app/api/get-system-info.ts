@@ -1,5 +1,4 @@
 import { Config } from "~/config";
-import type { ApiResponse } from "~/types";
 import { getSystem, type System } from "./client";
 import { buildAuth, standardizeApiResponse } from "./utils";
 
@@ -8,12 +7,10 @@ type GetSystemInfoParams = {
   systemSymbol: string;
 };
 
-type GetSystemInfoResponse = ApiResponse<System>;
-
 export async function getSystemInfo({
   token,
   systemSymbol,
-}: GetSystemInfoParams): Promise<GetSystemInfoResponse> {
+}: GetSystemInfoParams) {
   // Validate user input
   if (!token.trim().length) {
     return Config.Errors.MissingToken;

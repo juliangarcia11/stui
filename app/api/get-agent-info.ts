@@ -10,7 +10,12 @@ import {
   type GetMyShipsResponse,
   type Ship,
 } from "./client";
-import { buildAuth, standardizeApiResponse, wrapSuccess } from "./utils";
+import {
+  buildAuth,
+  standardizeListApiResponse,
+  standardizeApiResponse,
+  wrapSuccess,
+} from "./utils";
 
 export type AgentInfo = {
   agent: Agent;
@@ -31,21 +36,20 @@ export async function getAgentInfo(token: string): Promise<AgentInfoResponse> {
 
   // Prepare all requests for parallelization
   const requests = [
-    getMyAgent(buildAuth(token)),
-    getContracts(buildAuth(token)),
-    getMyShips(buildAuth(token)),
+    getMyAgent(buildAuth(token)).then(standardizeApiResponse),
+    getContracts(buildAuth(token)).then(standardizeListApiResponse),
+    getMyShips(buildAuth(token)).then(standardizeListApiResponse),
   ];
 
   // Make parallel requests & parse errors
   const responses = await Promise.all(requests);
-  const results = responses.map((response) => standardizeApiResponse(response));
 
   // Validate responses
-  const agentResult = results[0] as ApiResponse<Agent>;
+  const agentResult = responses[0] as ApiResponse<Agent>;
   if (agentResult.status === "error") return agentResult;
-  const contractsResult = results[1] as ApiResponse<GetContractsResponse>;
+  const contractsResult = responses[1] as ApiResponse<GetContractsResponse>;
   if (contractsResult.status === "error") return contractsResult;
-  const shipsResult = results[2] as ApiResponse<GetMyShipsResponse>;
+  const shipsResult = responses[2] as ApiResponse<GetMyShipsResponse>;
   if (shipsResult.status === "error") return shipsResult;
 
   // Prepare resulting data

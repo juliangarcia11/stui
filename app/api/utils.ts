@@ -56,8 +56,7 @@ type ListDataResponse<T> = {
  */
 export const standardizeApiResponse = <
   T = unknown,
-  R extends { error?: unknown; data?: DataResponse<T> | ListDataResponse<T> } =
-    any,
+  R extends { error?: unknown; data?: { data: T } } = any,
 >(
   response: R,
   dataExtractor: (response: R) => T = (response) =>
@@ -66,12 +65,34 @@ export const standardizeApiResponse = <
   if (response.error) return wrapErr(extractApiErr(response.error));
   if (!response.data) return Config.Errors.MissingData;
 
-  // Check if the response matches the List<T> structure
-  const listData = (response.data as any).data;
-  const meta = (response.data as any).meta;
-  if (Array.isArray(listData) && meta) {
-    return wrapSuccess({ data: listData, meta });
-  }
-
   return wrapSuccess(dataExtractor(response));
+};
+
+/**
+ * Util to standardize API responses that return lists, which have a slightly different structure (data is nested inside a `data` property along with `meta`).
+ * It checks for errors and missing data, and formats the response in a way that's easy for the UI to consume.
+ * The returned data includes both the list of items and the associated metadata.
+ *
+ * @example
+ * type MyItem = { foo: string };
+ * type MyListResponse = ListDataResponse<MyItem>;
+ * const response = await clientFunction(); // from `/app/client`
+ * const standardizedResponse = standardizeListApiResponse<MyItem>(response);
+ * if (standardizedResponse.status === "error") {
+ *   // Handle error
+ * } else {
+ *   // Use standardizedResponse.data.data for the list of items and standardizedResponse.data.meta for the metadata
+ * }
+ */
+export const standardizeListApiResponse = <
+  T = unknown,
+  R extends { error?: unknown; data?: { data: T[]; meta: Meta } } = any,
+>(
+  response: R,
+) => {
+  if (response.error) return wrapErr(extractApiErr(response.error));
+  if (!response.data) return Config.Errors.MissingData;
+
+  const { data, meta } = response.data;
+  return wrapSuccess({ data, meta });
 };
