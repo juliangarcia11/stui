@@ -1,10 +1,10 @@
 import { Container, Flex } from "@radix-ui/themes";
 import type { FC } from "react";
 import { WaypointsTable } from "./WaypointsTable";
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { Paginator } from "~/components";
-import { calculateTotalPages } from "./utils";
-import { OrbitingAlert } from "./RowActions/OrbitingAlert";
+import { calculateTotalPages } from "../utils";
+import { OrbitingAlert } from "./OrbitingAlert";
 
 /**
  * Page container for displaying waypoints in the current system in a paginated table format.

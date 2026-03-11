@@ -1,6 +1,6 @@
 import { Badge, Flex, Heading, Table, Text } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { WaypointPointsOfInterest } from "./WaypointPois";
 import { WaypointSymbol } from "./WaypointSymbol";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";

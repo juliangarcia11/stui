@@ -1,6 +1,6 @@
 import { Flex } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { UIWaypoint } from "./types";
+import type { UIWaypoint } from "../types";
 import { WaypointNearestShip } from "./WaypointNearestShip";
 import { WaypointPoiButton } from "./WaypointPoiButton";
 

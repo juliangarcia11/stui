@@ -1,13 +1,13 @@
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Button, DropdownMenu } from "@radix-ui/themes";
 import { useMemo, type FC } from "react";
-import { DOCK_SHIP_ACTION } from "./RowActions/DockingAlert";
-import { ORBIT_SHIP_ACTION } from "./RowActions/OrbitingAlert";
+import { DOCK_SHIP_ACTION } from "./DockingAlert";
+import { ORBIT_SHIP_ACTION } from "./OrbitingAlert";
 import type {
   ActionKeys,
   WaypointAction,
   WaypointRowActionsProps,
-} from "./types";
+} from "../types";
 
 const WAYPOINT_ACTIONS: Record<
   ActionKeys | `SEPARATOR_${string}`,

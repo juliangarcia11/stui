@@ -1,6 +1,6 @@
 import { Badge, Text, Tooltip } from "@radix-ui/themes";
 import type { FC } from "react";
-import { removeSystemPrefix } from "./utils";
+import { removeSystemPrefix } from "../utils";
 
 type WaypointSymbolProps = {
   headquarters: string;

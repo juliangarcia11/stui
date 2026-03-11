@@ -1,7 +1,7 @@
 import { type BadgeProps } from "@radix-ui/themes";
 import { useMemo, type FC } from "react";
 import type { ShipNavStatus } from "~/api/client";
-import type { UIWaypoint } from "./types";
+import type { UIWaypoint } from "../types";
 import { WaypointPoiButton } from "./WaypointPoiButton";
 
 type WaypointNearestShipProps = {
