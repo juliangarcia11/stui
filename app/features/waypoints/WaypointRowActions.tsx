@@ -73,7 +73,11 @@ export const WaypointRowActions: FC<WaypointRowActionsProps> = ({
                   : action.disabled
               }
             >
-              {Template ? <Template /> : action.label}
+              {Template ? (
+                <Template waypointSymbol={waypoint.symbol} />
+              ) : (
+                action.label
+              )}
             </DropdownMenu.Item>
           );
         },

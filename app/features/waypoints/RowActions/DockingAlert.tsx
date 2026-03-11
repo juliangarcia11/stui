@@ -1,23 +1,30 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
-import { useDialog } from "../../../hooks";
-import type { WaypointAction } from "../types";
+import type { FC } from "react";
+import { useWaypointDialog } from "../hooks";
+import type { WaypointAction, WaypointActionTemplateProps } from "../types";
 
 const DOCK_SHIP_DIALOG_KEY = "DOCK_SHIP";
 const DOCK_SHIP_ACTION_LABEL = "Dock Ship";
 
-const DockingAlertTrigger = () => {
-  const { openDialog } = useDialog(DOCK_SHIP_DIALOG_KEY);
+const DockingAlertTrigger: FC<WaypointActionTemplateProps> = ({
+  waypointSymbol,
+}) => {
+  const { openDialog } = useWaypointDialog(DOCK_SHIP_DIALOG_KEY);
 
-  return <span onClick={openDialog}>{DOCK_SHIP_ACTION_LABEL}</span>;
+  return (
+    <span onClick={() => openDialog(waypointSymbol)}>
+      {DOCK_SHIP_ACTION_LABEL}
+    </span>
+  );
 };
 
 export const DockingAlert = () => {
-  const { isOpen, openDialog, closeDialog } = useDialog(DOCK_SHIP_DIALOG_KEY);
+  const { isOpen, closeDialog } = useWaypointDialog(DOCK_SHIP_DIALOG_KEY);
 
   return (
     <AlertDialog.Root
       open={isOpen}
-      onOpenChange={(open) => (open ? openDialog() : closeDialog())}
+      onOpenChange={(open) => !open && closeDialog()}
     >
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>{DOCK_SHIP_ACTION_LABEL}</AlertDialog.Title>

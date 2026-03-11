@@ -24,6 +24,10 @@ export type ActionKeys =
   | "OPEN_MARKET"
   | "OPEN_SHIPYARD";
 
+export type WaypointActionTemplateProps = {
+  waypointSymbol: string;
+};
+
 export type WaypointAction = {
   // using template literal type to allow for separator items with unique keys
   key: ActionKeys | `SEPARATOR_${string}`;
@@ -34,7 +38,5 @@ export type WaypointAction = {
   // later, could add keyboard shortcuts to actions
   shortcut?: string;
   // menu item template for this action, if it requires a custom component (e.g. a dialog trigger)
-  template?: FC;
-  // optional custom content to add outside of the menu, e.g. a dialog component that listens to URL params for open/close state
-  dialog?: FC;
+  template?: FC<WaypointActionTemplateProps>;
 };

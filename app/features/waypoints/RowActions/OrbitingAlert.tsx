@@ -1,23 +1,35 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
-import { useDialog } from "../../../hooks";
-import type { WaypointAction } from "../types";
+import { type FC } from "react";
+import { ButtonForm } from "~/components";
+import { useWaypointDialog } from "../hooks";
+import type { WaypointAction, WaypointActionTemplateProps } from "../types";
 
 const ORBIT_SHIP_DIALOG_KEY = "ORBIT_SHIP";
 const ORBIT_SHIP_ACTION_LABEL = "Orbit Ship";
 
-const OrbitingAlertTrigger = () => {
-  const { openDialog } = useDialog(ORBIT_SHIP_DIALOG_KEY);
+const OrbitingAlertTrigger: FC<WaypointActionTemplateProps> = ({
+  waypointSymbol,
+}) => {
+  const { openDialog } = useWaypointDialog(ORBIT_SHIP_DIALOG_KEY);
 
-  return <span onClick={openDialog}>{ORBIT_SHIP_ACTION_LABEL}</span>;
+  return (
+    <span onClick={() => openDialog(waypointSymbol)}>
+      {ORBIT_SHIP_ACTION_LABEL}
+    </span>
+  );
 };
 
 export const OrbitingAlert = () => {
-  const { isOpen, openDialog, closeDialog } = useDialog(ORBIT_SHIP_DIALOG_KEY);
+  const { isOpen, params, closeDialog } = useWaypointDialog(
+    ORBIT_SHIP_DIALOG_KEY,
+  );
+  const shipSymbol = "";
+  const waypointSymbol = params.waypoint ?? "";
 
   return (
     <AlertDialog.Root
       open={isOpen}
-      onOpenChange={(open) => (open ? openDialog() : closeDialog())}
+      onOpenChange={(open) => !open && closeDialog()}
     >
       <AlertDialog.Content maxWidth="450px">
         <AlertDialog.Title>{ORBIT_SHIP_ACTION_LABEL}</AlertDialog.Title>
@@ -34,9 +46,18 @@ export const OrbitingAlert = () => {
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button variant="solid" color="green">
+            <ButtonForm
+              action="/waypoints"
+              method="POST"
+              hiddenValues={{
+                shipSymbol,
+                waypointSymbol,
+              }}
+              variant="solid"
+              color="green"
+            >
               Yes, put in orbit
-            </Button>
+            </ButtonForm>
           </AlertDialog.Action>
         </Flex>
       </AlertDialog.Content>
