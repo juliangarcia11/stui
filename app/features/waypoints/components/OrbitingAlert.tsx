@@ -2,11 +2,17 @@ import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { type FC } from "react";
 import { ButtonForm } from "~/components";
 import { useWaypointDialog } from "../hooks";
+import { useShipSelection } from "../hooks/useShipSelection";
 import type { WaypointAction, WaypointActionTemplateProps } from "../types";
+import { ShipSelect } from "./ShipSelect";
 
 const ORBIT_SHIP_DIALOG_KEY = "ORBIT_SHIP";
 const ORBIT_SHIP_ACTION_LABEL = "Orbit Ship";
 
+/**
+ * Menu action trigger for sending a ship into orbit.
+ * Uses URL parameters to open the dialog for the selected waypoint.
+ */
 const OrbitingAlertTrigger: FC<WaypointActionTemplateProps> = ({
   waypointSymbol,
 }) => {
@@ -19,12 +25,23 @@ const OrbitingAlertTrigger: FC<WaypointActionTemplateProps> = ({
   );
 };
 
+/**
+ * Dialog for selecting a ship to send into orbit. Only shows ships that are currently docked at the waypoint.
+ * Uses a form to submit the selected ship and waypoint to the server to perform the action.
+ */
 export const OrbitingAlert = () => {
   const { isOpen, params, closeDialog } = useWaypointDialog(
     ORBIT_SHIP_DIALOG_KEY,
   );
-  const shipSymbol = "";
   const waypointSymbol = params.waypoint ?? "";
+  const {
+    ships,
+    selectedShipSymbol: shipSymbol,
+    setSelectedShipSymbol,
+  } = useShipSelection({
+    waypointSymbol,
+    shipFilter: (ship) => ship.distance === 0 && ship.nav.status === "DOCKED",
+  });
 
   return (
     <AlertDialog.Root
@@ -39,6 +56,14 @@ export const OrbitingAlert = () => {
           until you dock again.
         </AlertDialog.Description>
 
+        <Flex direction="column" gap="4" mt="4" mx="auto" maxWidth="50%">
+          <ShipSelect
+            ships={ships}
+            selectedShipSymbol={shipSymbol}
+            setSelectedShipSymbol={setSelectedShipSymbol}
+          />
+        </Flex>
+
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel onClick={closeDialog}>
             <Button variant="soft" color="gray">
@@ -50,9 +75,11 @@ export const OrbitingAlert = () => {
               action="/waypoints"
               method="POST"
               hiddenValues={{
+                action: ORBIT_SHIP_DIALOG_KEY,
                 shipSymbol,
                 waypointSymbol,
               }}
+              disabled={!shipSymbol}
               variant="solid"
               color="green"
             >
