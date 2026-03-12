@@ -82,7 +82,7 @@ export const WaypointRowActions: FC<WaypointRowActionsProps> = ({
           );
         },
       ),
-    [],
+    [waypoint],
   );
 
   return (
