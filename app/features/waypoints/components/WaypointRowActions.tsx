@@ -1,14 +1,15 @@
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Button, DropdownMenu } from "@radix-ui/themes";
 import { useMemo, type FC } from "react";
-import { DOCK_SHIP_ACTION } from "./DockingAlert";
-import { ORBIT_SHIP_ACTION } from "./OrbitingAlert";
 import type {
   ActionKeys,
   WaypointAction,
   WaypointRowActionsProps,
 } from "../types";
+import { DOCK_SHIP_ACTION } from "./DockingAlert";
 import { OPEN_MARKET_ACTION } from "./MarketDialog";
+import { ORBIT_SHIP_ACTION } from "./OrbitingAlert";
+import { WaypointDialogTrigger } from "./WaypointDialogTrigger";
 
 const WAYPOINT_ACTIONS: Record<
   ActionKeys | `SEPARATOR_${string}`,
@@ -58,31 +59,29 @@ export const WaypointRowActions: FC<WaypointRowActionsProps> = ({
 }) => {
   const actionsToShow = useMemo(
     () =>
-      Object.values(WAYPOINT_ACTIONS).map(
-        ({ template: Template, ...action }) => {
-          if (action.key.startsWith("SEPARATOR_")) {
-            return <DropdownMenu.Separator key={action.key} />;
-          }
+      Object.values(WAYPOINT_ACTIONS).map((action) => {
+        if (_isSeparatorKey(action.key)) {
+          return <DropdownMenu.Separator key={action.key} />;
+        }
 
-          return (
-            <DropdownMenu.Item
-              key={action.key}
-              shortcut={action.shortcut}
-              disabled={
-                typeof action.disabled === "function"
-                  ? action.disabled({ waypoint })
-                  : action.disabled
-              }
-            >
-              {Template ? (
-                <Template waypointSymbol={waypoint.symbol} />
-              ) : (
-                action.label
-              )}
-            </DropdownMenu.Item>
-          );
-        },
-      ),
+        return (
+          <DropdownMenu.Item
+            key={action.key}
+            shortcut={action.shortcut}
+            disabled={
+              typeof action.disabled === "function"
+                ? action.disabled({ waypoint })
+                : action.disabled
+            }
+          >
+            <WaypointDialogTrigger
+              actionKey={action.key}
+              actionLabel={action.label}
+              waypointSymbol={waypoint.symbol}
+            />
+          </DropdownMenu.Item>
+        );
+      }),
     [waypoint],
   );
 
@@ -97,3 +96,7 @@ export const WaypointRowActions: FC<WaypointRowActionsProps> = ({
     </DropdownMenu.Root>
   );
 };
+
+// Helper type guard to determine if an action is a separator, which we render differently in the dropdown menu
+const _isSeparatorKey = (key: string): key is `SEPARATOR_${string}` =>
+  key.startsWith("SEPARATOR_");

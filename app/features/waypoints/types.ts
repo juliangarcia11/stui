@@ -1,16 +1,4 @@
-import type { FC, ReactNode } from "react";
 import type { LoadWaypointsDataResponse } from "./loader-waypoints";
-
-/**
- * Type alias for the UI representation of a waypoint, which extends the API response type to include
- * any additional fields needed for display or interaction in the UI.
- */
-export type UIWaypoint =
-  LoadWaypointsDataResponse["waypointsList"]["data"][number];
-
-export type WaypointRowActionsProps = {
-  waypoint: UIWaypoint;
-};
 
 export type ActionKeys =
   | "DOCK_SHIP"
@@ -24,8 +12,15 @@ export type ActionKeys =
   | "OPEN_MARKET"
   | "OPEN_SHIPYARD";
 
-export type WaypointActionTemplateProps = {
-  waypointSymbol: string;
+/**
+ * Type alias for the UI representation of a waypoint, which extends the API response type to include
+ * any additional fields needed for display or interaction in the UI.
+ */
+export type UIWaypoint =
+  LoadWaypointsDataResponse["waypointsList"]["data"][number];
+
+export type WaypointRowActionsProps = {
+  waypoint: UIWaypoint;
 };
 
 export type WaypointAction = {
@@ -37,8 +32,6 @@ export type WaypointAction = {
   disabled?: boolean | ((props: WaypointRowActionsProps) => boolean);
   // later, could add keyboard shortcuts to actions
   shortcut?: string;
-  // menu item template for this action, if it requires a custom component (e.g. a dialog trigger)
-  template?: FC<WaypointActionTemplateProps>;
 };
 
 /**

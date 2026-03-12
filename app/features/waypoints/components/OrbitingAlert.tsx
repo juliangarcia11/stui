@@ -1,28 +1,20 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
-import { type FC } from "react";
 import { ButtonForm } from "~/components";
 import { useWaypointDialog } from "../hooks";
 import { useShipSelection } from "../hooks/useShipSelection";
-import type { WaypointAction, WaypointActionTemplateProps } from "../types";
+import type { WaypointAction } from "../types";
 import { ShipSelect } from "./ShipSelect";
 
 const ORBIT_SHIP_DIALOG_KEY = "ORBIT_SHIP";
 const ORBIT_SHIP_ACTION_LABEL = "Orbit Ship";
 
-/**
- * Menu action trigger for sending a ship into orbit.
- * Uses URL parameters to open the dialog for the selected waypoint.
- */
-const OrbitingAlertTrigger: FC<WaypointActionTemplateProps> = ({
-  waypointSymbol,
-}) => {
-  const { openDialog } = useWaypointDialog(ORBIT_SHIP_DIALOG_KEY);
-
-  return (
-    <span onClick={() => openDialog(waypointSymbol)}>
-      {ORBIT_SHIP_ACTION_LABEL}
-    </span>
-  );
+export const ORBIT_SHIP_ACTION: WaypointAction = {
+  key: ORBIT_SHIP_DIALOG_KEY,
+  label: "Orbit Ship",
+  disabled: ({ waypoint }) =>
+    !waypoint.ships?.some(
+      (ship) => ship.distance === 0 && ship.nav.status === "DOCKED",
+    ),
 };
 
 /**
@@ -90,14 +82,4 @@ export const OrbitingAlert = () => {
       </AlertDialog.Content>
     </AlertDialog.Root>
   );
-};
-
-export const ORBIT_SHIP_ACTION: WaypointAction = {
-  key: ORBIT_SHIP_DIALOG_KEY,
-  label: "Orbit Ship",
-  disabled: ({ waypoint }) =>
-    !waypoint.ships?.some(
-      (ship) => ship.distance === 0 && ship.nav.status === "DOCKED",
-    ),
-  template: OrbitingAlertTrigger,
 };

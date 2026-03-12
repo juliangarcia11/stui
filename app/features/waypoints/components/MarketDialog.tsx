@@ -1,22 +1,16 @@
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { type FC } from "react";
 import { useWaypointDialog } from "../hooks";
-import type { WaypointAction, WaypointActionTemplateProps } from "../types";
+import type { WaypointAction } from "../types";
 import { transformWaypointToSystem } from "../utils";
 
 const MARKET_DIALOG_KEY = "OPEN_MARKET";
 const MARKET_ACTION_LABEL = "Open Market";
 
-const OpenMarketTrigger: FC<WaypointActionTemplateProps> = ({
-  waypointSymbol,
-}) => {
-  const { openDialog } = useWaypointDialog(MARKET_DIALOG_KEY);
-
-  return (
-    <span onClick={() => openDialog(waypointSymbol)}>
-      {MARKET_ACTION_LABEL}
-    </span>
-  );
+export const OPEN_MARKET_ACTION: WaypointAction = {
+  key: MARKET_DIALOG_KEY,
+  label: MARKET_ACTION_LABEL,
+  disabled: ({ waypoint }) =>
+    !waypoint?.traits.some((trait) => trait.symbol === "MARKETPLACE"),
 };
 
 export const MarketDialog = () => {
@@ -43,12 +37,4 @@ export const MarketDialog = () => {
       </Dialog.Content>
     </Dialog.Root>
   );
-};
-
-export const OPEN_MARKET_ACTION: WaypointAction = {
-  key: MARKET_DIALOG_KEY,
-  label: MARKET_ACTION_LABEL,
-  disabled: ({ waypoint }) =>
-    !waypoint?.traits.some((trait) => trait.symbol === "MARKETPLACE"),
-  template: OpenMarketTrigger,
 };
