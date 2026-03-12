@@ -16,7 +16,6 @@ export const ShipSelect: FC<UseShipSelectionReturn> = ({
     <Select.Root
       value={selectedShipSymbol}
       onValueChange={setSelectedShipSymbol}
-      defaultValue={selectedShipSymbol ?? ships[0]?.symbol}
     >
       <Select.Trigger placeholder="Select a ship" />
       <Select.Content>
