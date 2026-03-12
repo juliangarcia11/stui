@@ -16,11 +16,14 @@ export const ShipSelect: FC<UseShipSelectionReturn> = ({
     <Select.Root
       value={selectedShipSymbol}
       onValueChange={setSelectedShipSymbol}
+      defaultValue={selectedShipSymbol ?? ships[0]?.symbol}
     >
       <Select.Trigger placeholder="Select a ship" />
       <Select.Content>
         {ships.map((ship) => (
-          <Select.Item value={ship.symbol}>{ship.symbol}</Select.Item>
+          <Select.Item key={ship.symbol} value={ship.symbol}>
+            {ship.symbol}
+          </Select.Item>
         ))}
       </Select.Content>
     </Select.Root>
