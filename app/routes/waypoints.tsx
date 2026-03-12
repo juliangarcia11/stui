@@ -1,6 +1,10 @@
 import { redirect } from "react-router";
 import { ErrorBoundary } from "~/components";
-import { loadWaypointsData, WaypointContainer } from "~/features/waypoints";
+import {
+  loadWaypointsData,
+  WaypointContainer,
+  executeWaypointAction,
+} from "~/features/waypoints";
 import { extractToken } from "~/sessions.server";
 import type { Route } from "./+types/waypoints";
 
@@ -24,6 +28,20 @@ export async function loader({ request }: Route.LoaderArgs) {
 
   const searchparams = new URL(request.url).searchParams;
   return await loadWaypointsData(token, searchparams);
+}
+
+/**
+ * Action handler for the `/waypoints` route.
+ * This is a generic handler that extracts the token & form data for the request, then provides
+ * them to the `executeWaypointAction` function, which will route to the appropriate API call
+ * based on the "action" key in the form data.
+ */
+export async function action({ request }: Route.ActionArgs) {
+  const token = await extractToken(request.headers.get("Cookie"));
+  if (!token) return redirect("/login");
+
+  const formData = await request.formData();
+  return executeWaypointAction(token, formData);
 }
 
 export default function Waypoints({ loaderData }: Route.ComponentProps) {

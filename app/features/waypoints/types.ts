@@ -40,3 +40,15 @@ export type WaypointAction = {
   // menu item template for this action, if it requires a custom component (e.g. a dialog trigger)
   template?: FC<WaypointActionTemplateProps>;
 };
+
+/**
+ * Shared parameter type for all Waypoint Action handlers outlined in executeWaypointAction.
+ * Each action handler will receive an object of this type, which includes all possible parameters needed for any action.
+ * Individual handlers will be responsible for validating the presence of required parameters for their specific action
+ * and can ignore the rest.
+ */
+export type WaypointActionParams = {
+  token: string;
+  shipSymbol?: string;
+  waypointSymbol?: string;
+};
