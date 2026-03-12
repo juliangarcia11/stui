@@ -1,12 +1,12 @@
 import { redirect } from "react-router";
 import { ErrorBoundary } from "~/components";
 import {
+  executeWaypointAction,
   loadWaypointsData,
   WaypointContainer,
-  executeWaypointAction,
 } from "~/features/waypoints";
 import { extractToken } from "~/sessions.server";
-import type { Route } from "./+types/waypoints";
+import type { Route } from "./+types/waypoints-list";
 
 export function meta({}: Route.MetaArgs) {
   return [
