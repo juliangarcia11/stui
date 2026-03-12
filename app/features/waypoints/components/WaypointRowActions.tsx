@@ -8,12 +8,13 @@ import type {
   WaypointAction,
   WaypointRowActionsProps,
 } from "../types";
+import { OPEN_MARKET_ACTION } from "./MarketDialog";
 
 const WAYPOINT_ACTIONS: Record<
   ActionKeys | `SEPARATOR_${string}`,
   WaypointAction
 > = {
-  OPEN_MARKET: { key: "OPEN_MARKET", label: "Open Market", disabled: true },
+  OPEN_MARKET: OPEN_MARKET_ACTION,
   OPEN_SHIPYARD: {
     key: "OPEN_SHIPYARD",
     label: "Open Shipyard",

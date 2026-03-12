@@ -6,6 +6,7 @@ import { Paginator } from "~/components";
 import { calculateTotalPages } from "../utils";
 import { OrbitingAlert } from "./OrbitingAlert";
 import { DockingAlert } from "./DockingAlert";
+import { MarketDialog } from "./MarketDialog";
 
 /**
  * Page container for displaying waypoints in the current system in a paginated table format.
@@ -32,6 +33,8 @@ export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
           <Paginator to="/waypoints" totalPages={totalPages} />
         </Flex>
       </Flex>
+
+      <MarketDialog />
       <OrbitingAlert />
       <DockingAlert />
     </Container>
