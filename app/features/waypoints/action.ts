@@ -1,4 +1,4 @@
-import { orbitShip } from "~/api";
+import { dockShip, orbitShip } from "~/api";
 import { Config } from "~/config";
 import type { WaypointActionParams } from "./types";
 
@@ -27,6 +27,8 @@ export function executeWaypointAction(token: string, formData: FormData) {
   };
 
   switch (action) {
+    case "DOCK_SHIP":
+      return dockShip(params);
     case "ORBIT_SHIP":
       return orbitShip(params);
     default:

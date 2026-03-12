@@ -5,6 +5,7 @@ import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { Paginator } from "~/components";
 import { calculateTotalPages } from "../utils";
 import { OrbitingAlert } from "./OrbitingAlert";
+import { DockingAlert } from "./DockingAlert";
 
 /**
  * Page container for displaying waypoints in the current system in a paginated table format.
@@ -32,6 +33,7 @@ export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
         </Flex>
       </Flex>
       <OrbitingAlert />
+      <DockingAlert />
     </Container>
   );
 };
