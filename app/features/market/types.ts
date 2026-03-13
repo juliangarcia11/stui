@@ -1,3 +1,3 @@
-import type { MarketTradeGood, TradeGood } from "~/api/client";
+import type { MarketLoaderData } from "./loader";
 
-export type UITradeGood = MarketTradeGood & TradeGood;
+export type UITradeGood = MarketLoaderData["marketData"]["tradeGoods"][number];

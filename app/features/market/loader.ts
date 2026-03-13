@@ -1,7 +1,6 @@
 // File Purpose: Fetch all data needed for the Waypoint Market page
 import { getMarket } from "~/api";
 import type { Market, MarketTradeGood, TradeGood } from "~/api/client";
-import type { UITradeGood } from "./types";
 
 export async function loadMarketData(
   token: string,
@@ -23,7 +22,7 @@ export async function loadMarketData(
   // - join marketData.data.tradeGoods with marketData.data.exports, imports, exchange
   // - get transactions for each trade good and add to the good object
   // Be UI ready.
-  const tradeGoods: UITradeGood[] =
+  const tradeGoods =
     marketData.data.tradeGoods?.map((good) => ({
       ...good,
       name: getMarketParam(good, marketData.data, "name") || good.symbol,
