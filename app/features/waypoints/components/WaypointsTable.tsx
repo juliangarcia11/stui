@@ -2,9 +2,8 @@ import { Badge, Flex, Heading, Table, Text } from "@radix-ui/themes";
 import type { FC } from "react";
 import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { WaypointPointsOfInterest } from "./WaypointPois";
-import { WaypointSymbol } from "./WaypointSymbol";
-import { WaypointTypeBadge } from "./WaypointTypeBadge";
 import { WaypointRowActions } from "./WaypointRowActions";
+import { WaypointTypeBadge } from "./WaypointTypeBadge";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -30,10 +29,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Coordinates</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{"What's Here?"}</Table.ColumnHeaderCell>
-
-          {/* TODO: could add actions menu column */}
-          {/* <Table.ColumnHeaderCell>Clear Filters Button (using header as an 'header actions' item not menu) </Table.ColumnHeaderCell> */}
-          <Table.ColumnHeaderCell>Actions</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell> </Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -54,7 +50,6 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
               />
             </Table.Cell>
 
-            {/* TODO: could add actions menu column */}
             <Table.Cell>
               <WaypointRowActions waypoint={waypoint} />
             </Table.Cell>
