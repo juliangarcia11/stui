@@ -25,16 +25,17 @@ export const Config = {
 
   // App Error Message Strings
   Errors: {
-    MissingAction: wrapErr("Action is required"),
-    MissingActionHandler: wrapErr("No handler for this action"),
-    MissingAgentSymbol: wrapErr("Agent symbol is required"),
-    MissingShip: wrapErr("Ship symbol is required"),
-    MissingFaction: wrapErr("Faction is required"),
-    MissingData: wrapErr("Data missing in response"),
-    MissingSystem: wrapErr("System is required"),
-    MissingToken: wrapErr("Token is required"),
     MismatchedAgentSymbol: wrapErr(
       "Agent symbol provided does not match token",
     ),
+    MissingAction: wrapErr("Action is required"),
+    MissingActionHandler: wrapErr("No handler for this action"),
+    MissingAgentSymbol: wrapErr("Agent symbol is required"),
+    MissingFaction: wrapErr("Faction is required"),
+    MissingData: wrapErr("Data missing in response"),
+    MissingShip: wrapErr("Ship symbol is required"),
+    MissingSystem: wrapErr("System is required"),
+    MissingToken: wrapErr("Token is required"),
+    MissingWaypoint: wrapErr("Waypoint symbol is required"),
   },
 };
