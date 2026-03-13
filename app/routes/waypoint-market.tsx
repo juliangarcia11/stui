@@ -1,11 +1,11 @@
 import { redirect } from "react-router";
-import type { Route } from "./+types/waypoint-marketplace";
+import type { Route } from "./+types/waypoint-market";
 import { extractToken } from "~/sessions.server";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Marketplace | STUI" },
-    { name: "description", content: "SpaceTraders UI Waypoint Marketplace" },
+    { title: "Market | STUI" },
+    { name: "description", content: "SpaceTraders UI Waypoint Market" },
   ];
 }
 

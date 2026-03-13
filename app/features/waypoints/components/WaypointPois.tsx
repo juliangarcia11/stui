@@ -23,7 +23,7 @@ export const WaypointPointsOfInterest: FC<WaypointPointsOfInterestProps> = ({
   const hasShip = ship?.distance === 0;
   const hasOrbitals = (orbitals?.length ?? 0) > 0;
   const orbitalsCount = (orbitals?.length ?? 0).toString();
-  const marketplace = traits.find((trait) => trait.symbol === "MARKETPLACE");
+  const market = traits.find((trait) => trait.symbol === "MARKETPLACE");
   const shipyard = traits.find((trait) => trait.symbol === "SHIPYARD");
   const outpost = traits.find((trait) => trait.symbol === "OUTPOST");
 
@@ -38,7 +38,7 @@ export const WaypointPointsOfInterest: FC<WaypointPointsOfInterestProps> = ({
       {hasOrbitals && (
         <WaypointPoiButton text="Orbitals" badge={orbitalsCount} color="gray" />
       )}
-      {marketplace && <WaypointPoiButton text="Marketplace" color="violet" />}
+      {market && <WaypointPoiButton text="Market" color="violet" />}
       {shipyard && <WaypointPoiButton text="Shipyard" color="indigo" />}
       {outpost && <WaypointPoiButton text="Outpost" color="orange" />}
     </Flex>

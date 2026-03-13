@@ -12,7 +12,7 @@ export default [
 
     ...prefix("waypoints", [
       index("routes/waypoints-list.tsx"),
-      route(":waypointSymbol/marketplace", "routes/waypoint-marketplace.tsx"),
+      route(":waypointSymbol/market", "routes/waypoint-market.tsx"),
     ]),
   ]),
 
