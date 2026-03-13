@@ -1,8 +1,10 @@
 // File Purpose: Waypoint Market page container - WIP
+import { Container, Flex } from "@radix-ui/themes";
 import type { FC } from "react";
-import type { MarketLoaderData } from "../loader";
 import { Debug } from "~/components";
 import { stringifyWithBigInt } from "~/utils";
+import type { MarketLoaderData } from "../loader";
+import { TradeGoodsTable } from "./TradeGoodsTable";
 
 type MarketContainerProps = MarketLoaderData & {
   waypointSymbol: string;
@@ -22,9 +24,11 @@ export const MarketContainer: FC<MarketContainerProps> = ({
       {} as Record<string, unknown>,
     );
   return (
-    <div>
-      <h1>Market Data for {waypointSymbol}</h1>
-      <Debug>{stringifyWithBigInt(data)}</Debug>
-    </div>
+    <Container size="4">
+      <Flex direction="column" gap="1">
+        <Debug>{stringifyWithBigInt({ waypointSymbol, data })}</Debug>
+        <TradeGoodsTable goods={marketData.tradeGoods} />
+      </Flex>
+    </Container>
   );
 };
