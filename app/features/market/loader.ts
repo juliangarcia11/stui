@@ -20,17 +20,15 @@ export async function loadMarketData(
     throw new Error("No market data returned");
   }
 
-  // join marketData.data.tradeGoods with marketData.data.exports, imports, exchange
-  // to get name & description for each trade good. Be UI ready.
+  // - join marketData.data.tradeGoods with marketData.data.exports, imports, exchange
+  // - get transactions for each trade good and add to the good object
+  // Be UI ready.
   const tradeGoods: UITradeGood[] =
     marketData.data.tradeGoods?.map((good) => ({
       ...good,
-      name:
-        getMarketDataParam(marketData.data as Market, good, "name") ||
-        good.symbol,
-      description:
-        getMarketDataParam(marketData.data as Market, good, "description") ||
-        "",
+      name: getMarketParam(good, marketData.data, "name") || good.symbol,
+      description: getMarketParam(good, marketData.data, "description") || "",
+      transactions: getTransactions(good.symbol, marketData.data) || [],
     })) || [];
 
   return { marketData: { ...marketData.data, tradeGoods } };
@@ -38,14 +36,14 @@ export async function loadMarketData(
 
 /**
  * Helper function to get a parameter off of the market data
- * @param market the full market data object
  * @param good the trade good to get the parameter for
+ * @param market the full market data object
  * @param key the key of the parameter to get
  * @returns the value of the parameter, or undefined if not found
  */
-const getMarketDataParam = (
-  market: Market,
+const getMarketParam = (
   good: MarketTradeGood,
+  market: Market,
   key: keyof TradeGood,
 ) => {
   switch (good.type) {
@@ -60,6 +58,15 @@ const getMarketDataParam = (
     default:
       return undefined;
   }
+};
+
+const getTransactions = (
+  goodSymbol: MarketTradeGood["symbol"],
+  market: Market,
+) => {
+  return market.transactions?.filter(
+    (transaction) => transaction.tradeSymbol === goodSymbol,
+  );
 };
 
 export type MarketLoaderData = Awaited<ReturnType<typeof loadMarketData>>;
