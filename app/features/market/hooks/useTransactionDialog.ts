@@ -1,32 +1,29 @@
-import { useMemo } from "react";
-import type { TradeSymbol } from "~/api/client";
-import { useParams } from "~/hooks";
+import { useDialogParams } from "~/hooks";
 
-const ACTION_KEY = "action";
 const TRANSACTION_DIALOG_KEY = "OPEN_TRANSACTIONS";
 const GOOD_KEY = "goodSymbol";
 
+/**
+ * Custom hook to manage the transaction dialog state for a specific trade good.
+ * The good's symbol is added the the URL parameters when opening the dialog, allowing the dialog component to access it and display relevant transactions.
+ * @see useDialogParams for the underlying implementation of dialog open/closed state management
+ */
 export function useTransactionDialog() {
-  const { params, has, setParams } = useParams({
-    keys: [ACTION_KEY, GOOD_KEY],
-    matchers: {
-      [ACTION_KEY]: (value) => value === TRANSACTION_DIALOG_KEY,
-    },
+  const {
+    isOpen,
+    params,
+    closeDialog,
+    openDialog: _openDialog,
+  } = useDialogParams({
+    dialogKey: TRANSACTION_DIALOG_KEY,
+    extraKeys: [GOOD_KEY],
   });
 
-  const openDialog = (goodSymbol: TradeSymbol) =>
-    setParams({
-      [ACTION_KEY]: TRANSACTION_DIALOG_KEY,
+  // Extend the openDialog function to add a goodSymbol parameter for the dialog to use
+  const openDialog = (goodSymbol: string) =>
+    _openDialog({
       [GOOD_KEY]: goodSymbol,
     });
-
-  const closeDialog = () =>
-    setParams({
-      [ACTION_KEY]: undefined,
-      [GOOD_KEY]: undefined,
-    });
-
-  const isOpen = useMemo(() => has(ACTION_KEY), [has]);
 
   return { isOpen, params, openDialog, closeDialog };
 }
