@@ -1,7 +1,24 @@
 // File Purpose: UI Display - WIP
 import { Table } from "@radix-ui/themes";
 import type { FC } from "react";
+import { extractSchemaDescriptions } from "~/api";
 import type { MarketTradeGood } from "~/api/client";
+import {
+  ActivityLevelSchema,
+  MarketTradeGoodSchema,
+  SupplyLevelSchema,
+} from "~/api/client/schemas.gen";
+import { TextWithHelp } from "~/components";
+
+const HELP = {
+  ...extractSchemaDescriptions(MarketTradeGoodSchema),
+  ...extractSchemaDescriptions({
+    properties: { supply: SupplyLevelSchema },
+  }),
+  ...extractSchemaDescriptions({
+    properties: { activity: ActivityLevelSchema },
+  }),
+};
 
 export const TradeGoodsTable: FC<{ goods?: MarketTradeGood[] }> = ({
   goods = [],
@@ -12,11 +29,21 @@ export const TradeGoodsTable: FC<{ goods?: MarketTradeGood[] }> = ({
         <Table.Row>
           <Table.ColumnHeaderCell>Symbol</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Trade Volume</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Supply</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Activity</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Purchase Price</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell>Sell Price</Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>
+            <TextWithHelp text="Trade Volume" helpText={HELP.tradeVolume} />
+          </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>
+            <TextWithHelp text="Supply" helpText={HELP.supply} />
+          </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>
+            <TextWithHelp text="Activity" helpText={HELP.activity} />
+          </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>
+            <TextWithHelp text="Purchase Price" helpText={HELP.purchasePrice} />
+          </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>
+            <TextWithHelp text="Sell Price" helpText={HELP.sellPrice} />
+          </Table.ColumnHeaderCell>
         </Table.Row>
       </Table.Header>
 
