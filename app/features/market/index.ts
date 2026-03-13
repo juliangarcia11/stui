@@ -1,2 +1,2 @@
 export * from "./loader";
-export { MarketContainer } from "./components/market-container";
+export { MarketContainer } from "./components/MarketContainer";
