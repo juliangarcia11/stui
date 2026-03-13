@@ -1,7 +1,10 @@
+// File Purpose: React Router route orchestrator
 import { redirect } from "react-router";
-import type { Route } from "./+types/waypoint-market";
+import { loadMarketData, MarketContainer } from "~/features/market";
 import { extractToken } from "~/sessions.server";
+import type { Route } from "./+types/waypoint-market";
 
+// Route Meta given to the Browser
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Market | STUI" },
@@ -9,20 +12,20 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+// Route data loader for the route, runs on the server before rendering the component
+export async function loader({ request, params }: Route.LoaderArgs) {
   const token = await extractToken(request.headers.get("Cookie"));
   if (!token) return redirect("/login");
 
-  return {
-    ping: "pong",
-  };
+  const waypointSymbol = params.waypointSymbol;
+  if (!waypointSymbol) return redirect("/waypoints");
+
+  return await loadMarketData(token, params);
 }
 
-export default function Market({ params }: Route.ComponentProps) {
-  return (
-    <div>
-      <h1>Market</h1>
-      <p>This is the market page for: {params.waypointSymbol}</p>
-    </div>
-  );
+// Route component, rendered after the loader has run and provided data
+export default function Market({ loaderData, params }: Route.ComponentProps) {
+  const waypointSymbol = params.waypointSymbol;
+
+  return <MarketContainer waypointSymbol={waypointSymbol} {...loaderData} />;
 }

@@ -1,6 +1,7 @@
+// File Purpose: App to API standardized bridge
 import { Config } from "~/config";
 import { transformWaypointToSystem } from "~/features/waypoints";
-import { getMarket, type Market } from "./client";
+import { getMarket as get, type Market } from "./client";
 import { buildAuth, standardizeApiResponse } from "./utils";
 
 type GetMarketParams = {
@@ -8,15 +9,12 @@ type GetMarketParams = {
   waypointSymbol: string;
 };
 
-export async function getMarketData({
-  token,
-  waypointSymbol,
-}: GetMarketParams) {
+export async function getMarket({ token, waypointSymbol }: GetMarketParams) {
   if (!token.trim().length) return Config.Errors.MissingToken;
   if (!waypointSymbol.trim().length) return Config.Errors.MissingWaypoint;
 
   const systemSymbol = transformWaypointToSystem(waypointSymbol);
-  const response = await getMarket({
+  const response = await get({
     ...buildAuth(token),
     path: {
       systemSymbol,
