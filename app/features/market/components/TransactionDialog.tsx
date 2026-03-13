@@ -1,9 +1,10 @@
 import { Box, Button, Dialog, Flex } from "@radix-ui/themes";
-import { Debug } from "~/components";
+import { useMemo, type FC } from "react";
+import { Debug, TextWithHelp } from "~/components";
 import { stringifyWithBigInt } from "~/utils";
 import { useTransactionDialog } from "../hooks";
+import { useMarketData } from "../hooks/useMarketData";
 import type { UITradeGood } from "../types";
-import type { FC } from "react";
 
 export const TransactionDialogTrigger: FC<{ good: UITradeGood }> = ({
   good,
@@ -30,16 +31,29 @@ export const TransactionDialogTrigger: FC<{ good: UITradeGood }> = ({
 export const TransactionDialog = () => {
   const { isOpen, params, closeDialog } = useTransactionDialog();
   const goodSymbol = params.goodSymbol ?? "";
+  const { marketData } = useMarketData();
+  const good = useMemo(
+    () => marketData?.tradeGoods.find((g) => g.symbol === goodSymbol),
+    [marketData, goodSymbol],
+  );
+  const transactions = good?.transactions ?? [];
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && closeDialog()}>
       <Dialog.Content maxWidth="450px">
-        <Dialog.Title>Transactions for {goodSymbol}</Dialog.Title>
-        <Dialog.Description size="2" mb="4">
-          some description here
-        </Dialog.Description>
+        <Dialog.Title>
+          <Flex direction="row" align="center" gap="2">
+            Transactions -
+            <TextWithHelp
+              text={good?.name ?? goodSymbol}
+              helpText={good?.description}
+            />
+          </Flex>
+        </Dialog.Title>
 
-        <Debug>{stringifyWithBigInt(params)}</Debug>
+        {/* TODO: add transactions table */}
+        {/* TODO: add purchase/sell action triggers */}
+        <Debug>{stringifyWithBigInt(transactions)}</Debug>
 
         <Flex gap="3" mt="4" justify="end">
           <Dialog.Close>
