@@ -1,10 +1,13 @@
 // File Purpose: Waypoint Market page container - WIP
-import { Container, Flex } from "@radix-ui/themes";
-import type { FC } from "react";
+import { Box, Container, Flex, Tabs } from "@radix-ui/themes";
+import type { FC, ReactNode } from "react";
 import { Debug } from "~/components";
-import { stringifyWithBigInt } from "~/utils";
+import { capitalizeWords, stringifyWithBigInt } from "~/utils";
 import type { MarketLoaderData } from "../loader";
 import { TradeGoodsTable } from "./TradeGoodsTable";
+
+type TabKeys = "tradeGoods" | "transactions";
+type TabList = Record<TabKeys, ReactNode>;
 
 type MarketContainerProps = MarketLoaderData & {
   waypointSymbol: string;
@@ -14,20 +17,29 @@ export const MarketContainer: FC<MarketContainerProps> = ({
   waypointSymbol,
   marketData,
 }) => {
-  const data = Object.entries(marketData)
-    .map(([key, value]) => ({ key, value }))
-    .reduce(
-      (acc, { key, value }) => {
-        acc[key] = Array.isArray(value) ? value.length : value;
-        return acc;
-      },
-      {} as Record<string, unknown>,
-    );
+  const tabs: TabList = {
+    tradeGoods: <TradeGoodsTable goods={marketData.tradeGoods} />,
+    transactions: <Debug>{stringifyWithBigInt(marketData.transactions)}</Debug>,
+  };
   return (
     <Container size="4">
       <Flex direction="column" gap="1">
-        <Debug>{stringifyWithBigInt({ waypointSymbol, data })}</Debug>
-        <TradeGoodsTable goods={marketData.tradeGoods} />
+        <Tabs.Root defaultValue="tradeGoods">
+          <Tabs.List>
+            {Object.keys(tabs).map((key) => (
+              <Tabs.Trigger key={key} value={key}>
+                {capitalizeWords(key)}
+              </Tabs.Trigger>
+            ))}
+          </Tabs.List>
+          <Box pt="3">
+            {Object.entries(tabs).map(([key, content]) => (
+              <Tabs.Content key={key} value={key}>
+                {content}
+              </Tabs.Content>
+            ))}
+          </Box>
+        </Tabs.Root>
       </Flex>
     </Container>
   );
