@@ -36,6 +36,8 @@ type UseParamsReturn<TKeys extends string> = {
   setParams: (newParams: Partial<TKeyParams<TKeys>>) => void;
 };
 
+export type { MatcherFunction, TKeyParams };
+
 /**
  * Custom React hook to manage URL search parameters based on a specified set of keys and optional matcher functions.
  */
