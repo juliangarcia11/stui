@@ -1,6 +1,7 @@
 export * from "./Debug";
 export * from "./ErrorBoundary";
 export * from "./form";
+export * from "./Help";
 export * from "./layout";
 export * from "./NotFoundCard";
 export * from "./Paginator";
