@@ -96,3 +96,21 @@ export const standardizeListApiResponse = <
   const { data, meta } = response.data;
   return wrapSuccess({ data, meta });
 };
+
+/**
+ * Util to extract the descriptions from a JSON schema object, which can be used for documentation or UI tooltips.
+ * It looks for a `description` property in each of the schema's properties and returns an object mapping property names to their descriptions.
+ */
+export const extractSchemaDescriptions = <
+  T extends { properties: Record<string, any> },
+>(
+  schema: T,
+): Record<keyof T["properties"], string> => {
+  const descriptions: Partial<Record<keyof T["properties"], string>> = {};
+  for (const [key, value] of Object.entries(schema.properties)) {
+    if (typeof value === "object" && value !== null && "description" in value) {
+      descriptions[key as keyof T["properties"]] = value.description as string;
+    }
+  }
+  return descriptions as Record<keyof T["properties"], string>;
+};
