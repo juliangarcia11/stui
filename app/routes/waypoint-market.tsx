@@ -1,5 +1,6 @@
 // File Purpose: React Router route orchestrator
 import { redirect } from "react-router";
+import { ErrorBoundary } from "~/components";
 import { loadMarketData, MarketContainer } from "~/features/market";
 import { extractToken } from "~/sessions.server";
 import type { Route } from "./+types/waypoint-market";
@@ -29,3 +30,8 @@ export default function Market({ loaderData, params }: Route.ComponentProps) {
 
   return <MarketContainer waypointSymbol={waypointSymbol} {...loaderData} />;
 }
+
+/**
+ * Reusable error boundary for errors in the loader, component, or actions.
+ */
+export { ErrorBoundary };
