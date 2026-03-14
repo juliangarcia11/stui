@@ -3,6 +3,7 @@ import type { UIWaypoint } from "../types";
 import { useWaypointsData } from "./useWaypointsData";
 
 type UseShipSelectionParams = {
+  initialSelectedShip?: string;
   waypointSymbol: string;
   shipFilter?: (ship: UIWaypoint["ships"][number]) => boolean;
 };
@@ -16,6 +17,7 @@ export type UseShipSelectionReturn = {
 /**
  * Custom hook to manage selected ship state for waypoint actions that require a ship selection (e.g. orbiting, docking, refueling).
  * It retrieves the list of ships at the specified waypoint from the waypoints data context, applies an optional filter, and manages the selected ship symbol state.
+ * @param initialSelectedShip - an optional initial ship symbol to set as selected when the hook is first used
  * @param waypointSymbol - the symbol of the waypoint for which to retrieve ships
  * @param shipFilter - an optional function to filter the ships at the waypoint (e.g. only show docked ships for orbiting)
  * @returns an object containing:
@@ -24,6 +26,7 @@ export type UseShipSelectionReturn = {
  *   - setSelectedShipSymbol: a function to update the selected ship symbol
  */
 export function useShipSelection({
+  initialSelectedShip: initial,
   waypointSymbol,
   shipFilter,
 }: UseShipSelectionParams) {
@@ -34,7 +37,7 @@ export function useShipSelection({
     () => (shipFilter ? shipsList.filter(shipFilter) : shipsList),
     [shipsList, shipFilter],
   );
-  const [selectedShipSymbol, setSelectedShipSymbol] = useState<string>();
+  const [selectedShipSymbol, setSelectedShipSymbol] = useState(initial);
 
   return {
     ships,

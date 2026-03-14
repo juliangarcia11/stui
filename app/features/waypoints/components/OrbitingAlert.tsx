@@ -1,6 +1,6 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { ButtonForm } from "~/components";
-import { useWaypointDialog } from "../hooks";
+import { useDialogParams } from "~/hooks";
 import { useShipSelection } from "../hooks/useShipSelection";
 import type { WaypointAction } from "../types";
 import { ShipSelect } from "./ShipSelect";
@@ -22,15 +22,17 @@ export const ORBIT_SHIP_ACTION: WaypointAction = {
  * Uses a form to submit the selected ship and waypoint to the server to perform the action.
  */
 export const OrbitingAlert = () => {
-  const { isOpen, params, closeDialog } = useWaypointDialog(
-    ORBIT_SHIP_DIALOG_KEY,
-  );
+  const { isOpen, params, closeDialog } = useDialogParams({
+    dialogKey: ORBIT_SHIP_DIALOG_KEY,
+    extraKeys: ["waypoint", "ship"],
+  });
   const waypointSymbol = params.waypoint ?? "";
   const {
     ships,
     selectedShipSymbol: shipSymbol,
     setSelectedShipSymbol,
   } = useShipSelection({
+    initialSelectedShip: params.ship,
     waypointSymbol,
     shipFilter: (ship) => ship.distance === 0 && ship.nav.status === "DOCKED",
   });
