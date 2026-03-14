@@ -7,7 +7,6 @@ import type {
   WaypointRowActionsProps,
 } from "../types";
 import { DOCK_SHIP_ACTION } from "./DockingAlert";
-import { OPEN_MARKET_ACTION } from "./MarketDialog";
 import { ORBIT_SHIP_ACTION } from "./OrbitingAlert";
 import { WaypointDialogTrigger } from "./WaypointDialogTrigger";
 
@@ -15,13 +14,6 @@ const WAYPOINT_ACTIONS: Record<
   ActionKeys | `SEPARATOR_${string}`,
   WaypointAction
 > = {
-  OPEN_MARKET: OPEN_MARKET_ACTION,
-  OPEN_SHIPYARD: {
-    key: "OPEN_SHIPYARD",
-    label: "Open Shipyard",
-    disabled: true,
-  },
-  SEPARATOR_1: { key: "SEPARATOR_1", label: "" },
   DOCK_SHIP: DOCK_SHIP_ACTION,
   ORBIT_SHIP: ORBIT_SHIP_ACTION,
   NAVIGATE_SHIP: {

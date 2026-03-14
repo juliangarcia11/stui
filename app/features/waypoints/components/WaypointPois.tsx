@@ -2,7 +2,7 @@ import { Flex } from "@radix-ui/themes";
 import type { FC } from "react";
 import type { UIWaypoint } from "../types";
 import { WaypointNearestShip } from "./WaypointNearestShip";
-import { WaypointPoiButton } from "./WaypointPoiButton";
+import { WaypointPoiButton, WaypointPoiNavButton } from "./WaypointPoiButton";
 
 type WaypointPointsOfInterestProps = UIWaypoint & {
   isHeadquarters?: boolean;
@@ -14,6 +14,7 @@ type WaypointPointsOfInterestProps = UIWaypoint & {
  * - Number of orbitals (if any)
  */
 export const WaypointPointsOfInterest: FC<WaypointPointsOfInterestProps> = ({
+  symbol,
   isHeadquarters,
   ships,
   orbitals,
@@ -38,7 +39,13 @@ export const WaypointPointsOfInterest: FC<WaypointPointsOfInterestProps> = ({
       {hasOrbitals && (
         <WaypointPoiButton text="Orbitals" badge={orbitalsCount} color="gray" />
       )}
-      {market && <WaypointPoiButton text="Market" color="violet" />}
+      {market && (
+        <WaypointPoiNavButton
+          text="Market"
+          color="violet"
+          to={`${symbol}/market`}
+        />
+      )}
       {shipyard && <WaypointPoiButton text="Shipyard" color="indigo" />}
       {outpost && <WaypointPoiButton text="Outpost" color="orange" />}
     </Flex>

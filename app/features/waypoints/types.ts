@@ -8,9 +8,7 @@ export type ActionKeys =
   | "DELIVER_CONTRACT"
   | "JUMP_SYSTEM"
   | "SURVEY_WAYPOINT"
-  | "MINE_WAYPOINT"
-  | "OPEN_MARKET"
-  | "OPEN_SHIPYARD";
+  | "MINE_WAYPOINT";
 
 /**
  * Type alias for the UI representation of a waypoint, which extends the API response type to include
