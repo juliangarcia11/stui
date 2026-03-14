@@ -1,10 +1,10 @@
-import { Box, Button, Dialog, Flex } from "@radix-ui/themes";
+// File Purpose: Dialog UI pieces - only responsible for showing the dialog, laying out the content, & injecting data
+import { Box, Button, Dialog, Flex, Inset } from "@radix-ui/themes";
 import { useMemo, type FC } from "react";
-import { Debug, TextWithHelp } from "~/components";
-import { stringifyWithBigInt } from "~/utils";
 import { useTransactionDialog } from "../hooks";
 import { useMarketData } from "../hooks/useMarketData";
 import type { UITradeGood } from "../types";
+import { TransactionTable } from "./TransactionTable";
 
 export const TransactionDialogTrigger: FC<{ good: UITradeGood }> = ({
   good,
@@ -36,26 +36,19 @@ export const TransactionDialog = () => {
     () => marketData?.tradeGoods.find((g) => g.symbol === goodSymbol),
     [marketData, goodSymbol],
   );
-  const transactions = good?.transactions ?? [];
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && closeDialog()}>
-      <Dialog.Content maxWidth="450px">
-        <Dialog.Title>
-          <Flex direction="row" align="center" gap="2">
-            Transactions -
-            <TextWithHelp
-              text={good?.name ?? goodSymbol}
-              helpText={good?.description}
-            />
-          </Flex>
-        </Dialog.Title>
+      <Dialog.Content style={{ paddingBottom: 0 }} minWidth="fit-content">
+        {typeof good !== "undefined" && (
+          <Inset side="all" mb="5">
+            <TransactionTable good={good} />
+          </Inset>
+        )}
 
-        {/* TODO: add transactions table */}
-        {/* TODO: add purchase/sell action triggers */}
-        <Debug>{stringifyWithBigInt(transactions)}</Debug>
+        {/* TODO: empty card */}
 
-        <Flex gap="3" mt="4" justify="end">
+        <Flex gap="3" mx="-3" my="3" justify="end">
           <Dialog.Close>
             <Button>Close Transactions</Button>
           </Dialog.Close>

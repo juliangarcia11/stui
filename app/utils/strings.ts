@@ -7,7 +7,7 @@ export const stringifyWithBigInt = (
 ) => JSON.stringify(data, bigIntToString, space);
 
 export const capitalizeWords = (message: string) => {
-  const words = message.split(" ");
+  const words = message.toLowerCase().split(" ");
   const capitalizedWords = words.map(
     (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
   );
