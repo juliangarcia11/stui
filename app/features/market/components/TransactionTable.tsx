@@ -1,11 +1,11 @@
 // File Purpose: UI Display only - dumb component
-import { Badge, Box, Callout, Flex, Heading, Table } from "@radix-ui/themes";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
+import { Badge, Callout, Flex, Heading, Table } from "@radix-ui/themes";
 import type { FC, PropsWithChildren } from "react";
 import { TextWithHelp } from "~/components";
 import { formatRelativeDate } from "~/utils";
 import type { UITradeGood } from "../types";
 import { TypeBadge } from "./TransactionTypeBadge";
-import { CrossCircledIcon } from "@radix-ui/react-icons";
 
 type TransactionTableProps = {
   good?: UITradeGood;

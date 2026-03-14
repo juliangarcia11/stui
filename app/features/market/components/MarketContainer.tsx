@@ -3,10 +3,10 @@ import { Box, Container, Flex, Tabs } from "@radix-ui/themes";
 import type { FC, ReactNode } from "react";
 import { Debug } from "~/components";
 import { capitalizeWords, stringifyWithBigInt } from "~/utils";
-import type { MarketLoaderData } from "../loader";
+import type { MarketLoaderData } from "../types";
 import { TradeGoodsTable } from "./TradeGoodsTable";
 
-type TabKeys = "tradeGoods" | "transactions";
+type TabKeys = "tradeGoods" | "debug";
 type TabList = Record<TabKeys, ReactNode>;
 
 type MarketContainerProps = MarketLoaderData & {
@@ -19,7 +19,7 @@ export const MarketContainer: FC<MarketContainerProps> = ({
 }) => {
   const tabs: TabList = {
     tradeGoods: <TradeGoodsTable goods={marketData.tradeGoods} />,
-    transactions: <Debug>{stringifyWithBigInt(marketData.transactions)}</Debug>,
+    debug: <Debug>{stringifyWithBigInt(marketData)}</Debug>,
   };
   return (
     <Container size="4">

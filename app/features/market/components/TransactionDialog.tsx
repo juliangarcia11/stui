@@ -16,12 +16,12 @@ export const TransactionDialogTrigger: FC<{ good: UITradeGood }> = ({
       <Box width="80%" asChild>
         <Button
           size="2"
-          disabled={good.transactions.length === 0}
+          disabled={good.transactions?.length === 0}
           onClick={() => openDialog(good.symbol)}
         >
-          {good.transactions.length === 0
+          {good.transactions?.length === 0
             ? "None"
-            : `View (${good.transactions.length})`}
+            : `View (${good.transactions?.length})`}
         </Button>
       </Box>
     </Flex>
