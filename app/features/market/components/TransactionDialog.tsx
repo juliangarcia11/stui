@@ -40,13 +40,9 @@ export const TransactionDialog = () => {
   return (
     <Dialog.Root open={isOpen} onOpenChange={(open) => !open && closeDialog()}>
       <Dialog.Content style={{ paddingBottom: 0 }} minWidth="fit-content">
-        {typeof good !== "undefined" && (
-          <Inset side="all" mb="5">
-            <TransactionTable good={good} />
-          </Inset>
-        )}
-
-        {/* TODO: empty card */}
+        <Inset side="all" mb="5">
+          <TransactionTable good={good} />
+        </Inset>
 
         <Flex gap="3" mx="-3" my="3" justify="end">
           <Dialog.Close>

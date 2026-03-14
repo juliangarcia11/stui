@@ -1,13 +1,14 @@
 // File Purpose: UI Display only - dumb component
-import { Badge, Flex, Heading, Table } from "@radix-ui/themes";
+import { Badge, Box, Callout, Flex, Heading, Table } from "@radix-ui/themes";
 import type { FC, PropsWithChildren } from "react";
 import { TextWithHelp } from "~/components";
 import { formatRelativeDate } from "~/utils";
 import type { UITradeGood } from "../types";
 import { TypeBadge } from "./TransactionTypeBadge";
+import { CrossCircledIcon } from "@radix-ui/react-icons";
 
 type TransactionTableProps = {
-  good: UITradeGood;
+  good?: UITradeGood;
 };
 
 /**
@@ -42,7 +43,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({ good }) => {
       </Table.Header>
 
       <Table.Body>
-        {good.transactions.map((tx, index) => (
+        {good?.transactions.map((tx, index) => (
           <Table.Row key={index}>
             <Table.Cell>
               <TransactionIndexCell index={index}>
@@ -57,6 +58,14 @@ export const TransactionTable: FC<TransactionTableProps> = ({ good }) => {
             <Table.Cell>{tx.pricePerUnit}</Table.Cell>
           </Table.Row>
         ))}
+
+        {!good?.transactions?.length && (
+          <Table.Row>
+            <Table.Cell colSpan={5}>
+              <EmptyCallout good={good} />
+            </Table.Cell>
+          </Table.Row>
+        )}
       </Table.Body>
     </Table.Root>
   );
@@ -65,7 +74,7 @@ export const TransactionTable: FC<TransactionTableProps> = ({ good }) => {
 /**
  * First Header cell of the transaction table, showing the name of the good and a description tooltip if available
  */
-const TransactionGoodHeader: FC<{ good: UITradeGood }> = ({ good }) => {
+const TransactionGoodHeader: FC<{ good?: UITradeGood }> = ({ good }) => {
   return (
     <Flex direction="row" gap="2" align="baseline" asChild>
       <Heading as="h1" size="3">
@@ -99,3 +108,29 @@ const TransactionIndexCell: FC<PropsWithChildren<{ index: number }>> = ({
     </Flex>
   );
 };
+
+/**
+ * Callout to show when:
+ * - No good is selected (good is undefined)
+ * - A good is selected but has no transactions
+ * Shows a red callout with an error icon and appropriate text in each case
+ */
+const EmptyCallout: FC<{
+  good?: UITradeGood;
+}> = ({ good }) => (
+  <Callout.Root
+    size="1"
+    color="red"
+    mx="auto"
+    style={{ maxWidth: "fit-content" }}
+  >
+    <Callout.Icon>
+      <CrossCircledIcon />
+    </Callout.Icon>
+    <Callout.Text>
+      {!good
+        ? "Good not found at this market"
+        : `No ${good.name} transactions found at this market`}
+    </Callout.Text>
+  </Callout.Root>
+);
