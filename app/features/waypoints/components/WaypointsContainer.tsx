@@ -1,12 +1,11 @@
 import { Container, Flex } from "@radix-ui/themes";
 import type { FC } from "react";
-import { WaypointsTable } from "./WaypointsTable";
-import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { Paginator } from "~/components";
+import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { calculateTotalPages } from "../utils";
-import { OrbitingAlert } from "./OrbitingAlert";
 import { DockingAlert } from "./DockingAlert";
-import { MarketDialog } from "./MarketDialog";
+import { OrbitingAlert } from "./OrbitingAlert";
+import { WaypointsTable } from "./WaypointsTable";
 
 /**
  * Page container for displaying waypoints in the current system in a paginated table format.
@@ -34,7 +33,6 @@ export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
         </Flex>
       </Flex>
 
-      <MarketDialog />
       <OrbitingAlert />
       <DockingAlert />
     </Container>
