@@ -1,4 +1,4 @@
-import { Container, Flex } from "@radix-ui/themes";
+import { Container, Flex, Text } from "@radix-ui/themes";
 import type { FC } from "react";
 import { Paginator } from "~/components";
 import type { LoadWaypointsDataResponse } from "../loader-waypoints";
@@ -6,6 +6,7 @@ import { calculateTotalPages } from "../utils";
 import { DockingAlert } from "./DockingAlert";
 import { OrbitingAlert } from "./OrbitingAlert";
 import { WaypointsTable } from "./WaypointsTable";
+import { WaypointsTypeFilter } from "./WaypointsTypeFilter";
 
 /**
  * Page container for displaying waypoints in the current system in a paginated table format.
@@ -23,6 +24,7 @@ export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
   return (
     <Container size="4">
       <Flex direction="column" gap="1">
+        <WaypointsFilters />
         <WaypointsTable
           agentInfo={agentInfo}
           systemInfo={systemInfo}
@@ -36,5 +38,18 @@ export const WaypointsContainer: FC<LoadWaypointsDataResponse> = ({
       <OrbitingAlert />
       <DockingAlert />
     </Container>
+  );
+};
+
+const WaypointsFilters: React.FC = () => {
+  return (
+    <Flex direction="column" gap="0">
+      <Text as="label" size="1" style={{ color: "var(--accent-11)" }}>
+        Filters:
+      </Text>
+      <Flex justify="start" align="center" gap="2" ml="2">
+        <WaypointsTypeFilter />
+      </Flex>
+    </Flex>
   );
 };
