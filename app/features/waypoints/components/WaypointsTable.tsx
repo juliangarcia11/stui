@@ -4,6 +4,7 @@ import type { LoadWaypointsDataResponse } from "../loader-waypoints";
 import { WaypointPointsOfInterest } from "./WaypointPois";
 import { WaypointRowActions } from "./WaypointRowActions";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
+import { WaypointFactionBadge } from "./WaypointFactionBadge";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -26,6 +27,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
               symbol={systemInfo.symbol}
             />
           </Table.ColumnHeaderCell>
+          <Table.ColumnHeaderCell>Faction</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Type</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>Coordinates</Table.ColumnHeaderCell>
           <Table.ColumnHeaderCell>{"What's Here?"}</Table.ColumnHeaderCell>
@@ -37,6 +39,9 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
         {waypointsList.data.map((waypoint) => (
           <Table.Row key={waypoint.symbol}>
             <Table.RowHeaderCell>{waypoint.symbol}</Table.RowHeaderCell>
+            <Table.Cell>
+              <WaypointFactionBadge factionSymbol={waypoint.faction?.symbol} />
+            </Table.Cell>
             <Table.Cell>
               <WaypointTypeBadge type={waypoint.type} />
             </Table.Cell>
