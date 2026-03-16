@@ -4,6 +4,7 @@ import { useDialogParams } from "~/hooks";
 import { useShipSelection } from "../hooks/useShipSelection";
 import type { WaypointAction } from "../types";
 import { ShipSelect } from "./ShipSelect";
+import { useEffect } from "react";
 
 const ORBIT_SHIP_DIALOG_KEY = "ORBIT_SHIP";
 const ORBIT_SHIP_ACTION_LABEL = "Orbit Ship";
@@ -27,15 +28,30 @@ export const OrbitingAlert = () => {
     extraKeys: ["waypoint", "ship"],
   });
   const waypointSymbol = params.waypoint ?? "";
+  const initialSelectedShip = params.ship;
   const {
     ships,
     selectedShipSymbol: shipSymbol,
     setSelectedShipSymbol,
   } = useShipSelection({
-    initialSelectedShip: params.ship,
+    initialSelectedShip,
     waypointSymbol,
     shipFilter: (ship) => ship.distance === 0 && ship.nav.status === "DOCKED",
   });
+
+  // When the dialog opens, if there is an initial selected ship from the params and no ship is currently selected, set it as the selected ship.
+  useEffect(() => {
+    if (isOpen && initialSelectedShip && !shipSymbol) {
+      setSelectedShipSymbol(initialSelectedShip);
+    }
+  }, [isOpen, initialSelectedShip, shipSymbol, setSelectedShipSymbol]);
+
+  // When the dialog closes, reset the selected ship symbol to undefined to clear the selection for the next time the dialog is opened.
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedShipSymbol(undefined);
+    }
+  }, [isOpen, setSelectedShipSymbol]);
 
   return (
     <AlertDialog.Root
