@@ -1,7 +1,7 @@
 import { Container, Flex, Text } from "@radix-ui/themes";
 import type { FC } from "react";
 import { Paginator } from "~/components";
-import type { LoadWaypointsDataResponse } from "../loader-waypoints";
+import type { LoadWaypointsDataResponse } from "../loader";
 import { calculateTotalPages } from "../utils";
 import { DockingAlert } from "./DockingAlert";
 import { OrbitingAlert } from "./OrbitingAlert";

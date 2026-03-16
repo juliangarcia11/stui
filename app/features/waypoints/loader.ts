@@ -1,6 +1,7 @@
 import { getAgentInfo, getSystemInfo } from "~/api";
-import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
+import type { WaypointType } from "~/api/client";
 import { getWaypointsList } from "~/api/get-waypoints-list";
+import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
 
 /**
  * Loads the data for the Waypoints route.
@@ -13,6 +14,7 @@ export async function loadWaypointsData(
   searchParams: URLSearchParams,
 ) {
   const system = searchParams.get("system");
+  const type = searchParams.get("type");
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
 
@@ -32,7 +34,11 @@ export async function loadWaypointsData(
   const waypointsList = await getWaypointsList({
     token,
     systemSymbol,
-    query: { page: +page, limit: +limit },
+    query: {
+      page: +page,
+      limit: +limit,
+      type: typeof type === "string" ? (type as WaypointType) : undefined,
+    },
   });
   if (waypointsList.status === "error") {
     throw new Error(`Failed to fetch waypoints list: ${waypointsList.message}`);

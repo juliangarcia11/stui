@@ -1,4 +1,4 @@
-import type { LoadWaypointsDataResponse } from "./loader-waypoints";
+import type { LoadWaypointsDataResponse } from "./loader";
 
 export type ActionKeys =
   | "DOCK_SHIP"

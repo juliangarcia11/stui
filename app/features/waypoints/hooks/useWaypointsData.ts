@@ -1,5 +1,5 @@
 import { useLoaderData } from "react-router";
-import { type LoadWaypointsDataResponse } from "../loader-waypoints";
+import { type LoadWaypointsDataResponse } from "../loader";
 
 /**
  * Custom hook to access the data loaded by the Waypoints route's loader function.
