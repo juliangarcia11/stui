@@ -6,6 +6,7 @@ import { calculateTotalPages } from "../utils";
 import { DockingAlert } from "./DockingAlert";
 import { OrbitingAlert } from "./OrbitingAlert";
 import { WaypointsTable } from "./WaypointsTable";
+import { WaypointsTraitsFilter } from "./WaypointsTraitsFilter";
 import { WaypointsTypeFilter } from "./WaypointsTypeFilter";
 
 /**
@@ -49,6 +50,7 @@ const WaypointsFilters: React.FC = () => {
       </Text>
       <Flex justify="start" align="center" gap="2" ml="2">
         <WaypointsTypeFilter />
+        <WaypointsTraitsFilter />
       </Flex>
     </Flex>
   );

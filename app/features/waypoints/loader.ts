@@ -1,5 +1,5 @@
 import { getAgentInfo, getSystemInfo } from "~/api";
-import type { WaypointType } from "~/api/client";
+import type { WaypointTraitSymbol, WaypointType } from "~/api/client";
 import { getWaypointsList } from "~/api/get-waypoints-list";
 import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
 
@@ -15,6 +15,7 @@ export async function loadWaypointsData(
 ) {
   const system = searchParams.get("system");
   const type = searchParams.get("type");
+  const traits = searchParams.get("traits");
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
 
@@ -38,6 +39,10 @@ export async function loadWaypointsData(
       page: +page,
       limit: +limit,
       type: typeof type === "string" ? (type as WaypointType) : undefined,
+      traits:
+        typeof traits === "string"
+          ? (traits.split(",") as WaypointTraitSymbol[])
+          : undefined,
     },
   });
   if (waypointsList.status === "error") {
