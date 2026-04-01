@@ -10,6 +10,8 @@ export default [
   layout("components/layout/AppPageLayout.tsx", [
     index("routes/dashboard.tsx"),
 
+    // ...prefix("contracts", [index("routes/contracts-list.tsx")]),
+
     ...prefix("waypoints", [
       index("routes/waypoints-list.tsx"),
       route(":waypointSymbol/market", "routes/waypoint-market.tsx"),
