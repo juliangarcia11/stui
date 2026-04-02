@@ -11,6 +11,7 @@ import type { Route } from "./+types/root";
 import { client } from "./api/client/client.gen";
 import { ThemeProvider } from "./components";
 import { Config } from "./config";
+import { fetchWithCache } from "./utils";
 
 import "@radix-ui/themes/styles.css";
 import "./app.css";
@@ -19,10 +20,8 @@ import "./app.css";
 client.setConfig({
   // set default base url for requests
   baseUrl: Config.ApiUrl,
-  // set default headers for requests
-  // headers: {
-  //   Authorization: "Bearer <token_from_service_client>",
-  // },
+  // add customized caching fetcher using lru-cache & the URL as the cache key
+  fetch: fetchWithCache,
 });
 
 // client.interceptors.response.use((response) => {
