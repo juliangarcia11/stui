@@ -8,10 +8,10 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import { fetchWithCache } from "./api/cache";
 import { client } from "./api/client/client.gen";
 import { ThemeProvider } from "./components";
 import { Config } from "./config";
-import { fetchWithCache } from "./utils";
 
 import "@radix-ui/themes/styles.css";
 import "./app.css";

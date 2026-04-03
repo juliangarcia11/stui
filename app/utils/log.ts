@@ -13,14 +13,16 @@ type LogParams = {
  */
 export const log = ({ key, message, ...rest }: LogParams) => {
   const prefix = key ? `[${key}]` : "[LOG]";
+  const messageStartsWithBracket = message.startsWith("[");
+  const formattedMessage = messageStartsWithBracket ? message : ` ${message}`;
   if (
     typeof rest !== "undefined" &&
     rest !== null &&
     Object.keys(rest).length > 0
   ) {
-    console.log(`${prefix}${message}`, rest);
+    console.log(`${prefix}${formattedMessage}`, rest);
     return;
   }
 
-  console.log(`${prefix}${message}`);
+  console.log(`${prefix}${formattedMessage}`);
 };
