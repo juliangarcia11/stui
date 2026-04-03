@@ -21,4 +21,6 @@ export default [
     route("register", "routes/register.tsx"),
     route("*", "routes/not-found.tsx"),
   ]),
+
+  route("dev/cache", "routes/dev.cache.tsx"),
 ] satisfies RouteConfig;

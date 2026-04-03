@@ -13,4 +13,8 @@
  * - Implement cache busting mechanism so actions can purposely force a new request when needed
  */
 
+export { getCacheDump, getCacheSize } from "./utils";
 export { fetchWithCache } from "./fetch-w-cache";
+
+// Note: cache object is not exported directly to prevent misuse and encourage using the provided utility functions instead.
+// This allows for better encapsulation and control over how the cache is accessed and modified.
