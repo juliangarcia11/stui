@@ -1,6 +1,6 @@
 import { log } from "~/utils";
 import { cache } from "./cache";
-import { generateCacheKey } from "./utils";
+import { generateCacheKey } from "./generate-cache-key";
 
 /**
  * Custom fetch function that implements caching for GET requests using lru-cache.
