@@ -4,6 +4,7 @@ import type { AgentInfo } from "~/api";
 import type { GetStatusResponse } from "~/api/client";
 import { Leaderboards } from "./Leaderboards";
 import { ServerInfoHoverCard } from "./ServerInfoCard";
+import { AgentOverviewCard } from "../agent/AgentOverviewCard";
 
 type DashboardContainerProps = {
   statusInfo: GetStatusResponse;
@@ -21,6 +22,7 @@ export const DashboardContainer: FC<DashboardContainerProps> = ({
           Dashboard <ServerInfoHoverCard {...statusInfo} />
         </Heading>
 
+        <AgentOverviewCard agent={agentInfo.agent} />
         <Leaderboards {...statusInfo.leaderboards} />
       </Container>
     </Flex>

@@ -27,11 +27,11 @@ export const FACTION_BADGE_COLORS: Record<FactionSymbol, BadgeProps["color"]> =
   };
 
 /**
- * Component for displaying a faction badge for a waypoint, if the waypoint has a faction trait.
+ * Component for displaying a badge with a faction name.
  * The badge color is determined by the faction symbol using the FACTION_BADGE_COLORS mapping.
- * If the waypoint does not have a faction trait, this component will render null.
+ * If the not provided a faction trait, this component will render null.
  */
-export const WaypointFactionBadge: React.FC<{
+export const FactionBadge: React.FC<{
   factionSymbol?: FactionSymbol;
 }> = ({ factionSymbol }) => {
   if (!factionSymbol) return null;

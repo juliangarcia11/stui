@@ -1,10 +1,10 @@
 import { Badge, Flex, Heading, Table, Text } from "@radix-ui/themes";
 import type { FC } from "react";
+import { FactionBadge } from "~/features/factions";
 import type { LoadWaypointsDataResponse } from "../loader";
 import { WaypointPointsOfInterest } from "./WaypointPois";
 import { WaypointRowActions } from "./WaypointRowActions";
 import { WaypointTypeBadge } from "./WaypointTypeBadge";
-import { WaypointFactionBadge } from "./WaypointFactionBadge";
 
 /**
  * Table display of waypoints in the current system, showing:
@@ -40,7 +40,7 @@ export const WaypointsTable: FC<LoadWaypointsDataResponse> = ({
           <Table.Row key={waypoint.symbol}>
             <Table.RowHeaderCell>{waypoint.symbol}</Table.RowHeaderCell>
             <Table.Cell>
-              <WaypointFactionBadge factionSymbol={waypoint.faction?.symbol} />
+              <FactionBadge factionSymbol={waypoint.faction?.symbol} />
             </Table.Cell>
             <Table.Cell>
               <WaypointTypeBadge type={waypoint.type} />

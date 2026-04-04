@@ -1,6 +1,8 @@
 import { Badge, DataList, Flex, Text } from "@radix-ui/themes";
 import { useMemo, type FC, type ReactNode } from "react";
 import type { GetStatusResponse } from "~/api/client";
+import { CreditBadge } from "~/components/CreditBadge";
+import { numberWithCommas } from "~/utils";
 import { DashboardCard } from "./DashboardCard";
 
 const LeaderLabel: FC<{ leader: string; index: number }> = ({
@@ -38,10 +40,6 @@ type MostCredits = GetStatusResponse["leaderboards"]["mostCredits"];
 type MostSubmittedCharts =
   GetStatusResponse["leaderboards"]["mostSubmittedCharts"];
 
-function numberWithCommas(x: number | string) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 export const MostCreditsDataList: FC<{ leaders: MostCredits }> = ({
   leaders,
 }) => {
@@ -49,11 +47,7 @@ export const MostCreditsDataList: FC<{ leaders: MostCredits }> = ({
     () =>
       leaders.slice(0, 5).map((leader) => ({
         label: leader.agentSymbol,
-        value: (
-          <Badge color="jade">
-            ${numberWithCommas(leader.credits.toString())}
-          </Badge>
-        ),
+        value: <CreditBadge credits={leader.credits} />,
       })),
     [leaders],
   );
