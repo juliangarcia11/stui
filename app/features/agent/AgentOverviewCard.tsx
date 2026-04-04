@@ -19,13 +19,13 @@ const OVERVIEW_DATA: OverviewDataItem<Agent>[] = [
   {
     key: "credits",
     label: "Credits",
-    render: (key, agent) => <CreditBadge credits={agent[key]} />,
+    render: (agent) => <CreditBadge credits={agent.credits} />,
   },
   {
     key: "startingFaction",
     label: "Faction",
-    render: (key, agent) => (
-      <FactionBadge factionSymbol={agent[key] as FactionSymbol} />
+    render: (agent) => (
+      <FactionBadge factionSymbol={agent.startingFaction as FactionSymbol} />
     ),
   },
   {

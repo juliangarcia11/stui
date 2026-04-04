@@ -6,7 +6,7 @@ export type OverviewDataItem<T> = {
   /**
    * The key corresponding to the value in the data object to display for this item.
    */
-  key: keyof T;
+  key: string;
 
   /**
    * The label to display for this item.
@@ -16,7 +16,7 @@ export type OverviewDataItem<T> = {
   /**
    * Optional custom render function for this item. If not provided, the value will be displayed as a string by default.
    */
-  render?: (key: keyof T, data: T) => ReactNode | undefined;
+  render?: (data: T) => ReactNode | undefined;
 };
 
 export type OverviewDataCardProps<T> = {
@@ -63,10 +63,10 @@ export const OverviewDataCard = <T,>({
     <StyledCard title={Title} headingAs="h2" headingSize="4">
       <DataList.Root>
         {items.map(({ key, label, render }) => (
-          <DataList.Item key={key.toString()} align="center">
+          <DataList.Item key={key} align="center">
             <DataList.Label>{label}</DataList.Label>
             <DataList.Value>
-              {render ? render(key, data) : `${data[key]}`}
+              {render ? render(data) : `${data[key as keyof T]}`}
             </DataList.Value>
           </DataList.Item>
         ))}

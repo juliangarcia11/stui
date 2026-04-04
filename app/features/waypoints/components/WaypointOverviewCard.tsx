@@ -15,17 +15,17 @@ const OVERVIEW_DATA: OverviewDataItem<Waypoint>[] = [
   {
     key: "symbol",
     label: "Waypoint",
-    render: (_, waypoint) => removeSystemPrefix(waypoint.symbol),
+    render: (waypoint) => removeSystemPrefix(waypoint.symbol),
   },
   {
     key: "type",
     label: "Type",
-    render: (_, waypoint) => <WaypointTypeBadge type={waypoint.type} />,
+    render: (waypoint) => <WaypointTypeBadge type={waypoint.type} />,
   },
   {
-    key: "x",
+    key: "coords",
     label: "Coords",
-    render: (_, waypoint) => `(${waypoint.x}, ${waypoint.y})`,
+    render: (waypoint) => `(${waypoint.x}, ${waypoint.y})`,
   },
 ];
 
