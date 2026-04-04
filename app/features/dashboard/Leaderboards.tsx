@@ -1,9 +1,8 @@
 import { Badge, DataList, Flex, Text } from "@radix-ui/themes";
 import { useMemo, type FC, type ReactNode } from "react";
 import type { GetStatusResponse } from "~/api/client";
-import { CreditBadge } from "~/components/CreditBadge";
+import { CreditBadge, StyledCard } from "~/components";
 import { numberWithCommas } from "~/utils";
-import { DashboardCard } from "./DashboardCard";
 
 const LeaderLabel: FC<{ leader: string; index: number }> = ({
   leader,
@@ -53,9 +52,9 @@ export const MostCreditsDataList: FC<{ leaders: MostCredits }> = ({
   );
 
   return (
-    <DashboardCard title="Credits" outlined>
+    <StyledCard title="Credits" outlined>
       <LeaderboardDataList items={items} />
-    </DashboardCard>
+    </StyledCard>
   );
 };
 
@@ -76,9 +75,9 @@ export const MostSubmittedChartsDataList: FC<{
   );
 
   return (
-    <DashboardCard title="Charts" outlined>
+    <StyledCard title="Charts" outlined>
       <LeaderboardDataList items={items} />
-    </DashboardCard>
+    </StyledCard>
   );
 };
 
@@ -86,10 +85,10 @@ export const Leaderboards: FC<{
   mostCredits: MostCredits;
   mostSubmittedCharts: MostSubmittedCharts;
 }> = ({ mostCredits, mostSubmittedCharts }) => (
-  <DashboardCard title="Agent Leaderboards" headingAs="h2" headingSize="5">
+  <StyledCard title="Agent Leaderboards" headingAs="h2" headingSize="5">
     <Flex direction="row" gap="4" width="fit-content">
       <MostCreditsDataList leaders={mostCredits} />
       <MostSubmittedChartsDataList leaders={mostSubmittedCharts} />
     </Flex>
-  </DashboardCard>
+  </StyledCard>
 );

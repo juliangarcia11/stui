@@ -1,52 +1,76 @@
-import { Box, Card, DataList, Flex, Heading, Text } from "@radix-ui/themes";
+import { DataList, Flex, Text } from "@radix-ui/themes";
 import type { ReactNode } from "react";
-
-export type OverviewDataItemRender<T> = (
-  key: keyof T,
-  data: T,
-) => ReactNode | undefined;
+import { StyledCard } from "./StyledCard";
 
 export type OverviewDataItem<T> = {
+  /**
+   * The key corresponding to the value in the data object to display for this item.
+   */
   key: keyof T;
+
+  /**
+   * The label to display for this item.
+   */
   label: string;
-  render?: OverviewDataItemRender<T>;
+
+  /**
+   * Optional custom render function for this item. If not provided, the value will be displayed as a string by default.
+   */
+  render?: (key: keyof T, data: T) => ReactNode | undefined;
 };
 
 export type OverviewDataCardProps<T> = {
+  /**
+   * Title of the card
+   */
   title: string;
+
+  /**
+   * Optional icon to display next to the title
+   */
   icon?: ReactNode;
+
+  /**
+   * List of data items to display, each with a key, label, and optional custom render function.
+   * If no render function is provided, the value will be displayed as a string by default.
+   */
   items: OverviewDataItem<T>[];
+
+  /**
+   * The data object containing the values to display, where each key corresponds to an item in the `items` array.
+   */
   data: T;
 };
 
+/**
+ * Display an overview of data in a card format, with a title, optional icon, and a list of key-value pairs.
+ * Each value can be rendered using a custom function or displayed as a string by default.
+ */
 export const OverviewDataCard = <T,>({
   title,
   icon,
   items,
   data,
 }: OverviewDataCardProps<T>) => {
+  const Title = (
+    <Flex gap="1" align="center">
+      {icon}
+      <Text as="span">{title}</Text>
+    </Flex>
+  );
+
   return (
-    <Box width="fit-content" asChild>
-      <Card>
-        <Flex direction="column" gap="3" align="center">
-          <Heading as="h2" size="4" asChild>
-            <Flex gap="1" align="center">
-              {icon}
-              <Text as="span">{title}</Text>
-            </Flex>
-          </Heading>
-          <DataList.Root>
-            {items.map(({ key, label, render }) => (
-              <DataList.Item key={key.toString()} align="center">
-                <DataList.Label>{label}</DataList.Label>
-                <DataList.Value>
-                  {render ? render(key, data) : `${data[key]}`}
-                </DataList.Value>
-              </DataList.Item>
-            ))}
-          </DataList.Root>
-        </Flex>
-      </Card>
-    </Box>
+    <StyledCard title={Title} headingAs="h2" headingSize="4">
+      <DataList.Root>
+        {items.map(({ key, label, render }) => (
+          <DataList.Item key={key.toString()} align="center">
+            <DataList.Label>{label}</DataList.Label>
+            <DataList.Value>
+              {render ? render(key, data) : `${data[key]}`}
+            </DataList.Value>
+          </DataList.Item>
+        ))}
+      </DataList.Root>
+    </StyledCard>
   );
 };

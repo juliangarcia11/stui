@@ -1,11 +1,11 @@
 import { PersonIcon } from "@radix-ui/react-icons";
 import type { FC } from "react";
 import type { Agent, FactionSymbol } from "~/api/client";
-import { CreditBadge } from "~/components/CreditBadge";
 import {
+  CreditBadge,
   OverviewDataCard,
   type OverviewDataItem,
-} from "~/components/OverviewDataCard";
+} from "~/components";
 import { FactionBadge } from "~/features/factions";
 
 const AGENT_OVERVIEW_INFO =
