@@ -5,7 +5,7 @@ import type { GetStatusResponse } from "~/api/client";
 import { Leaderboards } from "./Leaderboards";
 import { ServerInfoHoverCard } from "./ServerInfoCard";
 import { AgentOverviewCard } from "../agent/AgentOverviewCard";
-import { NewContractCard } from "../contracts";
+import { ContractOverviewCard } from "../contracts";
 
 type DashboardContainerProps = {
   statusInfo: GetStatusResponse;
@@ -27,7 +27,7 @@ export const DashboardContainer: FC<DashboardContainerProps> = ({
           <AgentOverviewCard agent={agentInfo.agent} />
 
           {agentInfo.contracts[0] && !agentInfo.contracts[0].accepted && (
-            <NewContractCard contract={agentInfo.contracts[0]} />
+            <ContractOverviewCard contract={agentInfo.contracts[0]} />
           )}
 
           <Leaderboards {...statusInfo.leaderboards} />

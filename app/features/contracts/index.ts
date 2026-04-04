@@ -1,1 +1,1 @@
-export * from "./NewContractCard";
+export * from "./ContractOverviewCard";

@@ -3,6 +3,7 @@ import { Badge } from "@radix-ui/themes";
 import type { Contract, FactionSymbol } from "~/api/client";
 import {
   CreditBadge,
+  InfoText,
   OverviewDataCard,
   type OverviewDataItem,
 } from "~/components";
@@ -52,15 +53,51 @@ const OVERVIEW_DATA: OverviewDataItem<Contract>[] = [
       <CreditBadge credits={contract.terms.payment.onFulfilled} />
     ),
   },
+  {
+    key: "status",
+    label: "Status",
+    render: (contract) => (
+      <Badge
+        color={
+          contract.accepted ? "blue" : contract.fulfilled ? "gray" : "green"
+        }
+      >
+        {contract.accepted
+          ? "Accepted"
+          : contract.fulfilled
+            ? "Fulfilled"
+            : "New"}
+      </Badge>
+    ),
+  },
 ];
 
-export const NewContractCard = ({ contract }: { contract: Contract }) => {
+export const ContractOverviewCard = ({ contract }: { contract: Contract }) => {
+  return (
+    <OverviewDataCard
+      title="Contract Overview"
+      icon={<FileTextIcon />}
+      items={OVERVIEW_DATA}
+      data={contract}
+    />
+  );
+};
+
+export const ContractQuickstartOverviewCard = ({
+  contract,
+}: {
+  contract: Contract;
+}) => {
   return (
     <OverviewDataCard
       title="New Contract"
       icon={<FileTextIcon />}
       items={OVERVIEW_DATA}
       data={contract}
-    />
+    >
+      <InfoText text={CONTRACT_OVERVIEW_INFO} />
+
+      {/* TODO: acceptance button & POST */}
+    </OverviewDataCard>
   );
 };
