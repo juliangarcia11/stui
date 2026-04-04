@@ -1,5 +1,5 @@
 import { DataList, Flex, Text } from "@radix-ui/themes";
-import type { ReactNode } from "react";
+import type { PropsWithChildren, ReactNode } from "react";
 import { StyledCard } from "./StyledCard";
 
 export type OverviewDataItem<T> = {
@@ -51,7 +51,8 @@ export const OverviewDataCard = <T,>({
   icon,
   items,
   data,
-}: OverviewDataCardProps<T>) => {
+  children,
+}: PropsWithChildren<OverviewDataCardProps<T>>) => {
   const Title = (
     <Flex gap="1" align="center">
       {icon}
@@ -61,16 +62,21 @@ export const OverviewDataCard = <T,>({
 
   return (
     <StyledCard title={Title} headingAs="h2" headingSize="4">
-      <DataList.Root>
-        {items.map(({ key, label, render }) => (
-          <DataList.Item key={key} align="center">
-            <DataList.Label>{label}</DataList.Label>
-            <DataList.Value>
-              {render ? render(data) : `${data[key as keyof T]}`}
-            </DataList.Value>
-          </DataList.Item>
-        ))}
-      </DataList.Root>
+      <Flex direction="column" gap="2">
+        <DataList.Root>
+          {items.map(({ key, label, render }) => (
+            <DataList.Item key={key} align="center">
+              <DataList.Label>{label}</DataList.Label>
+              <DataList.Value>
+                {render ? render(data) : `${data[key as keyof T]}`}
+              </DataList.Value>
+            </DataList.Item>
+          ))}
+        </DataList.Root>
+
+        {/* optional footer-ish content */}
+        {children}
+      </Flex>
     </StyledCard>
   );
 };
