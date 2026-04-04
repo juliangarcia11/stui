@@ -6,6 +6,7 @@ import { Leaderboards } from "./Leaderboards";
 import { ServerInfoHoverCard } from "./ServerInfoCard";
 import { AgentOverviewCard } from "../agent/AgentOverviewCard";
 import { ContractOverviewCard } from "../contracts";
+import { ShipOverviewCard } from "../ships";
 
 type DashboardContainerProps = {
   statusInfo: GetStatusResponse;
@@ -23,12 +24,17 @@ export const DashboardContainer: FC<DashboardContainerProps> = ({
           Dashboard <ServerInfoHoverCard {...statusInfo} />
         </Heading>
 
-        <Flex gap="2">
+        <Flex gap="2" wrap="wrap">
           <AgentOverviewCard agent={agentInfo.agent} />
 
           {agentInfo.contracts[0] && !agentInfo.contracts[0].accepted && (
             <ContractOverviewCard contract={agentInfo.contracts[0]} />
           )}
+
+          {agentInfo.ships.length > 0 &&
+            agentInfo.ships.map((s) => (
+              <ShipOverviewCard key={s.symbol} ship={s} />
+            ))}
 
           <Leaderboards {...statusInfo.leaderboards} />
         </Flex>
