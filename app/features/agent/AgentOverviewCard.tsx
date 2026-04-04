@@ -3,6 +3,7 @@ import type { FC } from "react";
 import type { Agent, FactionSymbol } from "~/api/client";
 import {
   CreditBadge,
+  InfoText,
   OverviewDataCard,
   type OverviewDataItem,
 } from "~/components";
@@ -41,4 +42,17 @@ export const AgentOverviewCard: FC<{ agent: Agent }> = ({ agent }) => (
     items={OVERVIEW_DATA}
     data={agent}
   />
+);
+
+export const AgentQuickstartOverviewCard: FC<{ agent: Agent }> = ({
+  agent,
+}) => (
+  <OverviewDataCard
+    title="Your Agent"
+    icon={<PersonIcon />}
+    items={OVERVIEW_DATA}
+    data={agent}
+  >
+    <InfoText text={AGENT_OVERVIEW_INFO} />
+  </OverviewDataCard>
 );

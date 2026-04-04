@@ -62,8 +62,8 @@ export const OverviewDataCard = <T,>({
 
   return (
     <StyledCard title={Title} headingAs="h2" headingSize="4">
-      <Flex direction="column" gap="2">
-        <DataList.Root>
+      <Flex direction="column" gap="4">
+        <DataList.Root mx="auto">
           {items.map(({ key, label, render }) => (
             <DataList.Item key={key} align="center">
               <DataList.Label>{label}</DataList.Label>
