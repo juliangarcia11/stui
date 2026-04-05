@@ -38,3 +38,21 @@ export const deleteCacheEntry = (key: string) => {
   log({ key: "CACHE", message: `Deleting cache entry for key: ${key}` });
   return cache.delete(key);
 };
+
+export const deleteCacheEntriesByPattern = (pattern: string) => {
+  let somethingDeleted = false;
+  Array.from(cache.entries()).forEach(([key]) => {
+    if (key.includes(pattern)) {
+      cache.delete(key);
+      somethingDeleted = true;
+      log({ key: "CACHE", message: `Deleted cache entry for key: ${key}` });
+    }
+  });
+
+  if (!somethingDeleted) {
+    log({
+      key: "CACHE",
+      message: `No cache entries found matching pattern: ${pattern}`,
+    });
+  }
+};

@@ -3,6 +3,7 @@ import type { WaypointActionParams } from "~/features/waypoints/types";
 import type { OrbitShipResponses } from "./client";
 import { orbitShip as orbitShipRequest } from "./client";
 import { buildAuth, standardizeApiResponse } from "./utils";
+import { CacheInvalidator } from "./cache/cache-invalidator";
 
 type OrbitShipResponse = OrbitShipResponses["200"]["data"];
 
@@ -16,6 +17,10 @@ export async function orbitShip({ token, shipSymbol }: WaypointActionParams) {
       shipSymbol,
     },
   });
+
+  if (response.response.ok) {
+    CacheInvalidator.invalidateShipCache(shipSymbol);
+  }
 
   return standardizeApiResponse<OrbitShipResponse>(response);
 }
