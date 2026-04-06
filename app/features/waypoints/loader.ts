@@ -1,6 +1,5 @@
-import { getAgentInfo, getSystemInfo } from "~/api";
+import { API } from "~/api";
 import type { WaypointTraitSymbol, WaypointType } from "~/api/client";
-import { getWaypointsList } from "~/api/systems/get-waypoints-list";
 import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
 
 /**
@@ -19,7 +18,7 @@ export async function loadWaypointsData(
   const page = searchParams.get("page") || "1";
   const limit = searchParams.get("limit") || "10";
 
-  const agentInfo = await getAgentInfo(token);
+  const agentInfo = await API.Agent.getAgentInfo(token);
   if (agentInfo.status === "error") {
     throw new Error(`Failed to fetch agent info: ${agentInfo.message}`);
   }
@@ -27,12 +26,12 @@ export async function loadWaypointsData(
   const systemSymbol = system?.length
     ? system
     : transformWaypointToSystem(agentInfo.data.agent.headquarters);
-  const systemInfo = await getSystemInfo({ token, systemSymbol });
+  const systemInfo = await API.Systems.getSystemInfo({ token, systemSymbol });
   if (systemInfo.status === "error") {
     throw new Error(`Failed to fetch system info: ${systemInfo.message}`);
   }
 
-  const waypointsList = await getWaypointsList({
+  const waypointsList = await API.Systems.getWaypointsList({
     token,
     systemSymbol,
     query: {

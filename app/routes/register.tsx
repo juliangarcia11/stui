@@ -1,5 +1,5 @@
 import { data, redirect } from "react-router";
-import { registerAgent } from "~/api";
+import { API } from "~/api";
 import { FactionSymbol } from "~/api/client";
 import { ErrorBoundary } from "~/components";
 import { RegistrationForm } from "~/features/auth";
@@ -37,7 +37,7 @@ export async function action({ request }: Route.ActionArgs) {
   const symbol = form.get("symbol")?.toString() ?? "";
   const faction = (form.get("faction")?.toString() as FactionSymbol) ?? "";
 
-  const result = await registerAgent({ symbol, faction });
+  const result = await API.Agent.registerAgent({ symbol, faction });
 
   // Registration error, flash the error message to session storage & refresh
   if (result.status === "error") {

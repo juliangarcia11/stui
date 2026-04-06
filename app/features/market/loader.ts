@@ -1,5 +1,5 @@
 // File Purpose: Fetch all data needed for the Waypoint Market page
-import { getMarket } from "~/api";
+import { API } from "~/api";
 import type { Market, MarketTradeGood, TradeGood } from "~/api/client";
 import type { UITradeGood } from "./types";
 
@@ -8,7 +8,7 @@ export async function loadMarketData(
   params: { waypointSymbol: string },
 ) {
   const waypointSymbol = params.waypointSymbol;
-  const marketData = await getMarket({
+  const marketData = await API.Systems.getMarket({
     token,
     waypointSymbol,
   });

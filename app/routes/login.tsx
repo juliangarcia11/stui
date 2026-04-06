@@ -1,5 +1,5 @@
 import { data, redirect } from "react-router";
-import { loginAgent } from "~/api";
+import { API } from "~/api";
 import { ErrorBoundary } from "~/components";
 import { LoginForm } from "~/features/auth";
 import { commitSession, flashError, getSession } from "../sessions.server";
@@ -41,7 +41,7 @@ export async function action({ request }: Route.ActionArgs) {
   const symbol = form.get("symbol")?.toString() ?? "";
   const token = form.get("token")?.toString() ?? "";
 
-  const result = await loginAgent({
+  const result = await API.Agent.loginAgent({
     symbol,
     token,
   });

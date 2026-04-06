@@ -1,4 +1,4 @@
-import { dockShip, orbitShip } from "~/api";
+import { API } from "~/api";
 import { Config } from "~/config";
 import type { WaypointActionParams } from "./types";
 
@@ -28,9 +28,9 @@ export function executeWaypointAction(token: string, formData: FormData) {
 
   switch (action) {
     case "DOCK_SHIP":
-      return dockShip(params);
+      return API.Fleet.dockShip(params);
     case "ORBIT_SHIP":
-      return orbitShip(params);
+      return API.Fleet.orbitShip(params);
     default:
       return Config.Errors.MissingActionHandler;
   }

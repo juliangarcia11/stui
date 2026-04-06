@@ -1,5 +1,5 @@
 import { redirect } from "react-router";
-import { getAgentInfo, getApiStatus } from "~/api";
+import { API } from "~/api";
 import { ErrorBoundary } from "~/components";
 import { DashboardContainer } from "~/features/dashboard";
 import { extractToken } from "~/sessions.server";
@@ -17,8 +17,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   const token = await extractToken(request.headers.get("Cookie"));
   if (!token) return redirect("/login");
 
-  const apiStatus = await getApiStatus();
-  const agentInfo = await getAgentInfo(token);
+  const apiStatus = await API.Global.getApiStatus();
+  const agentInfo = await API.Agent.getAgentInfo(token);
 
   if (apiStatus.status === "error") {
     throw new Error(`Failed to fetch API status: ${apiStatus.message}`);
