@@ -1,5 +1,5 @@
-import { getStatus, type GetStatusResponse } from "./client";
-import { standardizeApiResponse } from "./utils";
+import { getStatus, type GetStatusResponse } from "../client";
+import { standardizeApiResponse } from "../utils";
 
 /**
  * Get the status of the API and prepare the response for the UI
