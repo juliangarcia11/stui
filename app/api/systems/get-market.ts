@@ -1,8 +1,8 @@
 // File Purpose: App to API standardized bridge
 import { Config } from "~/config";
 import { transformWaypointToSystem } from "~/features/waypoints";
-import { getMarket as get, type Market } from "./client";
-import { buildAuth, standardizeApiResponse } from "./utils";
+import { getMarket as get, type Market } from "../client";
+import { buildAuth, standardizeApiResponse } from "../utils";
 
 type GetMarketParams = {
   token: string;

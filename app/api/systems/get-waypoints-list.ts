@@ -3,8 +3,8 @@ import {
   getSystemWaypoints,
   type GetSystemWaypointsData,
   type Waypoint,
-} from "./client";
-import { buildAuth, standardizeListApiResponse } from "./utils";
+} from "../client";
+import { buildAuth, standardizeListApiResponse } from "../utils";
 
 type GetSystemInfoParams = {
   token: string;

@@ -1,6 +1,6 @@
 import { Config } from "~/config";
-import { getSystem, type System } from "./client";
-import { buildAuth, standardizeApiResponse } from "./utils";
+import { getSystem, type System } from "../client";
+import { buildAuth, standardizeApiResponse } from "../utils";
 
 type GetSystemInfoParams = {
   token: string;

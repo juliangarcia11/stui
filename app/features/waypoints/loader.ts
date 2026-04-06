@@ -1,6 +1,6 @@
 import { getAgentInfo, getSystemInfo } from "~/api";
 import type { WaypointTraitSymbol, WaypointType } from "~/api/client";
-import { getWaypointsList } from "~/api/get-waypoints-list";
+import { getWaypointsList } from "~/api/systems/get-waypoints-list";
 import { mapWaypointsWithShips, transformWaypointToSystem } from "./utils";
 
 /**
