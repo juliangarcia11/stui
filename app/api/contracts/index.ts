@@ -1,4 +1,5 @@
 import { acceptContract } from "./accept-contract";
+import { fulfillContract } from "./fulfill-contract";
 import { negotiateContract } from "./negotiate-contract";
 
 /**
@@ -7,5 +8,6 @@ import { negotiateContract } from "./negotiate-contract";
  */
 export const ContractsApi = {
   acceptContract,
+  fulfillContract,
   negotiateContract,
 };
