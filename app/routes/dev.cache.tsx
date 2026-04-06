@@ -1,4 +1,4 @@
-import { getCacheDump, getCacheSize } from "~/api/cache";
+import { Cache } from "~/api/cache";
 import { formatRelativeDate } from "~/utils";
 
 /**
@@ -11,8 +11,8 @@ export async function loader() {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const size = getCacheSize();
-  const dump = getCacheDump();
+  const size = Cache.Management.getSize();
+  const dump = Cache.Management.getDump();
   let entries = [];
   for (const [key, val] of dump) {
     const text = await val.value.body.text();

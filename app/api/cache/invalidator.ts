@@ -1,9 +1,9 @@
-import { deleteCacheEntriesByPattern } from "./utils";
+import { CacheManagement } from "./management";
 
 export const CacheInvalidator = {
-  invalidateShipCache(shipSymbol: string) {
+  shipCache(shipSymbol: string) {
     const shipKeyPattern = `ship/${shipSymbol}`;
-    deleteCacheEntriesByPattern(shipKeyPattern);
+    CacheManagement.deleteEntriesByPattern(shipKeyPattern);
   },
   // Add more resource-specific invalidation methods as needed
 };

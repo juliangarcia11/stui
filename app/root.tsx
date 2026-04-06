@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { fetchWithCache } from "./api/cache";
+import { Cache } from "./api/cache";
 import { client } from "./api/client/client.gen";
 import { ThemeProvider } from "./components";
 import { Config } from "./config";
@@ -21,7 +21,7 @@ client.setConfig({
   // set default base url for requests
   baseUrl: Config.ApiUrl,
   // add customized caching fetcher using lru-cache & the URL as the cache key
-  fetch: fetchWithCache,
+  fetch: Cache.fetch,
 });
 
 // client.interceptors.response.use((response) => {

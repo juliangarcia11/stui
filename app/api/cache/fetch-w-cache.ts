@@ -1,6 +1,6 @@
+import { Config } from "~/config";
 import { log } from "~/utils";
 import { cache } from "./cache";
-import { generateCacheKey } from "./generate-cache-key";
 
 /**
  * Custom fetch function that implements caching for GET requests using lru-cache.
@@ -11,7 +11,6 @@ import { generateCacheKey } from "./generate-cache-key";
  *
  * Cache busting not yet implemented.
  */
-
 export const fetchWithCache: typeof fetch = async (
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -53,4 +52,25 @@ export const fetchWithCache: typeof fetch = async (
   }
 
   return response;
+};
+
+/**
+ * Generates a unique cache key based on the request URL and options.
+ * It removes the base URL and includes the request options to differentiate between requests with different parameters.
+ */
+
+const generateCacheKey = (
+  input: RequestInfo | URL,
+  init?: RequestInit,
+): string => {
+  const url =
+    typeof input === "string"
+      ? input
+      : input instanceof URL
+        ? input.href
+        : input.url;
+  const options = init ? JSON.stringify(init) : "";
+  let key = url.replace(Config.ApiUrl, ""); // Remove base URL
+  key += options ? `:${options}` : "";
+  return key;
 };
