@@ -31,6 +31,7 @@ export const Config = {
     MissingAction: wrapErr("Action is required"),
     MissingActionHandler: wrapErr("No handler for this action"),
     MissingAgentSymbol: wrapErr("Agent symbol is required"),
+    MissingContractId: wrapErr("Contract ID is required"),
     MissingFaction: wrapErr("Faction is required"),
     MissingData: wrapErr("Data missing in response"),
     MissingShip: wrapErr("Ship symbol is required"),
