@@ -1,3 +1,6 @@
+import { ContractsApi } from "./contracts";
+
+// TODO: migrate to `Object Literal Pattern` for better code organization and maintainability.
 export * from "./agent-login";
 export * from "./agent-registration";
 export * from "./dock-ship";
@@ -9,3 +12,7 @@ export * from "./get-system-info";
 export * from "./get-waypoints-list";
 export * from "./orbit-ship";
 export * from "./utils";
+
+export const API = {
+  Contracts: ContractsApi,
+};
