@@ -1,9 +1,9 @@
 import { Button, type ButtonProps } from "@radix-ui/themes";
 import type { FC } from "react";
-import { Form, type FormProps } from "react-router";
+import { Form, useFetcher, type FormProps } from "react-router";
 
 type ButtonFormProps = Omit<ButtonProps, "type"> & {
-  action: FormProps["action"];
+  action?: FormProps["action"];
   method?: "GET" | "POST";
   hiddenValues: Record<string, string | number | readonly string[] | undefined>;
 };
@@ -48,5 +48,36 @@ export const ButtonForm: FC<ButtonFormProps> = ({
       ))}
       <Button {...buttonProps} type="submit" />
     </Form>
+  );
+};
+
+/**
+ * A variant of ButtonForm that uses React Router's useFetcher to handle form submission without a full page reload.
+ * This component is ideal for actions that should update the UI without navigating away from the current page.
+ * It accepts the same props as ButtonForm, with an additional submittingText prop to indicate when the form is being submitted.
+ * @see https://reactrouter.com/start/framework/actions#calling-actions-with-a-fetcher
+ */
+export const ButtonFetcherForm: FC<
+  ButtonFormProps & {
+    submittingText?: string;
+  }
+> = ({
+  action,
+  method = "GET",
+  hiddenValues,
+  children = "Submit",
+  submittingText = "Submitting...",
+  ...buttonProps
+}) => {
+  let fetcher = useFetcher();
+  let busy = fetcher.state !== "idle";
+
+  return (
+    <fetcher.Form action={action} method={method}>
+      {Object.entries(hiddenValues).map(([key, value]) => (
+        <input key={key} type="hidden" name={key} value={value} />
+      ))}
+      <Button {...buttonProps} type="submit" disabled={busy} />
+    </fetcher.Form>
   );
 };
