@@ -1,5 +1,5 @@
 import { FileTextIcon } from "@radix-ui/react-icons";
-import { Badge } from "@radix-ui/themes";
+import { Badge, Flex } from "@radix-ui/themes";
 import type { Contract, FactionSymbol } from "~/api/client";
 import {
   CreditBadge,
@@ -9,6 +9,7 @@ import {
 } from "~/components";
 import { FactionBadge } from "~/features/factions";
 import { formatRelativeDate } from "~/utils";
+import { ContractAcceptanceButton } from "./ContractAcceptanceButton";
 
 const CONTRACT_OVERVIEW_INFO =
   "Accepting locks you into these terms. You'll earn some upfront and the remainder on delivery.";
@@ -97,7 +98,9 @@ export const ContractQuickstartOverviewCard = ({
     >
       <InfoText text={CONTRACT_OVERVIEW_INFO} />
 
-      {/* TODO: acceptance button & POST */}
+      <Flex justify="center">
+        <ContractAcceptanceButton contractId={contract.id} />
+      </Flex>
     </OverviewDataCard>
   );
 };
