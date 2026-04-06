@@ -1,7 +1,7 @@
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { type Agent, getMyAgent } from "./client";
-import { standardizeApiResponse } from "./utils";
+import { type Agent, getMyAgent } from "../client";
+import { standardizeApiResponse } from "../utils";
 
 type AgentLoginParams = {
   symbol: string;

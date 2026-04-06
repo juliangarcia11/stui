@@ -1,6 +1,6 @@
 import { Config } from "~/config";
-import { getMyAgent, type Agent } from "./client";
-import { buildAuth, standardizeApiResponse } from "./utils";
+import { getMyAgent, type Agent } from "../client";
+import { buildAuth, standardizeApiResponse } from "../utils";
 
 /**
  * Get Agent, Contracts, and Ships in a parallel request

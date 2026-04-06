@@ -9,13 +9,13 @@ import {
   type GetContractsResponse,
   type GetMyShipsResponse,
   type Ship,
-} from "./client";
+} from "../client";
 import {
   buildAuth,
   standardizeListApiResponse,
   standardizeApiResponse,
   wrapSuccess,
-} from "./utils";
+} from "../utils";
 
 export type AgentInfo = {
   agent: Agent;

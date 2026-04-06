@@ -1,7 +1,7 @@
 import { Config } from "~/config";
 import type { ApiResponse } from "~/types";
-import { FactionSymbol, register, type RegisterResponse } from "./client";
-import { standardizeApiResponse } from "./utils";
+import { FactionSymbol, register, type RegisterResponse } from "../client";
+import { standardizeApiResponse } from "../utils";
 
 type AgentRegistrationParams = {
   symbol: string;
