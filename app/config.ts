@@ -13,8 +13,7 @@ export const Config = {
 
   // App Header Navigation Items
   Pages: [
-    { label: "Contracts", href: "/contracts" },
-    { label: "Fleet", href: "/fleet" },
+    { label: "Quickstart", href: "/quickstart" },
     { label: "Waypoints", href: "/waypoints" },
     { label: "Settings", href: "/settings" },
   ],
