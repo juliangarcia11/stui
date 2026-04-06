@@ -4,7 +4,8 @@ import { FleetApi } from "./fleet";
 import { GlobalApi } from "./global";
 import { SystemsApi } from "./systems";
 
-export * from "./utils";
+// only exporting what is needed outside of this module to keep the API surface small
+export { extractSchemaDescriptions, wrapErr } from "./utils";
 
 export const API = {
   Agent: AgentApi,
