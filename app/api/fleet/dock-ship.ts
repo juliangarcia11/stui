@@ -1,8 +1,8 @@
 import { Config } from "~/config";
 import type { WaypointActionParams } from "~/features/waypoints/types";
-import { dockShip as dockShipRequest, type DockShipResponses } from "./client";
-import { buildAuth, standardizeApiResponse } from "./utils";
-import { CacheInvalidator } from "./cache/invalidator";
+import { dockShip as dockShipRequest, type DockShipResponses } from "../client";
+import { buildAuth, standardizeApiResponse } from "../utils";
+import { CacheInvalidator } from "../cache/invalidator";
 
 type DockShipResponse = DockShipResponses["200"]["data"];
 

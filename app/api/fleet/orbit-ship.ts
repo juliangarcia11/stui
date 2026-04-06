@@ -1,9 +1,9 @@
 import { Config } from "~/config";
 import type { WaypointActionParams } from "~/features/waypoints/types";
-import type { OrbitShipResponses } from "./client";
-import { orbitShip as orbitShipRequest } from "./client";
-import { buildAuth, standardizeApiResponse } from "./utils";
-import { CacheInvalidator } from "./cache/invalidator";
+import { Cache } from "../cache/";
+import type { OrbitShipResponses } from "../client";
+import { orbitShip as orbitShipRequest } from "../client";
+import { buildAuth, standardizeApiResponse } from "../utils";
 
 type OrbitShipResponse = OrbitShipResponses["200"]["data"];
 
@@ -19,7 +19,7 @@ export async function orbitShip({ token, shipSymbol }: WaypointActionParams) {
   });
 
   if (response.response.ok) {
-    CacheInvalidator.shipCache(shipSymbol);
+    Cache.Invalidate.shipCache(shipSymbol);
   }
 
   return standardizeApiResponse<OrbitShipResponse>(response);
