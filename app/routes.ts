@@ -9,7 +9,6 @@ import {
 export default [
   layout("components/layout/AppPageLayout.tsx", [
     index("routes/dashboard.tsx"),
-    route("quickstart", "routes/quickstart.tsx"),
 
     ...prefix("waypoints", [
       index("routes/waypoints-list.tsx"),
