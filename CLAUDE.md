@@ -55,3 +55,8 @@ Tailwind CSS 4 (via `@tailwindcss/vite` plugin) is the primary approach. Radix U
 
 - `VITE_SPACETRADERS_ACCOUNT_TOKEN` — dev JWT token
 - `VITE_ENABLE_MOCKS` — set to `"true"` to enable MSW mocking
+
+## Model Usage
+
+- Use **Haiku** for file reading tasks
+- Use **Opus** for thinking/planning tasks
