@@ -9,6 +9,7 @@ import {
 export default [
   layout("components/layout/AppPageLayout.tsx", [
     index("routes/dashboard.tsx"),
+    route("quickstart", "routes/quickstart.tsx"),
 
     ...prefix("waypoints", [
       index("routes/waypoints-list.tsx"),
@@ -23,4 +24,6 @@ export default [
   ]),
 
   route("dev/cache", "routes/dev.cache.tsx"),
+  route("api/quickstart-context", "routes/api.quickstart-context.tsx"),
+  route("api/contract-flow", "routes/api.contract-flow.tsx"),
 ] satisfies RouteConfig;

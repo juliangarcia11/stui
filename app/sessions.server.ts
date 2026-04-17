@@ -1,4 +1,5 @@
 import {
+  createCookie,
   createCookieSessionStorage,
   redirect,
   type Session,
@@ -99,4 +100,30 @@ export async function extractToken(cookie: string | null) {
 
   const session = await getSession(cookie);
   return session.get("token");
+}
+
+// ===========================================================
+// Quickstart dismissed state cookie
+// ===========================================================
+
+const quickstartCookie = createCookie("__quickstart_dismissed", {
+  maxAge: 60 * 60 * 24 * 365,
+  path: "/",
+  sameSite: "lax",
+  secure: true,
+  httpOnly: true,
+});
+
+export async function getQuickstartDismissed(
+  cookieHeader: string | null,
+): Promise<string | null> {
+  return quickstartCookie.parse(cookieHeader);
+}
+
+export async function setQuickstartDismissed(contractId: string): Promise<string> {
+  return quickstartCookie.serialize(contractId);
+}
+
+export async function clearQuickstartDismissed(): Promise<string> {
+  return quickstartCookie.serialize("", { maxAge: 0 });
 }
