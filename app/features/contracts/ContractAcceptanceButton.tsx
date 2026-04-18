@@ -10,6 +10,7 @@ export const ContractAcceptanceButton: FC<{ contractId: string }> = ({
       method="POST"
       hiddenValues={{ action: "ACCEPT_CONTRACT", contractId }}
       color="jade"
+      size="1"
       submittingText="Accepting..."
     >
       Accept Contract
