@@ -2,11 +2,9 @@ import { Badge, Flex, Text } from "@radix-ui/themes";
 import { ContractAcceptanceButton } from "~/features/contracts/ContractAcceptanceButton";
 import { numberWithCommas } from "~/utils/numbers";
 import { DataRow } from "../components/DataRow";
-import type { ContractFlowContext } from "../types";
+import type { StepRenderProps } from "../types";
 
-type Props = { ctx: ContractFlowContext };
-
-export function AcceptContractStep({ ctx }: Props) {
+export function AcceptContractStep({ ctx }: StepRenderProps) {
   const { contract } = ctx;
 
   if (contract.accepted) {

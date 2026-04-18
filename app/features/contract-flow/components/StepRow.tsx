@@ -1,7 +1,8 @@
 import { Flex, Text } from "@radix-ui/themes";
 import type { ReactNode } from "react";
+import type { StepState } from "../types";
 
-export type StepState = "complete" | "active" | "upcoming";
+export type { StepState };
 
 type StepRowProps = {
   state: StepState;

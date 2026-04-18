@@ -1,11 +1,9 @@
 import { Flex, Text } from "@radix-ui/themes";
 import { Link } from "react-router";
 import { DataRow } from "../components/DataRow";
-import type { ContractFlowContext } from "../types";
+import type { StepRenderProps } from "../types";
 
-type Props = { ctx: ContractFlowContext };
-
-export function StartingLocationStep({ ctx }: Props) {
+export function StartingLocationStep({ ctx }: StepRenderProps) {
   const { agent, systemSymbol, waypoints } = ctx;
   const hqWaypoint = waypoints.find((w) => w.symbol === agent.headquarters);
 

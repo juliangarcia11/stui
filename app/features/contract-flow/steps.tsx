@@ -1,27 +1,54 @@
-import type { ContractFlowStep } from "./types";
+import { Text } from "@radix-ui/themes";
+import { numberWithCommas } from "~/utils/numbers";
+import { AcceptContractStep } from "./steps/AcceptContractStep";
+import { AgentOverviewStep } from "./steps/AgentOverviewStep";
+import { StartingLocationStep } from "./steps/StartingLocationStep";
+import type { ContractFlowStep, StepRenderProps } from "./types";
 
 const ASTEROID_TYPES = ["ASTEROID", "ENGINEERED_ASTEROID"] as const;
+
+const placeholder = (_props: StepRenderProps) => (
+  <Text size="1" color="gray">
+    Step content coming soon
+  </Text>
+);
 
 export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
   {
     key: "agent-overview",
     label: "Agent Overview",
     isComplete: (ctx) => Boolean(ctx.agent.symbol),
+    renderSummary: (ctx) =>
+      `${ctx.agent.symbol} · ${numberWithCommas(Number(ctx.agent.credits))} ¢`,
+    renderContent: (props) => <AgentOverviewStep {...props} />,
   },
   {
     key: "starting-location",
     label: "Starting Location",
     isComplete: (ctx) => ctx.waypoints.length > 0,
+    renderSummary: (ctx) => {
+      const hq = ctx.waypoints.find((w) => w.symbol === ctx.agent.headquarters);
+      return `${ctx.systemSymbol} · ${hq?.type ?? ""}`;
+    },
+    renderContent: (props) => <StartingLocationStep {...props} />,
   },
   {
     key: "accept-contract",
     label: "Accept Contract",
     isComplete: (ctx) => ctx.contract.accepted,
+    renderSummary: (ctx) => {
+      const deliver = ctx.contract.terms.deliver?.[0];
+      return deliver
+        ? `${ctx.contract.factionSymbol} · ${deliver.tradeSymbol} ×${deliver.unitsRequired}`
+        : ctx.contract.factionSymbol;
+    },
+    renderContent: (props) => <AcceptContractStep {...props} />,
   },
   {
     key: "purchase-ship",
     label: "Purchase Ship",
     isComplete: (ctx) => ctx.ship !== null,
+    renderContent: placeholder,
   },
   {
     key: "navigate-to-asteroid",
@@ -32,8 +59,12 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
       const current = ctx.waypoints.find(
         (w) => w.symbol === ctx.ship!.nav.waypointSymbol,
       );
-      return current !== undefined && ASTEROID_TYPES.includes(current.type as (typeof ASTEROID_TYPES)[number]);
+      return (
+        current !== undefined &&
+        ASTEROID_TYPES.includes(current.type as (typeof ASTEROID_TYPES)[number])
+      );
     },
+    renderContent: placeholder,
   },
   {
     key: "extract-resources",
@@ -51,6 +82,7 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         return cargoItem !== undefined && cargoItem.units >= needed;
       });
     },
+    renderContent: placeholder,
   },
   {
     key: "sell-surplus",
@@ -64,6 +96,7 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         requiredSymbols.has(item.symbol),
       );
     },
+    renderContent: placeholder,
   },
   {
     key: "navigate-to-delivery",
@@ -77,6 +110,7 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         ctx.ship.nav.waypointSymbol === deliverGood.destinationSymbol
       );
     },
+    renderContent: placeholder,
   },
   {
     key: "deliver-goods",
@@ -88,10 +122,12 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         deliverGoods.every((good) => good.unitsFulfilled >= good.unitsRequired)
       );
     },
+    renderContent: placeholder,
   },
   {
     key: "fulfill-contract",
     label: "Fulfill Contract",
     isComplete: (ctx) => ctx.contract.fulfilled,
+    renderContent: placeholder,
   },
 ];

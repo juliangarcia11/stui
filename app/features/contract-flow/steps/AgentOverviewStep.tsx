@@ -2,11 +2,9 @@ import { Flex } from "@radix-ui/themes";
 import { Link } from "react-router";
 import { numberWithCommas } from "~/utils/numbers";
 import { DataRow } from "../components/DataRow";
-import type { ContractFlowContext } from "../types";
+import type { StepRenderProps } from "../types";
 
-type Props = { ctx: ContractFlowContext };
-
-export function AgentOverviewStep({ ctx }: Props) {
+export function AgentOverviewStep({ ctx }: StepRenderProps) {
   const { agent } = ctx;
   return (
     <Flex direction="column" gap="2">

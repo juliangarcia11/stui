@@ -4,12 +4,8 @@ import { useFetcher } from "react-router";
 import { CollapsedTab } from "./components/CollapsedTab";
 import { ProgressBar } from "./components/ProgressBar";
 import { StepRow } from "./components/StepRow";
-import { AcceptContractStep } from "./steps/AcceptContractStep";
-import { AgentOverviewStep } from "./steps/AgentOverviewStep";
-import { StartingLocationStep } from "./steps/StartingLocationStep";
 import { CONTRACT_FLOW_STEPS } from "./steps";
 import type { ContractFlowContext } from "./types";
-import { numberWithCommas } from "~/utils/numbers";
 
 type QuickstartContextData = {
   context: ContractFlowContext | null;
@@ -48,20 +44,6 @@ export function QuickstartPanel() {
   const completedCount =
     activeStepIndex === -1 ? steps.length : activeStepIndex;
 
-  const STEP_CONTENT: Partial<Record<string, React.ReactNode>> = {
-    "agent-overview": <AgentOverviewStep ctx={context} />,
-    "starting-location": <StartingLocationStep ctx={context} />,
-    "accept-contract": <AcceptContractStep ctx={context} />,
-  };
-
-  const deliver = context.contract.terms.deliver?.[0];
-  const STEP_SUMMARIES: Partial<Record<string, string>> = {
-    "agent-overview": `${context.agent.symbol} · ${numberWithCommas(Number(context.agent.credits))} ¢`,
-    "starting-location": `${context.systemSymbol} · ${context.waypoints.find((w) => w.symbol === context.agent.headquarters)?.type ?? ""}`,
-    "accept-contract": deliver
-      ? `${context.contract.factionSymbol} · ${deliver.tradeSymbol} ×${deliver.unitsRequired}`
-      : context.contract.factionSymbol,
-  };
 
   if (dismissed) {
     return (
@@ -122,13 +104,9 @@ export function QuickstartPanel() {
               key={step.key}
               state={state}
               label={step.label}
-              summary={STEP_SUMMARIES[step.key]}
+              summary={step.renderSummary?.(context)}
             >
-              {STEP_CONTENT[step.key] ?? (
-                <Text size="1" color="gray">
-                  Step content coming soon
-                </Text>
-              )}
+              {step.renderContent({ ctx: context, state })}
             </StepRow>
           );
         })}
