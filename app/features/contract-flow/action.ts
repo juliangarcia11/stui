@@ -1,3 +1,4 @@
+import { ContractsApi } from "~/api/contracts";
 import { Config } from "~/config";
 
 export async function executeContractFlowAction(
@@ -12,7 +13,14 @@ export async function executeContractFlowAction(
 
   switch (action) {
     case "DISMISS_QUICKSTART":
-    case "ACCEPT_CONTRACT":
+      return Config.Errors.MissingActionHandler;
+
+    case "ACCEPT_CONTRACT": {
+      const contractId = formData.get("contractId");
+      if (typeof contractId !== "string") return Config.Errors.MissingContractId;
+      return ContractsApi.acceptContract({ token, contractId });
+    }
+
     case "PURCHASE_SHIP":
     case "NAVIGATE_SHIP":
     case "EXTRACT_RESOURCES":
@@ -20,6 +28,7 @@ export async function executeContractFlowAction(
     case "DELIVER_CONTRACT":
     case "FULFILL_CONTRACT":
       return Config.Errors.MissingActionHandler;
+
     default:
       return Config.Errors.MissingActionHandler;
   }

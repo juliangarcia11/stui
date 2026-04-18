@@ -1,20 +1,14 @@
 import type { FC } from "react";
 import { ButtonFetcherForm } from "~/components";
 
-const action = "API.Contracts.acceptContract";
-
-/**
- * Button component for accepting a contract.
- * Uses the ButtonForm component to submit a POST request to the API with the contract ID when clicked.
- * Page Route Action must contain a handler for the "API.Contracts.acceptContract" action key.
- */
 export const ContractAcceptanceButton: FC<{ contractId: string }> = ({
   contractId,
 }) => {
   return (
     <ButtonFetcherForm
+      action="/api/contract-flow"
       method="POST"
-      hiddenValues={{ action, contractId }}
+      hiddenValues={{ action: "ACCEPT_CONTRACT", contractId }}
       color="jade"
       submittingText="Accepting..."
     >
