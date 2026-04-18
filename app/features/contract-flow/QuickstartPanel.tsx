@@ -4,8 +4,11 @@ import { useFetcher } from "react-router";
 import { CollapsedTab } from "./components/CollapsedTab";
 import { ProgressBar } from "./components/ProgressBar";
 import { StepRow } from "./components/StepRow";
+import { AgentOverviewStep } from "./steps/AgentOverviewStep";
+import { StartingLocationStep } from "./steps/StartingLocationStep";
 import { CONTRACT_FLOW_STEPS } from "./steps";
 import type { ContractFlowContext } from "./types";
+import { numberWithCommas } from "~/utils/numbers";
 
 type QuickstartContextData = {
   context: ContractFlowContext | null;
@@ -43,6 +46,16 @@ export function QuickstartPanel() {
   const activeStepIndex = steps.findIndex((step) => !step.isComplete(context));
   const completedCount =
     activeStepIndex === -1 ? steps.length : activeStepIndex;
+
+  const STEP_CONTENT: Partial<Record<string, React.ReactNode>> = {
+    "agent-overview": <AgentOverviewStep ctx={context} />,
+    "starting-location": <StartingLocationStep ctx={context} />,
+  };
+
+  const STEP_SUMMARIES: Partial<Record<string, string>> = {
+    "agent-overview": `${context.agent.symbol} · ${numberWithCommas(Number(context.agent.credits))} ¢`,
+    "starting-location": `${context.systemSymbol} · ${context.waypoints.find((w) => w.symbol === context.agent.headquarters)?.type ?? ""}`,
+  };
 
   if (dismissed) {
     return (
@@ -99,10 +112,17 @@ export function QuickstartPanel() {
                 ? "active"
                 : "upcoming";
           return (
-            <StepRow key={step.key} state={state} label={step.label}>
-              <Text size="1" color="gray">
-                Step content coming soon
-              </Text>
+            <StepRow
+              key={step.key}
+              state={state}
+              label={step.label}
+              summary={STEP_SUMMARIES[step.key]}
+            >
+              {STEP_CONTENT[step.key] ?? (
+                <Text size="1" color="gray">
+                  Step content coming soon
+                </Text>
+              )}
             </StepRow>
           );
         })}
