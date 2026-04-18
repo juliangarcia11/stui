@@ -77,7 +77,9 @@ export const ButtonFetcherForm: FC<
       {Object.entries(hiddenValues).map(([key, value]) => (
         <input key={key} type="hidden" name={key} value={value} />
       ))}
-      <Button {...buttonProps} type="submit" disabled={busy} />
+      <Button {...buttonProps} type="submit" disabled={busy}>
+        {busy ? submittingText : children}
+      </Button>
     </fetcher.Form>
   );
 };
