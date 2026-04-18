@@ -31,6 +31,7 @@ Hand-written modules wrap the generated client by feature domain: `AgentApi`, `C
 ### Caching Strategy
 
 Two layers:
+
 1. **Fetch-level LRU cache** — [app/api/cache/fetch-w-cache.ts](app/api/cache/fetch-w-cache.ts) wraps GET requests with an LRU cache. Import `fetchWithCache` instead of raw `fetch` for cacheable API calls.
 2. **React Query** — used for client-side synchronization and invalidation. Cache invalidation helpers live in [app/api/cache/invalidator.ts](app/api/cache/invalidator.ts).
 
@@ -40,12 +41,15 @@ Server-side cookie sessions via React Router's `createCookieSessionStorage` ([ap
 
 ### Components vs Features
 
+- `@radix-ui/themes` — Radix UI theme primitives for consistent design tokens
+- `@radix-ui/react-icons` — Radix UI icons for consistent iconography
+- `@radix-ui/react-*` - Radix UI React components for building accessible UI primitives when `@radix-ui/themes` does not have a corresponding component.
 - [app/components/](app/components/) — generic, reusable UI (form fields, layout primitives, Paginator, ErrorBoundary, etc.)
 - [app/features/](app/features/) — feature-scoped components tied to a domain (auth, dashboard, contracts, market, ships, factions, agent)
 
 ### Styling
 
-Tailwind CSS 4 (via `@tailwindcss/vite` plugin) is the primary approach. Radix UI `<Theme>` wraps the app for design tokens and component primitives. Global styles are in [app/app.css](app/app.css).
+Radix UI provides a set of design primitives and components that can be used in conjunction with Tailwind CSS to build a consistent and accessible UI. Radix UI focuses on accessibility and design consistency, while Tailwind CSS provides utility-first styling to quickly build responsive layouts. Global styles are in [app/app.css](app/app.css).
 
 ### Path Aliases
 
