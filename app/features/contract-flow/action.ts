@@ -1,7 +1,7 @@
 import { ContractsApi } from "~/api/contracts";
 import { FleetApi } from "~/api/fleet";
 import { Config } from "~/config";
-import type { ShipType } from "~/api/client";
+import type { ShipType, TradeSymbol } from "~/api/client";
 
 export async function executeContractFlowAction(
   token: string,
@@ -47,10 +47,46 @@ export async function executeContractFlowAction(
       return FleetApi.extractResources({ token, shipSymbol });
     }
 
-    case "SELL_CARGO":
-    case "DELIVER_CONTRACT":
-    case "FULFILL_CONTRACT":
-      return Config.Errors.MissingActionHandler;
+    case "SELL_CARGO": {
+      const shipSymbol = formData.get("shipSymbol");
+      const symbol = formData.get("symbol");
+      const units = formData.get("units");
+      if (typeof shipSymbol !== "string") return Config.Errors.MissingShip;
+      if (typeof symbol !== "string" || typeof units !== "string")
+        return Config.Errors.MissingData;
+      await FleetApi.dockShip({ token, shipSymbol });
+      return FleetApi.sellCargo({
+        token,
+        shipSymbol,
+        symbol: symbol as TradeSymbol,
+        units: Number(units),
+      });
+    }
+
+    case "DELIVER_CONTRACT": {
+      const contractId = formData.get("contractId");
+      const shipSymbol = formData.get("shipSymbol");
+      const tradeSymbol = formData.get("tradeSymbol");
+      const units = formData.get("units");
+      if (typeof contractId !== "string") return Config.Errors.MissingContractId;
+      if (typeof shipSymbol !== "string") return Config.Errors.MissingShip;
+      if (typeof tradeSymbol !== "string" || typeof units !== "string")
+        return Config.Errors.MissingData;
+      await FleetApi.dockShip({ token, shipSymbol });
+      return ContractsApi.deliverContract({
+        token,
+        contractId,
+        shipSymbol,
+        tradeSymbol,
+        units: Number(units),
+      });
+    }
+
+    case "FULFILL_CONTRACT": {
+      const contractId = formData.get("contractId");
+      if (typeof contractId !== "string") return Config.Errors.MissingContractId;
+      return ContractsApi.fulfillContract({ token, contractId });
+    }
 
     default:
       return Config.Errors.MissingActionHandler;

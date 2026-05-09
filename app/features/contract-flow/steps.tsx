@@ -2,8 +2,10 @@ import { Text } from "@radix-ui/themes";
 import { numberWithCommas } from "~/utils/numbers";
 import { AcceptContractStep } from "./steps/AcceptContractStep";
 import { AgentOverviewStep } from "./steps/AgentOverviewStep";
+import { FulfillContractStep } from "./steps/FulfillContractStep";
 import { NavigateMineStep } from "./steps/NavigateMineStep";
 import { PurchaseShipStep } from "./steps/PurchaseShipStep";
+import { SellCargoStep } from "./steps/SellCargoStep";
 import { StartingLocationStep } from "./steps/StartingLocationStep";
 import type { ContractFlowStep, StepRenderProps } from "./types";
 
@@ -115,7 +117,17 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         requiredSymbols.has(item.symbol),
       );
     },
-    renderContent: placeholder,
+    renderSummary: (ctx) => {
+      if (!ctx.ship) return undefined;
+      const requiredSymbols = new Set(
+        (ctx.contract.terms.deliver ?? []).map((g) => g.tradeSymbol),
+      );
+      const surplus = ctx.ship.cargo.inventory.filter(
+        (i) => !requiredSymbols.has(i.symbol),
+      );
+      return surplus.length === 0 ? "Cargo clear" : `${surplus.length} surplus item(s)`;
+    },
+    renderContent: (props) => <SellCargoStep {...props} />,
   },
   {
     key: "navigate-to-delivery",
@@ -129,7 +141,9 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         ctx.ship.nav.waypointSymbol === deliverGood.destinationSymbol
       );
     },
-    renderContent: placeholder,
+    renderSummary: (ctx) =>
+      ctx.ship?.nav.waypointSymbol ?? undefined,
+    renderContent: (props) => <SellCargoStep {...props} />,
   },
   {
     key: "deliver-goods",
@@ -141,12 +155,20 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         deliverGoods.every((good) => good.unitsFulfilled >= good.unitsRequired)
       );
     },
-    renderContent: placeholder,
+    renderSummary: (ctx) => {
+      const goods = ctx.contract.terms.deliver ?? [];
+      if (goods.length === 0) return undefined;
+      const fulfilled = goods.reduce((s, g) => s + g.unitsFulfilled, 0);
+      const required = goods.reduce((s, g) => s + g.unitsRequired, 0);
+      return `${fulfilled} / ${required} units`;
+    },
+    renderContent: (props) => <FulfillContractStep {...props} />,
   },
   {
     key: "fulfill-contract",
     label: "Fulfill Contract",
     isComplete: (ctx) => ctx.contract.fulfilled,
-    renderContent: placeholder,
+    renderSummary: (ctx) => (ctx.contract.fulfilled ? "Complete" : undefined),
+    renderContent: (props) => <FulfillContractStep {...props} />,
   },
 ];

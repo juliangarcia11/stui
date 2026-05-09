@@ -178,11 +178,11 @@ type ContractFlowStep = {
 - [x] `get-ship-cooldown.ts` — API wrapper for `GET /my/ships/{shipSymbol}/cooldown`
 - [x] `shipCooldown` added to `ContractFlowContext`; `onRequestRefresh` added to `StepRenderProps`
 
-### Phase 7 — Steps 6–10: Sell, Deliver, Fulfill
+### Phase 7 — Steps 6–10: Sell, Deliver, Fulfill ✓
 
-- [ ] `SellCargoStep.tsx` — marketplace nav + sell
-- [ ] `FulfillContractStep.tsx` — deliver + fulfill sub-states
-- [ ] `SELL_CARGO`, `DELIVER_CONTRACT`, `FULFILL_CONTRACT` in `action.ts`
+- [x] `SellCargoStep.tsx` — sell surplus + navigate-to-delivery sub-states, 5s polling in transit
+- [x] `FulfillContractStep.tsx` — deliver goods + fulfill contract sub-states
+- [x] `SELL_CARGO`, `DELIVER_CONTRACT`, `FULFILL_CONTRACT` in `action.ts`
 
 ### Phase 8 — Completion State
 
