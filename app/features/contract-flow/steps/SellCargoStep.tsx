@@ -1,5 +1,5 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ButtonFetcherForm } from "~/components";
 import { ClientOnly } from "~/components/ClientOnly";
 import { CooldownTimer } from "../components/CooldownTimer";
@@ -20,13 +20,16 @@ export function SellCargoStep({ ctx, onRequestRefresh }: StepRenderProps) {
     (item) => !requiredSymbols.has(item.symbol),
   );
 
+  const refreshRef = useRef(onRequestRefresh);
+  refreshRef.current = onRequestRefresh;
+
   const isInTransit = ship.nav.status === "IN_TRANSIT";
 
   useEffect(() => {
-    if (!isInTransit || !onRequestRefresh) return;
-    const id = setInterval(onRequestRefresh, POLL_INTERVAL_MS);
+    if (!isInTransit) return;
+    const id = setInterval(() => refreshRef.current?.(), POLL_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [isInTransit, onRequestRefresh]);
+  }, [isInTransit]);
 
   if (surplusCargo.length > 0) {
     return (

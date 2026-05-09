@@ -1,5 +1,5 @@
 import { Flex, Text } from "@radix-ui/themes";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ButtonFetcherForm } from "~/components";
 import { ClientOnly } from "~/components/ClientOnly";
 import { calculateDistance } from "~/features/waypoints";
@@ -13,18 +13,36 @@ const POLL_INTERVAL_MS = 5000;
 export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
   const { ship, waypoints, contract, shipCooldown } = ctx;
 
-  if (!ship) return null;
+  // Stable ref so the interval doesn't depend on the inline callback reference
+  const refreshRef = useRef(onRequestRefresh);
+  refreshRef.current = onRequestRefresh;
 
-  const isInTransit = ship.nav.status === "IN_TRANSIT";
-  const currentWaypoint = waypoints.find((w) => w.symbol === ship.nav.waypointSymbol);
-  const isAtAsteroid = currentWaypoint !== undefined && ASTEROID_TYPES.has(currentWaypoint.type);
-  const asteroidWaypoints = waypoints.filter((w) => ASTEROID_TYPES.has(w.type));
+  const isInTransit = ship?.nav.status === "IN_TRANSIT";
 
   useEffect(() => {
-    if (!isInTransit || !onRequestRefresh) return;
-    const id = setInterval(onRequestRefresh, POLL_INTERVAL_MS);
+    if (!isInTransit) return;
+    const id = setInterval(() => refreshRef.current?.(), POLL_INTERVAL_MS);
     return () => clearInterval(id);
-  }, [isInTransit, onRequestRefresh]);
+  }, [isInTransit]);
+
+  if (!ship) return null;
+
+  const currentWaypoint = waypoints.find((w) => w.symbol === ship.nav.waypointSymbol);
+  const isAtAsteroid = currentWaypoint !== undefined && ASTEROID_TYPES.has(currentWaypoint.type);
+
+  const sortedAsteroidWaypoints = waypoints
+    .filter((w) => ASTEROID_TYPES.has(w.type))
+    .map((w) => ({
+      waypoint: w,
+      distance: currentWaypoint
+        ? calculateDistance(currentWaypoint.x, currentWaypoint.y, w.x, w.y)
+        : null,
+    }))
+    .sort((a, b) => {
+      if (a.distance === null) return 1;
+      if (b.distance === null) return -1;
+      return a.distance - b.distance;
+    });
 
   if (isInTransit) {
     return (
@@ -44,15 +62,13 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
 
   if (isAtAsteroid) {
     const deliverGoods = contract.terms.deliver ?? [];
-    const hasCooldown =
-      shipCooldown !== null && shipCooldown.remainingSeconds > 0;
+    const hasCooldown = shipCooldown !== null && shipCooldown.remainingSeconds > 0;
 
     return (
       <Flex direction="column" gap="2">
         {deliverGoods.map((good) => {
           const inCargo =
-            ship.cargo.inventory.find((i) => i.symbol === good.tradeSymbol)
-              ?.units ?? 0;
+            ship.cargo.inventory.find((i) => i.symbol === good.tradeSymbol)?.units ?? 0;
           const needed = Math.max(0, good.unitsRequired - good.unitsFulfilled);
           return (
             <div key={good.tradeSymbol} className="flex flex-col gap-1">
@@ -66,9 +82,7 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
             <Text size="1" color="gray">
               Cooldown
             </Text>
-            <ClientOnly
-              fallback={<Text size="1" color="gray">On cooldown</Text>}
-            >
+            <ClientOnly fallback={<Text size="1" color="gray">On cooldown</Text>}>
               <CooldownTimer expiration={shipCooldown!.expiration} />
             </ClientOnly>
           </Flex>
@@ -91,7 +105,7 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
     );
   }
 
-  if (asteroidWaypoints.length === 0) {
+  if (sortedAsteroidWaypoints.length === 0) {
     return (
       <Text size="1" color="gray">
         No asteroid waypoints found in this system.
@@ -101,15 +115,12 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
 
   return (
     <Flex direction="column" gap="2">
-      {asteroidWaypoints.map((waypoint) => {
-        const distance = currentWaypoint
-          ? calculateDistance(currentWaypoint.x, currentWaypoint.y, waypoint.x, waypoint.y)
-          : null;
-
-        return (
+      {sortedAsteroidWaypoints.map(({ waypoint, distance }, i) => (
         <div
           key={waypoint.symbol}
-          className="rounded border border-(--gray-4) px-2 py-1.5 flex flex-col gap-2"
+          className={`rounded border px-2 py-1.5 flex flex-col gap-2 ${
+            i === 0 ? "border-(--jade-7)" : "border-(--gray-4)"
+          }`}
         >
           <div className="flex flex-col gap-1">
             <DataRow label="Waypoint" value={waypoint.symbol} />
@@ -133,8 +144,7 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
             Navigate
           </ButtonFetcherForm>
         </div>
-        );
-      })}
+      ))}
     </Flex>
   );
 }
