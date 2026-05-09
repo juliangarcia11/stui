@@ -2,75 +2,64 @@ import { Config } from "~/config";
 import { log } from "~/utils";
 import { cache } from "./cache";
 
-/**
- * Custom fetch function that implements caching for GET requests using lru-cache.
- * If the request is not a GET request, it bypasses the cache and performs a normal fetch.
- * If the request is a GET request, it checks if a response for the given request is already cached and returns it if available.
- * If not, it performs the fetch, caches the successful response, and returns it.
- * The cache key is generated based on the request URL and options to ensure that different requests are cached separately.
- *
- * Cache busting not yet implemented.
- */
 export const fetchWithCache: typeof fetch = async (
   input: RequestInfo | URL,
   init?: RequestInit,
 ): Promise<Response> => {
-  // if not a GET request, bypass cache and perform normal fetch
-  if (init?.method && init.method.toUpperCase() !== "GET") {
+  // When the hey-api client calls fetch(Request, undefined), extract method from the Request.
+  const method =
+    input instanceof Request ? input.method : (init?.method ?? "GET");
+
+  if (method.toUpperCase() !== "GET") {
     return fetch(input, init);
   }
 
   const cacheKey = generateCacheKey(input, init);
 
-  // Check if the response is in the cache
   const cached = cache.get(cacheKey);
   if (cached) {
     log({ key: "CACHE", message: `[HIT][${cached.count ?? 0}][${cacheKey}]` });
-    cache.set(cacheKey, { ...cached, count: (cached.count || 0) + 1 }); // Update usage count
-
-    // Recreate the Response object from the cached body and init
+    cache.set(cacheKey, { ...cached, count: (cached.count || 0) + 1 });
     return new Response(cached.body, cached.init);
   }
 
-  // If not cached, perform the fetch
   const response = await fetch(input, init);
 
-  // Cache the response if it's successful
   if (response.ok) {
-    const body = await response.blob(); // Read the body as a Blob
-    const init: ResponseInit = {
+    const body = await response.blob();
+    const responseInit: ResponseInit = {
       status: response.status,
       statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries()), // Clone headers
+      headers: Object.fromEntries(response.headers.entries()),
     };
 
-    cache.set(cacheKey, { body, init, timestamp: Date.now() });
+    cache.set(cacheKey, { body, init: responseInit, timestamp: Date.now() });
     log({ key: "CACHE", message: `[STORE][${cacheKey}]` });
 
-    // Return a new Response object since the body has been consumed
-    return new Response(body, init);
+    return new Response(body, responseInit);
   }
 
   return response;
 };
 
-/**
- * Generates a unique cache key based on the request URL and options.
- * It removes the base URL and includes the request options to differentiate between requests with different parameters.
- */
-
 const generateCacheKey = (
   input: RequestInfo | URL,
   init?: RequestInit,
 ): string => {
-  const url =
-    typeof input === "string"
-      ? input
-      : input instanceof URL
-        ? input.href
-        : input.url;
+  let url: string;
+  let authHeader = "";
+
+  if (input instanceof Request) {
+    url = input.url;
+    // Include the Authorization header so different agents don't share cache entries.
+    authHeader = input.headers.get("Authorization") ?? "";
+  } else {
+    url = typeof input === "string" ? input : input.href;
+  }
+
   const options = init ? JSON.stringify(init) : "";
-  let key = url.replace(Config.ApiUrl, ""); // Remove base URL
+  let key = url.replace(Config.ApiUrl, "");
   key += options ? `:${options}` : "";
+  if (authHeader) key += `:${authHeader}`;
   return key;
 };
