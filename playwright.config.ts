@@ -37,11 +37,29 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
       dependencies: ["setup"],
     },
+    {
+      name: "mocked",
+      testMatch: /mocked\/.+\.spec\.ts/,
+      use: {
+        ...devices["Desktop Chrome"],
+        baseURL: "http://localhost:5174",
+        storageState: "playwright/.auth/session.json",
+      },
+      dependencies: ["setup"],
+    },
   ],
 
-  webServer: {
-    command: "pnpm dev",
-    url: "http://localhost:5173",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: "pnpm dev",
+      url: "http://localhost:5173",
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: "pnpm dev -- --port 5174",
+      url: "http://localhost:5174",
+      reuseExistingServer: !process.env.CI,
+      env: { VITE_ENABLE_MOCKS: "true" },
+    },
+  ],
 });
