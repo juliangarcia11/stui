@@ -24,8 +24,10 @@ export async function getShipCooldown({ token, shipSymbol }: GetShipCooldownPara
     path: { shipSymbol },
   });
 
+  // 204 = no cooldown; openapi-fetch may fail to parse the empty body and leave
+  // response.error/response.response in an indeterminate state — check data first
+  if (!response.data) return wrapSuccess<ShipCooldownData | null>(null);
   if (response.error) return wrapErr(extractApiErr(response.error));
-  // 204 = no active cooldown; the 204 variant types response.data as unknown
   const cooldown = (response.data as { data?: Cooldown } | undefined)?.data;
   if (!cooldown) return wrapSuccess<ShipCooldownData | null>(null);
 
