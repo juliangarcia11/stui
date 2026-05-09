@@ -30,7 +30,7 @@ export async function navigateShip({
   });
 
   if (response.response.ok) {
-    Cache.Invalidate.shipCache(shipSymbol);
+    Cache.Invalidate.allShips();
   }
 
   return standardizeApiResponse<NavigateShipResponse>(response);

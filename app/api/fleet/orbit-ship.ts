@@ -19,7 +19,7 @@ export async function orbitShip({ token, shipSymbol }: WaypointActionParams) {
   });
 
   if (response.response.ok) {
-    Cache.Invalidate.shipCache(shipSymbol);
+    Cache.Invalidate.allShips();
   }
 
   return standardizeApiResponse<OrbitShipResponse>(response);

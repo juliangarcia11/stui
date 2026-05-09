@@ -18,7 +18,7 @@ export async function dockShip({ token, shipSymbol }: WaypointActionParams) {
   });
 
   if (response.response.ok) {
-    CacheInvalidator.shipCache(shipSymbol);
+    CacheInvalidator.allShips();
   }
 
   return standardizeApiResponse<DockShipResponse>(response);
