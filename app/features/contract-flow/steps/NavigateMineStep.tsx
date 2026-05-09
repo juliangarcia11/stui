@@ -2,6 +2,7 @@ import { Flex, Text } from "@radix-ui/themes";
 import { useEffect } from "react";
 import { ButtonFetcherForm } from "~/components";
 import { ClientOnly } from "~/components/ClientOnly";
+import { calculateDistance } from "~/features/waypoints";
 import { CooldownTimer } from "../components/CooldownTimer";
 import { DataRow } from "../components/DataRow";
 import type { StepRenderProps } from "../types";
@@ -100,7 +101,12 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
 
   return (
     <Flex direction="column" gap="2">
-      {asteroidWaypoints.map((waypoint) => (
+      {asteroidWaypoints.map((waypoint) => {
+        const distance = currentWaypoint
+          ? calculateDistance(currentWaypoint.x, currentWaypoint.y, waypoint.x, waypoint.y)
+          : null;
+
+        return (
         <div
           key={waypoint.symbol}
           className="rounded border border-(--gray-4) px-2 py-1.5 flex flex-col gap-2"
@@ -108,6 +114,9 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
           <div className="flex flex-col gap-1">
             <DataRow label="Waypoint" value={waypoint.symbol} />
             <DataRow label="Type" value={waypoint.type} />
+            {distance !== null && (
+              <DataRow label="Distance" value={String(distance)} />
+            )}
           </div>
           <ButtonFetcherForm
             action="/api/contract-flow"
@@ -124,7 +133,8 @@ export function NavigateMineStep({ ctx, onRequestRefresh }: StepRenderProps) {
             Navigate
           </ButtonFetcherForm>
         </div>
-      ))}
+        );
+      })}
     </Flex>
   );
 }
