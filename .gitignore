@@ -1,6 +1,9 @@
 .DS_Store
 .env
 /node_modules/
+/playwright/.auth/
+/playwright-report/
+/test-results/
 
 # React Router
 /.react-router/
