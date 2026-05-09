@@ -3,12 +3,20 @@ import type { Agent, Contract, Ship, Waypoint } from "~/api/client";
 
 export type StepState = "complete" | "active" | "upcoming";
 
+export type ShipOption = {
+  waypointSymbol: string;
+  shipType: string;
+  name: string;
+  purchasePrice: number;
+};
+
 export type ContractFlowContext = {
   contract: Contract;
   ship: Ship | null;
   agent: Agent;
   waypoints: Waypoint[];
   systemSymbol: string;
+  shipOptions: ShipOption[];
 };
 
 export type StepRenderProps = {

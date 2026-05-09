@@ -164,11 +164,11 @@ type ContractFlowStep = {
 - [x] `AcceptContractStep.tsx` — compact terms display + accept button
 - [x] `ACCEPT_CONTRACT` implemented in `action.ts`
 
-### Phase 5 — Step 4: Purchase Ship
+### Phase 5 — Step 4: Purchase Ship ✓
 
-- [ ] `PurchaseShipStep.tsx` — shipyard picker, cost display, `PURCHASE_SHIP` action
-- [ ] `PURCHASE_SHIP` in `action.ts`
-- [ ] Wire into `steps.tsx`
+- [x] `PurchaseShipStep.tsx` — shipyard picker, cost display, `PURCHASE_SHIP` action
+- [x] `PURCHASE_SHIP` in `action.ts`
+- [x] Wire into `steps.tsx`
 
 ### Phase 6 — Step 5: Navigate & Mine
 

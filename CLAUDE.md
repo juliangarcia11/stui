@@ -65,5 +65,4 @@ Radix UI provides a set of design primitives and components that can be used in 
 - Use the most cost-effective Claude model for the task at hand.
 - For simple tasks or quick responses, use Claude Haiku.
 - For more complex tasks, use Claude Sonnet.
-- For extremely complex tasks or tasks requiring deep reasoning, use Claude Opus.
 - Unless deep reasoning or extensive context is required, prefer Claude Haiku for efficiency.

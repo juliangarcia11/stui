@@ -1,5 +1,7 @@
 import { ContractsApi } from "~/api/contracts";
+import { FleetApi } from "~/api/fleet";
 import { Config } from "~/config";
+import type { ShipType } from "~/api/client";
 
 export async function executeContractFlowAction(
   token: string,
@@ -21,7 +23,14 @@ export async function executeContractFlowAction(
       return ContractsApi.acceptContract({ token, contractId });
     }
 
-    case "PURCHASE_SHIP":
+    case "PURCHASE_SHIP": {
+      const shipType = formData.get("shipType");
+      const waypointSymbol = formData.get("waypointSymbol");
+      if (typeof shipType !== "string") return Config.Errors.MissingShip;
+      if (typeof waypointSymbol !== "string") return Config.Errors.MissingWaypoint;
+      return FleetApi.purchaseShip({ token, shipType: shipType as ShipType, waypointSymbol });
+    }
+
     case "NAVIGATE_SHIP":
     case "EXTRACT_RESOURCES":
     case "SELL_CARGO":

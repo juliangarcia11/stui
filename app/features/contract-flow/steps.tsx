@@ -2,6 +2,7 @@ import { Text } from "@radix-ui/themes";
 import { numberWithCommas } from "~/utils/numbers";
 import { AcceptContractStep } from "./steps/AcceptContractStep";
 import { AgentOverviewStep } from "./steps/AgentOverviewStep";
+import { PurchaseShipStep } from "./steps/PurchaseShipStep";
 import { StartingLocationStep } from "./steps/StartingLocationStep";
 import type { ContractFlowStep, StepRenderProps } from "./types";
 
@@ -48,7 +49,9 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
     key: "purchase-ship",
     label: "Purchase Ship",
     isComplete: (ctx) => ctx.ship !== null,
-    renderContent: placeholder,
+    renderSummary: (ctx) =>
+      ctx.ship ? `${ctx.ship.symbol} · ${ctx.ship.registration.role}` : undefined,
+    renderContent: (props) => <PurchaseShipStep {...props} />,
   },
   {
     key: "navigate-to-asteroid",

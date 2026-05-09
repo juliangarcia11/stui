@@ -1,7 +1,7 @@
 import type { Waypoint } from "~/api/client";
 import { API } from "~/api";
 import { transformWaypointToSystem } from "~/features/waypoints";
-import type { ContractFlowContext } from "./types";
+import type { ContractFlowContext, ShipOption } from "./types";
 
 const MINING_MOUNT_PREFIXES = [
   "MOUNT_MINING_LASER_I",
@@ -36,5 +36,34 @@ export async function loadContractFlowContext(
   const waypoints: Waypoint[] =
     waypointsResult.status === "success" ? waypointsResult.data.data : [];
 
-  return { contract, ship: miningShip, agent, waypoints, systemSymbol };
+  let shipOptions: ShipOption[] = [];
+  if (!miningShip) {
+    const shipyardWaypoints = waypoints.filter((w) =>
+      w.traits.some((t) => t.symbol === "SHIPYARD"),
+    );
+    const shipyardResults = await Promise.all(
+      shipyardWaypoints.map((w) =>
+        API.Systems.getShipyard({ token, waypointSymbol: w.symbol }),
+      ),
+    );
+    shipOptions = shipyardResults.flatMap((result, i) => {
+      if (result.status !== "success") return [];
+      return (result.data.ships ?? [])
+        .filter((s) =>
+          s.mounts.some((m) =>
+            (MINING_MOUNT_PREFIXES as readonly string[]).some((prefix) =>
+              m.symbol.startsWith(prefix),
+            ),
+          ),
+        )
+        .map((s) => ({
+          waypointSymbol: shipyardWaypoints[i]!.symbol,
+          shipType: s.type,
+          name: s.name,
+          purchasePrice: s.purchasePrice,
+        }));
+    });
+  }
+
+  return { contract, ship: miningShip, agent, waypoints, systemSymbol, shipOptions };
 }
