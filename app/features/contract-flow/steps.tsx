@@ -2,6 +2,7 @@ import { Text } from "@radix-ui/themes";
 import { numberWithCommas } from "~/utils/numbers";
 import { AcceptContractStep } from "./steps/AcceptContractStep";
 import { AgentOverviewStep } from "./steps/AgentOverviewStep";
+import { NavigateMineStep } from "./steps/NavigateMineStep";
 import { PurchaseShipStep } from "./steps/PurchaseShipStep";
 import { StartingLocationStep } from "./steps/StartingLocationStep";
 import type { ContractFlowStep, StepRenderProps } from "./types";
@@ -67,7 +68,11 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         ASTEROID_TYPES.includes(current.type as (typeof ASTEROID_TYPES)[number])
       );
     },
-    renderContent: placeholder,
+    renderSummary: (ctx) =>
+      ctx.ship && ctx.ship.nav.status !== "IN_TRANSIT"
+        ? ctx.ship.nav.waypointSymbol
+        : undefined,
+    renderContent: (props) => <NavigateMineStep {...props} />,
   },
   {
     key: "extract-resources",
@@ -85,7 +90,18 @@ export const CONTRACT_FLOW_STEPS: ContractFlowStep[] = [
         return cargoItem !== undefined && cargoItem.units >= needed;
       });
     },
-    renderContent: placeholder,
+    renderSummary: (ctx) => {
+      if (!ctx.ship) return undefined;
+      const deliverGoods = ctx.contract.terms.deliver ?? [];
+      const firstGood = deliverGoods[0];
+      if (!firstGood) return undefined;
+      const inCargo =
+        ctx.ship.cargo.inventory.find((i) => i.symbol === firstGood.tradeSymbol)
+          ?.units ?? 0;
+      const needed = Math.max(0, firstGood.unitsRequired - firstGood.unitsFulfilled);
+      return `${inCargo} / ${needed} ${firstGood.tradeSymbol}`;
+    },
+    renderContent: (props) => <NavigateMineStep {...props} />,
   },
   {
     key: "sell-surplus",

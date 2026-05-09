@@ -106,7 +106,12 @@ export function QuickstartPanel() {
               label={step.label}
               summary={step.renderSummary?.(context)}
             >
-              {step.renderContent({ ctx: context, state })}
+              {step.renderContent({
+                ctx: context,
+                state,
+                onRequestRefresh: () =>
+                  contextFetcher.load("/api/quickstart-context"),
+              })}
             </StepRow>
           );
         })}

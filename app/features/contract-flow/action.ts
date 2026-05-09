@@ -31,8 +31,22 @@ export async function executeContractFlowAction(
       return FleetApi.purchaseShip({ token, shipType: shipType as ShipType, waypointSymbol });
     }
 
-    case "NAVIGATE_SHIP":
-    case "EXTRACT_RESOURCES":
+    case "NAVIGATE_SHIP": {
+      const shipSymbol = formData.get("shipSymbol");
+      const waypointSymbol = formData.get("waypointSymbol");
+      if (typeof shipSymbol !== "string") return Config.Errors.MissingShip;
+      if (typeof waypointSymbol !== "string") return Config.Errors.MissingWaypoint;
+      await FleetApi.orbitShip({ token, shipSymbol });
+      return FleetApi.navigateShip({ token, shipSymbol, waypointSymbol });
+    }
+
+    case "EXTRACT_RESOURCES": {
+      const shipSymbol = formData.get("shipSymbol");
+      if (typeof shipSymbol !== "string") return Config.Errors.MissingShip;
+      await FleetApi.orbitShip({ token, shipSymbol });
+      return FleetApi.extractResources({ token, shipSymbol });
+    }
+
     case "SELL_CARGO":
     case "DELIVER_CONTRACT":
     case "FULFILL_CONTRACT":

@@ -170,11 +170,13 @@ type ContractFlowStep = {
 - [x] `PURCHASE_SHIP` in `action.ts`
 - [x] Wire into `steps.tsx`
 
-### Phase 6 — Step 5: Navigate & Mine
+### Phase 6 — Step 5: Navigate & Mine ✓
 
-- [ ] `CooldownTimer.tsx` — client-only countdown with `ClientOnly` wrapper
-- [ ] `NavigateMineStep.tsx` — navigate / in-transit / extract sub-states, 5s polling
-- [ ] `NAVIGATE_SHIP`, `EXTRACT_RESOURCES` in `action.ts`
+- [x] `CooldownTimer.tsx` — client-only countdown with `ClientOnly` wrapper
+- [x] `NavigateMineStep.tsx` — navigate / in-transit / extract sub-states, 5s polling
+- [x] `NAVIGATE_SHIP`, `EXTRACT_RESOURCES` in `action.ts`
+- [x] `get-ship-cooldown.ts` — API wrapper for `GET /my/ships/{shipSymbol}/cooldown`
+- [x] `shipCooldown` added to `ContractFlowContext`; `onRequestRefresh` added to `StepRenderProps`
 
 ### Phase 7 — Steps 6–10: Sell, Deliver, Fulfill
 

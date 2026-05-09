@@ -10,6 +10,11 @@ export type ShipOption = {
   purchasePrice: number;
 };
 
+export type ShipCooldown = {
+  remainingSeconds: number;
+  expiration?: string;
+};
+
 export type ContractFlowContext = {
   contract: Contract;
   ship: Ship | null;
@@ -17,11 +22,13 @@ export type ContractFlowContext = {
   waypoints: Waypoint[];
   systemSymbol: string;
   shipOptions: ShipOption[];
+  shipCooldown: ShipCooldown | null;
 };
 
 export type StepRenderProps = {
   ctx: ContractFlowContext;
   state: StepState;
+  onRequestRefresh?: () => void;
 };
 
 export type ContractFlowStep = {

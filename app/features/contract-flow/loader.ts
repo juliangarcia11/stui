@@ -1,7 +1,8 @@
 import type { Waypoint } from "~/api/client";
 import { API } from "~/api";
+import { FleetApi } from "~/api/fleet";
 import { transformWaypointToSystem } from "~/features/waypoints";
-import type { ContractFlowContext, ShipOption } from "./types";
+import type { ContractFlowContext, ShipCooldown, ShipOption } from "./types";
 
 const MINING_MOUNT_PREFIXES = [
   "MOUNT_MINING_LASER_I",
@@ -65,5 +66,16 @@ export async function loadContractFlowContext(
     });
   }
 
-  return { contract, ship: miningShip, agent, waypoints, systemSymbol, shipOptions };
+  let shipCooldown: ShipCooldown | null = null;
+  if (miningShip) {
+    const cooldownResult = await FleetApi.getShipCooldown({
+      token,
+      shipSymbol: miningShip.symbol,
+    });
+    if (cooldownResult.status === "success" && cooldownResult.data) {
+      shipCooldown = cooldownResult.data;
+    }
+  }
+
+  return { contract, ship: miningShip, agent, waypoints, systemSymbol, shipOptions, shipCooldown };
 }
