@@ -1,4 +1,4 @@
-import { Button, type ButtonProps } from "@radix-ui/themes";
+import { Button, Text, type ButtonProps } from "@radix-ui/themes";
 import type { FC } from "react";
 import { Form, useFetcher, type FormProps } from "react-router";
 
@@ -69,17 +69,26 @@ export const ButtonFetcherForm: FC<
   submittingText = "Submitting...",
   ...buttonProps
 }) => {
-  let fetcher = useFetcher();
-  let busy = fetcher.state !== "idle";
+  const fetcher = useFetcher<{ status: string; message?: string }>();
+  const busy = fetcher.state !== "idle";
+  const error =
+    !busy && fetcher.data?.status === "error" ? fetcher.data.message : null;
 
   return (
-    <fetcher.Form action={action} method={method}>
-      {Object.entries(hiddenValues).map(([key, value]) => (
-        <input key={key} type="hidden" name={key} value={value} />
-      ))}
-      <Button {...buttonProps} type="submit" disabled={busy}>
-        {busy ? submittingText : children}
-      </Button>
-    </fetcher.Form>
+    <div className="flex flex-col gap-1">
+      <fetcher.Form action={action} method={method}>
+        {Object.entries(hiddenValues).map(([key, value]) => (
+          <input key={key} type="hidden" name={key} value={value} />
+        ))}
+        <Button {...buttonProps} type="submit" disabled={busy}>
+          {busy ? submittingText : children}
+        </Button>
+      </fetcher.Form>
+      {error && (
+        <Text size="1" color="red">
+          {error}
+        </Text>
+      )}
+    </div>
   );
 };

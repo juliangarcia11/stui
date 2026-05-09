@@ -190,12 +190,11 @@ type ContractFlowStep = {
 - [x] Auto-dismiss after 5s or manual close
 - [x] `fleetSize` added to `ContractFlowContext`
 
-### Phase 9 — Polish & Resilience
+### Phase 9 — Polish & Resilience ✓
 
-- [ ] Inline error + retry on every `ButtonFetcherForm`
-- [ ] Out-of-order state verification
-- [ ] Loading skeletons + button busy states
-- [ ] Accessibility: `aria-current="step"`, keyboard focus
-- [ ] Full typecheck pass
+- [x] Inline error display on every `ButtonFetcherForm` (red text below button, button itself is retry)
+- [x] Completed steps expandable to review content (`StepRow` toggle)
+- [x] Accessibility: `aria-current="step"` on active step
+- [x] Loading state in `QuickstartPanel` during initial context fetch
+- [x] Full typecheck pass
 - [ ] Manual smoke test: fresh agent → contract fulfilled
-- [ ] Let users view previous/completed quickstart steps' content

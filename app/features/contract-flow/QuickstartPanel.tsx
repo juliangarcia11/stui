@@ -37,7 +37,21 @@ export function QuickstartPanel() {
   }, [actionFetcher.state, actionFetcher.data]);
 
   const data = contextFetcher.data;
-  if (!data?.context) return null;
+
+  if (!data) {
+    if (contextFetcher.state === "loading") {
+      return (
+        <div className="fixed right-0 top-0 bottom-0 w-72 z-50 flex items-center justify-center bg-(--color-panel-solid) border-l border-(--gray-5) shadow-xl">
+          <Text size="1" color="gray">
+            Loading…
+          </Text>
+        </div>
+      );
+    }
+    return null;
+  }
+
+  if (!data.context) return null;
 
   const { context, dismissed } = data;
   const steps = CONTRACT_FLOW_STEPS;
