@@ -24,7 +24,7 @@ export default defineConfig({
     },
     {
       name: "chromium",
-      testIgnore: /smoke\/auth\.spec\.ts/,
+      testIgnore: [/smoke\/auth\.spec\.ts/, /mocked\//],
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/session.json",
