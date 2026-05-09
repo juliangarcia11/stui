@@ -184,10 +184,11 @@ type ContractFlowStep = {
 - [x] `FulfillContractStep.tsx` — deliver goods + fulfill contract sub-states
 - [x] `SELL_CARGO`, `DELIVER_CONTRACT`, `FULFILL_CONTRACT` in `action.ts`
 
-### Phase 8 — Completion State
+### Phase 8 — Completion State ✓
 
-- [ ] `CompletionScreen.tsx` — credits earned, fleet size, nav links
-- [ ] Auto-dismiss after 5s or manual close
+- [x] `CompletionScreen.tsx` — credits earned, fleet size, Waypoints link
+- [x] Auto-dismiss after 5s or manual close
+- [x] `fleetSize` added to `ContractFlowContext`
 
 ### Phase 9 — Polish & Resilience
 

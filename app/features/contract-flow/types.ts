@@ -23,6 +23,7 @@ export type ContractFlowContext = {
   systemSymbol: string;
   shipOptions: ShipOption[];
   shipCooldown: ShipCooldown | null;
+  fleetSize: number;
 };
 
 export type StepRenderProps = {

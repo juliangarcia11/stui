@@ -1,6 +1,7 @@
 import { Button, Flex, Text } from "@radix-ui/themes";
 import { useEffect, useRef } from "react";
 import { useFetcher } from "react-router";
+import { CompletionScreen } from "./CompletionScreen";
 import { CollapsedTab } from "./components/CollapsedTab";
 import { ProgressBar } from "./components/ProgressBar";
 import { StepRow } from "./components/StepRow";
@@ -45,6 +46,13 @@ export function QuickstartPanel() {
     activeStepIndex === -1 ? steps.length : activeStepIndex;
 
 
+  const handleDismiss = () => {
+    actionFetcher.submit(
+      { action: "DISMISS_QUICKSTART", contractId: context.contract.id },
+      { method: "POST", action: "/api/contract-flow" },
+    );
+  };
+
   if (dismissed) {
     return (
       <CollapsedTab
@@ -59,6 +67,8 @@ export function QuickstartPanel() {
       />
     );
   }
+
+  const isComplete = activeStepIndex === -1;
 
   return (
     <div
@@ -76,51 +86,53 @@ export function QuickstartPanel() {
         <Text size="2" weight="bold">
           ☆ Quickstart
         </Text>
-        <actionFetcher.Form method="POST" action="/api/contract-flow">
-          <input type="hidden" name="action" value="DISMISS_QUICKSTART" />
-          <input type="hidden" name="contractId" value={context.contract.id} />
-          <Button
-            type="submit"
-            variant="ghost"
-            size="1"
-            aria-label="Dismiss quickstart"
-          >
-            ✕
-          </Button>
-        </actionFetcher.Form>
+        <Button
+          variant="ghost"
+          size="1"
+          aria-label="Dismiss quickstart"
+          onClick={handleDismiss}
+        >
+          ✕
+        </Button>
       </Flex>
 
-      {/* Step list */}
-      <div className="flex-1 overflow-y-auto px-3 py-2" role="list">
-        {steps.map((step, i) => {
-          const state =
-            activeStepIndex === -1 || i < activeStepIndex
-              ? "complete"
-              : i === activeStepIndex
-                ? "active"
-                : "upcoming";
-          return (
-            <StepRow
-              key={step.key}
-              state={state}
-              label={step.label}
-              summary={step.renderSummary?.(context)}
-            >
-              {step.renderContent({
-                ctx: context,
-                state,
-                onRequestRefresh: () =>
-                  contextFetcher.load("/api/quickstart-context"),
-              })}
-            </StepRow>
-          );
-        })}
-      </div>
+      {isComplete ? (
+        <CompletionScreen context={context} onDismiss={handleDismiss} />
+      ) : (
+        <>
+          {/* Step list */}
+          <div className="flex-1 overflow-y-auto px-3 py-2" role="list">
+            {steps.map((step, i) => {
+              const state =
+                i < activeStepIndex
+                  ? "complete"
+                  : i === activeStepIndex
+                    ? "active"
+                    : "upcoming";
+              return (
+                <StepRow
+                  key={step.key}
+                  state={state}
+                  label={step.label}
+                  summary={step.renderSummary?.(context)}
+                >
+                  {step.renderContent({
+                    ctx: context,
+                    state,
+                    onRequestRefresh: () =>
+                      contextFetcher.load("/api/quickstart-context"),
+                  })}
+                </StepRow>
+              );
+            })}
+          </div>
 
-      {/* Footer */}
-      <div className="p-3 border-t border-(--gray-5) shrink-0">
-        <ProgressBar completed={completedCount} total={steps.length} />
-      </div>
+          {/* Footer */}
+          <div className="p-3 border-t border-(--gray-5) shrink-0">
+            <ProgressBar completed={completedCount} total={steps.length} />
+          </div>
+        </>
+      )}
     </div>
   );
 }

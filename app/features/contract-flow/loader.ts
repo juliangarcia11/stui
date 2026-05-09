@@ -77,5 +77,5 @@ export async function loadContractFlowContext(
     }
   }
 
-  return { contract, ship: miningShip, agent, waypoints, systemSymbol, shipOptions, shipCooldown };
+  return { contract, ship: miningShip, agent, waypoints, systemSymbol, shipOptions, shipCooldown, fleetSize: ships.length };
 }
