@@ -56,7 +56,7 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: "pnpm dev -- --port 5174",
+      command: "pnpm dev:mocked",
       url: "http://localhost:5174",
       reuseExistingServer: !process.env.CI,
       env: { VITE_ENABLE_MOCKS: "true" },

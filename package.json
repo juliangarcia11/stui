@@ -9,6 +9,7 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "client:gen": "node scripts/generate-client.mjs",
+    "dev:mocked": "react-router dev --port 5174",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui"
   },
