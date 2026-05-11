@@ -12,7 +12,11 @@ pnpm typecheck    # Generate React Router types + run tsc
 pnpm client:gen   # Regenerate API client from SpaceTraders OpenAPI spec
 ```
 
-No test or lint scripts are currently configured.
+No lint scripts are currently configured.
+
+## Bug Tracking
+
+Out-of-scope bugs discovered during a session go in [`docs/bugs/`](docs/bugs/). Name files `YYYYMMDD-HHmm-short-desc.md` and update the index in [`docs/bugs/README.md`](docs/bugs/README.md) with a status (`open`, `solved`, or `wont-fix`).
 
 ## Architecture Overview
 
