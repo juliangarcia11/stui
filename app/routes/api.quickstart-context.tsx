@@ -1,9 +1,9 @@
 import { data } from "react-router";
 import { loadContractFlowContext } from "~/features/contract-flow/loader";
-import { extractToken, getQuickstartDismissed } from "~/sessions.server";
+import { extractToken, getQuickstartDismissed, withAuth } from "~/sessions.server";
 import type { Route } from "./+types/api.quickstart-context";
 
-export async function loader({ request }: Route.LoaderArgs) {
+export const loader = withAuth(async ({ request }: Route.LoaderArgs) => {
   const cookieHeader = request.headers.get("Cookie");
   const token = await extractToken(cookieHeader);
 
@@ -21,4 +21,4 @@ export async function loader({ request }: Route.LoaderArgs) {
     context?.contract.id === dismissedContractId;
 
   return data({ context, dismissed, dismissedContractId });
-}
+});

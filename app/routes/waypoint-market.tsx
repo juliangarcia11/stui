@@ -2,7 +2,7 @@
 import { redirect } from "react-router";
 import { ErrorBoundary } from "~/components";
 import { loadMarketData, MarketContainer } from "~/features/market";
-import { extractToken } from "~/sessions.server";
+import { extractToken, withAuth } from "~/sessions.server";
 import type { Route } from "./+types/waypoint-market";
 
 // Route Meta given to the Browser
@@ -14,7 +14,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 // Route data loader for the route, runs on the server before rendering the component
-export async function loader({ request, params }: Route.LoaderArgs) {
+export const loader = withAuth(async ({ request, params }: Route.LoaderArgs) => {
   const token = await extractToken(request.headers.get("Cookie"));
   if (!token) return redirect("/login");
 
@@ -22,7 +22,7 @@ export async function loader({ request, params }: Route.LoaderArgs) {
   if (!waypointSymbol) return redirect("/waypoints");
 
   return await loadMarketData(token, params);
-}
+});
 
 // Route component, rendered after the loader has run and provided data
 export default function Market({ loaderData, params }: Route.ComponentProps) {

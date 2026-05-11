@@ -1,6 +1,10 @@
+import { TokenResetError } from "~/errors";
 import { Config } from "~/config";
 import type { ApiError } from "~/types";
 import type { Meta } from "./client";
+
+export const isTokenResetError = (message?: string) =>
+  !!message?.includes("Failed to parse token");
 
 /**
  * Util that formats success response json
@@ -62,7 +66,11 @@ export const standardizeApiResponse = <
   dataExtractor: (response: R) => T = (response) =>
     (response.data as any).data as T,
 ) => {
-  if (response.error) return wrapErr(extractApiErr(response.error));
+  if (response.error) {
+    const message = extractApiErr(response.error);
+    if (isTokenResetError(message)) throw new TokenResetError(message);
+    return wrapErr(message);
+  }
   if (!response.data) return Config.Errors.MissingData;
 
   return wrapSuccess(dataExtractor(response));
@@ -90,7 +98,11 @@ export const standardizeListApiResponse = <
 >(
   response: R,
 ) => {
-  if (response.error) return wrapErr(extractApiErr(response.error));
+  if (response.error) {
+    const message = extractApiErr(response.error);
+    if (isTokenResetError(message)) throw new TokenResetError(message);
+    return wrapErr(message);
+  }
   if (!response.data) return Config.Errors.MissingData;
 
   const { data, meta } = response.data;

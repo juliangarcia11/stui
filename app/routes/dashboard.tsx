@@ -2,7 +2,7 @@ import { redirect } from "react-router";
 import { API } from "~/api";
 import { ErrorBoundary } from "~/components";
 import { DashboardContainer } from "~/features/dashboard";
-import { extractToken } from "~/sessions.server";
+import { extractToken, withAuth } from "~/sessions.server";
 import type { Route } from "./+types/dashboard";
 
 export function meta({}: Route.MetaArgs) {
@@ -13,7 +13,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 // see: https://reactrouter.com/start/framework/data-loading
-export async function loader({ request }: Route.LoaderArgs) {
+export const loader = withAuth(async ({ request }: Route.LoaderArgs) => {
   const token = await extractToken(request.headers.get("Cookie"));
   if (!token) return redirect("/login");
 
@@ -31,7 +31,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     statusInfo: apiStatus.data,
     agentInfo: agentInfo.data,
   };
-}
+});
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   return <DashboardContainer {...loaderData} />;

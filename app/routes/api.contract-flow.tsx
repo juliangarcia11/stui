@@ -4,10 +4,11 @@ import {
   clearQuickstartDismissed,
   extractToken,
   setQuickstartDismissed,
+  withAuth,
 } from "~/sessions.server";
 import type { Route } from "./+types/api.contract-flow";
 
-export async function action({ request }: Route.ActionArgs) {
+export const action = withAuth(async ({ request }: Route.ActionArgs) => {
   const token = await extractToken(request.headers.get("Cookie"));
   if (!token) return redirect("/login");
 
@@ -32,4 +33,4 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   return executeContractFlowAction(token, formData);
-}
+});

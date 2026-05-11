@@ -2,6 +2,7 @@ import { data, redirect } from "react-router";
 import { API } from "~/api";
 import { ErrorBoundary } from "~/components";
 import { LoginForm } from "~/features/auth";
+import { TokenResetError } from "~/errors";
 import { commitSession, flashError, getSession } from "../sessions.server";
 import type { Route } from "./+types/login";
 
@@ -41,10 +42,20 @@ export async function action({ request }: Route.ActionArgs) {
   const symbol = form.get("symbol")?.toString() ?? "";
   const token = form.get("token")?.toString() ?? "";
 
-  const result = await API.Agent.loginAgent({
-    symbol,
-    token,
-  });
+  let result;
+  try {
+    result = await API.Agent.loginAgent({ symbol, token });
+  } catch (e) {
+    if (e instanceof TokenResetError) {
+      return flashError({
+        flashError:
+          "The SpaceTraders server has reset — please register a new agent.",
+        redirectUrl: "/register",
+        session,
+      });
+    }
+    throw e;
+  }
 
   // Login error, flash the error message to session storage & refresh
   if (result.status === "error") {

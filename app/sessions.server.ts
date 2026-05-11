@@ -4,6 +4,7 @@ import {
   redirect,
   type Session,
 } from "react-router";
+import { TokenResetError } from "~/errors";
 
 type SessionData = {
   token: string;
@@ -90,6 +91,28 @@ export async function flashError({
       "Set-Cookie": await commitSession(session),
     },
   });
+}
+
+/**
+ * Wraps a loader or action to redirect to /register (clearing the session) when
+ * the SpaceTraders API signals the token is invalid due to a server reset.
+ */
+export function withAuth<TArgs extends { request: Request }, TReturn>(
+  handler: (args: TArgs) => Promise<TReturn>,
+): (args: TArgs) => Promise<TReturn | Response> {
+  return async (args) => {
+    try {
+      return await handler(args);
+    } catch (e) {
+      if (e instanceof TokenResetError) {
+        const session = await getSession(args.request.headers.get("Cookie"));
+        return redirect("/register", {
+          headers: { "Set-Cookie": await destroySession(session) },
+        });
+      }
+      throw e;
+    }
+  };
 }
 
 /**
