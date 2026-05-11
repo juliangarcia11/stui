@@ -8,7 +8,7 @@ export const agentFixture: Agent = {
   accountId: "test-account-id",
   symbol: "TESTAGENT",
   headquarters: HQ_WAYPOINT,
-  credits: 100000n,
+  credits: 100000,
   startingFaction: "COSMIC",
   shipCount: 0,
 };

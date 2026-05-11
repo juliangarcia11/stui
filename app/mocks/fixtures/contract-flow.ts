@@ -154,5 +154,5 @@ export const fulfillCtx = {
 export const completedCtx = {
   ...fulfillCtx,
   contract: { ...fulfillCtx.contract, fulfilled: true },
-  agent: { ...agentFixture, credits: 145000n },
+  agent: { ...agentFixture, credits: 145000 },
 };

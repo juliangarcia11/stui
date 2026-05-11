@@ -3,7 +3,7 @@
 import type { AcceptContractResponse, CreateChartResponse, CreateShipShipScanResponse, CreateShipSystemScanResponse, CreateShipWaypointScanResponse, CreateSurveyResponse, DeliverContractResponse, DockShipResponse, ExtractResourcesResponse, ExtractResourcesWithSurveyResponse, FulfillContractResponse, GetAgentResponse, GetAgentsResponse, GetContractResponse, GetContractsResponse, GetMarketResponse, GetMyAccountResponse, GetMyAgentEventsResponse, GetMyAgentResponse, GetMyShipResponse, GetMyShipsResponse, GetRepairShipResponse, GetScrapShipResponse, GetShipNavResponse, GetShipyardResponse, GetStatusResponse, GetSystemWaypointsResponse, GetWaypointResponse, InstallMountResponse, InstallShipModuleResponse, JumpShipResponse, NavigateShipResponse, NegotiateContractResponse, OrbitShipResponse, PatchShipNavResponse, PurchaseCargoResponse, PurchaseShipResponse, RefuelShipResponse, RegisterResponse, RemoveMountResponse, RemoveShipModuleResponse, RepairShipResponse, ScrapShipResponse, SellCargoResponse, ShipRefineResponse, SiphonResourcesResponse, WarpShipResponse } from './types.gen';
 
 const publicAgentSchemaResponseTransformer = (data: any) => {
-    data.credits = BigInt(data.credits.toString());
+    data.credits = Number(data.credits);
     return data;
 };
 
@@ -19,7 +19,7 @@ export const getAgentResponseTransformer = async (data: any): Promise<GetAgentRe
 
 export const getStatusResponseTransformer = async (data: any): Promise<GetStatusResponse> => {
     data.leaderboards.mostCredits = data.leaderboards.mostCredits.map((item: any) => {
-        item.credits = BigInt(item.credits.toString());
+        item.credits = Number(item.credits);
         return item;
     });
     return data;
@@ -106,7 +106,7 @@ export const getContractResponseTransformer = async (data: any): Promise<GetCont
 };
 
 const agentSchemaResponseTransformer = (data: any) => {
-    data.credits = BigInt(data.credits.toString());
+    data.credits = Number(data.credits);
     return data;
 };
 

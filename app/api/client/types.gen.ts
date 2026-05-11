@@ -176,7 +176,7 @@ export type PublicAgent = {
     /**
      * The number of credits the agent has available. Credits can be negative if funds have been overdrawn.
      */
-    credits: bigint;
+    credits: number;
     /**
      * The faction the agent started with.
      */
@@ -1278,7 +1278,7 @@ export type Agent = {
     /**
      * The number of credits the agent has available. Credits can be negative if funds have been overdrawn.
      */
-    credits: bigint;
+    credits: number;
     /**
      * The faction the agent started with.
      */
@@ -2006,7 +2006,7 @@ export type GetStatusResponses = {
                 /**
                  * Amount of credits.
                  */
-                credits: bigint;
+                credits: number;
             }>;
             /**
              * Top agents with the most charted submitted.

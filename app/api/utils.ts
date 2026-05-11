@@ -21,7 +21,13 @@ export const wrapErr = (message: string) =>
 /**
  * Util that pulls error messages from items we hope are ApiErrors
  */
-export const extractApiErr = (e: unknown) => (e as ApiError).error.message;
+export const extractApiErr = (e: unknown) => {
+  const apiErr = e as Partial<ApiError>;
+  if (!apiErr?.error?.message) {
+    console.error("[extractApiErr] unexpected error shape:", JSON.stringify(e));
+  }
+  return apiErr?.error?.message ?? "An unknown error occurred";
+};
 
 /**
  * Util to create a header json object to drop into the client function calls
