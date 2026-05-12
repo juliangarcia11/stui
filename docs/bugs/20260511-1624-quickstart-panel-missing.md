@@ -21,3 +21,11 @@ Two failure modes:
 - `app/features/` — find the `QuickstartPanel` component, check its ARIA region and label.
 - `tests/contract-flow/panel.spec.ts:6` — the first failing assertion.
 - `tests/mocked/contract-flow.spec.ts:27` — `openPanel` helper that all mocked tests depend on.
+
+## Resolution (2026-05-11)
+
+**Root cause:** React Router v7 single-fetch routes all `useFetcher.load()` calls through a turbo-stream pipeline. `page.route()` returning plain JSON caused `Unable to decode turbo-stream response` and an "Oops!" error screen — the panel never rendered.
+
+**Fix:** Replaced the plain-JSON `page.route` mock with `mockLoaderData` from `tests/helpers/mock-single-fetch.ts`, which encodes fixture data as turbo-stream with the correct envelope shape and headers. Also fixed an unrelated ambiguous selector in the completion screen test.
+
+See `docs/single-fetch-test-mocking.md` for the full explanation and fragility notes.

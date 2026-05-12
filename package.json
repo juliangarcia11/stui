@@ -42,6 +42,7 @@
     "msw": "^2.12.10",
     "openapi-typescript": "^7.13.0",
     "tailwindcss": "^4.1.13",
+    "turbo-stream": "2.4.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4"

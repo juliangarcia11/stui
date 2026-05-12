@@ -9,16 +9,14 @@ import {
   TRADE_SYMBOL,
   UNITS_REQUIRED,
 } from "../../app/mocks/fixtures/contract-flow";
+import { mockLoaderData } from "../helpers/mock-single-fetch";
 
-// Intercept /api/quickstart-context so the panel renders deterministic fixture state
-// without making real SpaceTraders API calls for context assembly.
 async function mockCtx(page: Page, ctx: unknown) {
-  await page.route(/api\/quickstart-context/, (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: "application/json",
-      body: JSON.stringify({ context: ctx, dismissed: false, dismissedContractId: null }),
-    }),
+  await mockLoaderData(
+    page,
+    "/api/quickstart-context",
+    "routes/api.quickstart-context",
+    { context: ctx, dismissed: false, dismissedContractId: null },
   );
 }
 
@@ -141,6 +139,6 @@ test.describe("completion screen", () => {
   });
 
   test("shows dismissal countdown button", async ({ page }) => {
-    await expect(page.getByRole("button", { name: /Dismiss/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Dismiss \(/ })).toBeVisible();
   });
 });

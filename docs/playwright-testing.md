@@ -47,7 +47,7 @@ All API calls in this app are made server-side (React Router loaders). MSW uses 
 
 Playwright runs a second dev server on `:5174` with `VITE_ENABLE_MOCKS=true`. Tests under `tests/mocked/` use the `mocked` project which targets that server. Real-API tests on `:5173` are unaffected.
 
-**Panel context tests** use `page.route(/api\/quickstart-context/, ...)` rather than MSW. The `QuickstartPanel` fetches this internal route from the browser, so Playwright can intercept it directly and return any context fixture — no server-side handler change required. This lets each test describe block set a different step state without restarting the mock server.
+**Panel context tests** use a turbo-stream-aware `page.route()` helper (`tests/helpers/mock-single-fetch.ts`) rather than MSW. React Router v7 single-fetch means all `useFetcher.load()` responses must be encoded as turbo-stream, not plain JSON — see [`docs/single-fetch-test-mocking.md`](./single-fetch-test-mocking.md) for the full explanation. This lets each test describe block set a different step state without restarting the mock server.
 
 ---
 
